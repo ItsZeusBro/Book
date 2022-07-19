@@ -12,3 +12,7 @@ A profound prophecy is that Ai may actually need to produce and consume its own 
 
 Other benefits: 
 - Partial searching is better than exhaustive searching when you don't want redundant search results, and when statistical relevancy can be apart of your indexing strategy. It's especially important on huge data sets when the single best answer to a question is not important to answering the question you want
+
+- Indexes are functionally about content within a page or chapter. Things are ordered by Ai based on content similarity in a virtual way without changing the underlying string document
+- Glossaries are functionally "translation units", and anything having to do with translations.
+- References can just be hyperlinks
