@@ -104,9 +104,6 @@ class TestBook{
 		_Book._removePagesNtoM(_Book, 10, 20)
 		assert.equal(pageCount-11, _Book.getPageCount(_Book))
 	}
-
-
-
 }
 
 

@@ -8,6 +8,7 @@ export class Book{
         this.tools=tools;
 		this.pages;
         this.book;
+        this.index;//for the future!
 		this.bookify(string, this, tools);
     }
 
