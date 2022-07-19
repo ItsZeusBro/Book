@@ -16,3 +16,8 @@ Other benefits:
 - Indexes are functionally about content within a page or chapter. Things are ordered by Ai based on content similarity in a virtual way without changing the underlying string document
 - Glossaries are functionally "translation units", and anything having to do with translations.
 - References can just be hyperlinks
+
+- Virtual Indexing and Ordering
+  - Basically every line in a document (with some arbitrary delimiter) can be virtually associated with other lines by a computer (with map association to its original location in the original document)
+  - This allows us to search documents logically irrespective of its ordering.
+  - The efficiency of this can be toned down to aide human readers, and eventually train them to be as efficient as computers
