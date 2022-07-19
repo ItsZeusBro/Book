@@ -80,9 +80,9 @@ export class Book{
         fs.writeFileSync(fileName+'.book', JSON.stringify(_Book.book))
     }
 
-    scrollifyBook(_Book){
+    scrollify(_Book){
         if(!_Book){_Book=this;}
-        return this.scrollifyPagesNtoM(_Book)
+        return this.scrollifyPagesNtoM(null, null, _Book)
     }
 
     //if you need to scrollify large ranges, your pages are too small
@@ -93,11 +93,11 @@ export class Book{
         }
         if(pageN && pageM){
             //if pageN or pageM
-            return _Book._scrollifyNtoM(pageN, pageM, _Book);
+            return _Book._scrollifyPagesNtoM(pageN, pageM, _Book);
         }else if(pageN){
-            return _Book._scrollifyNtoM(pageN, _Book.getPageCount(_Book), _Book);
+            return _Book._scrollifyPagesNtoM(pageN, _Book.getPageCount(_Book), _Book);
         }else if(pageM){
-            return _Book._scrollifyNtoM(0, pageM, _Book);
+            return _Book._scrollifyPagesNtoM(0, pageM, _Book);
         }else{
             var string="";
             for (const [pageNumber, page] of Object.entries(_Book.book['pages'])) {
@@ -168,7 +168,7 @@ export class Book{
 
     _scrollifyPageN(pageN, _Book){
         if(!_Book){_Book=this;}
-        return this._scrollifyNtoM(pageN, pageN, _Book);
+        return this._scrollifyPagesNtoM(pageN, pageN, _Book);
     }
 
 
