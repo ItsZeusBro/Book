@@ -1,11 +1,7 @@
 import * as assert from "node:assert"
 import * as util from "node:util"
 
-//This is for reading and analysis, not for writing
-//It provides a format to help you analyze a large string document
-//in chunks. It's primary reason for existance was to enable
-//probablistic matching on large strings to avoid having
-//matching scalability issues
+//Its just a book...
 export class Book{
     constructor(string, tools){
         this.string=string;
