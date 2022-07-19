@@ -1,6 +1,8 @@
 # Book
 Its like a really long string, but better.
 
+Books solved the problem of searching and sorting a long time ago! Since then, computer science and mathematics has provided a set of tools that aide in the same problem. The issue is that computer science looks at scrolls of data, and not at books. Books are better.
+
 <img src="https://github.com/ItsZeusBro/Book/blob/36d7bec2d3ca3d23673540738009e4be8ca37863/Neanderthals.jpeg"/>
 
 Jokes aside: 
