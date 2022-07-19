@@ -11,14 +11,8 @@ export class Book{
         this.book;
 		this.bookify(string, this, tools);
     }
-    getLine(_Book, pageN, lineN){
-        return this.getPageN(_Book, pageN)['lines'][lineN.toString];
-    }
 
-    getPageN(_Book, pageN){
-        return _Book.book['pages'][pageN.toString()];
-    }
-
+    //PUBLIC GETTERS
     getPageCount(_Book){
 		return parseInt(_Book.book['pageCount']);
 	}
@@ -26,13 +20,7 @@ export class Book{
         return parseInt(page['lineCount']);
     }
 
-    _getEmptyPage(){
-		return {'lineCount':'0','lines':{}};
-	}
-	_getEmptyBook(){
-		return {'pageCount':'0','pages':{}};
-	}
-    
+    //PUBLIC UTILS
     bookify(string, _Book, tools){
 		if(!(string&&tools)){
 			tools = this.tools;
@@ -70,6 +58,7 @@ export class Book{
     stringifyBook(_Book){
 
     }
+
     //if you need to stringify large ranges, your pages are too small
     stringifyPagesNtoM(_Book, pageN, pageM){
         if(!_Book.book){
@@ -92,6 +81,41 @@ export class Book{
             return string;
         }
     }
+
+    pushStringToBook(string, _Book, tools){
+        if(!string && !_Book.book){
+            throw Error("you need to provide a string and a book");
+        }
+        if(!tools){
+            tools=this.tools;
+        }
+		this.bookify(string, _Book, tools);
+	}
+
+    printBook(_Book){
+		console.log(util.inspect(_Book.book, {showHidden: true, depth: null, colors: true}));
+	}
+
+    //PRIVATE GETTERS
+    _getLineNFromPageM(_Book, pageM, lineN){
+        return this.getPageN(_Book, pageM)['lines'][lineN.toString];
+    }
+    _getPageN(_Book, pageN){
+        return _Book.book['pages'][pageN.toString()];
+    }
+    
+    _getEmptyLine(){
+        return {'charCount':0, 'line':""}
+    }
+    _getEmptyPage(){
+		return {'lineCount':'0','lines':{}, 'charOffset':0};
+	}
+	_getEmptyBook(){
+		return {'pageCount':'0','pages':{}};
+	}
+    
+   
+    
     //O(n^2) where n is the number of pages n to m, pagination should be balanced
     //to avoid performance issues
     _stringifyPagesNtoM(_Book, pageN, pageM){
@@ -105,15 +129,15 @@ export class Book{
         return string;
     }
 
-    stringifyPageN(_Book, pageN){
+    _stringifyPageN(_Book, pageN){
         return this._stringifyNtoM(_Book, pageN, pageN);
     }
 
 
-    _removePagesNtoM(_Book, n, m){
-		assert.equal(m>=n, true);
-		for (var j = n; j<=m; j++){
-			this._removePageN(_Book, j);
+    _removePagesNtoM(_Book, pageN, pageM){
+		assert.equal(pageM>=pageN, true);
+		for (var i=pageN; i<=pageM; i++){
+			this._removePageN(_Book, i);
 		}
 	}
 
@@ -128,8 +152,8 @@ export class Book{
 
     
     //this should be tested when its actually used, leave it here for now.
-    _popNPagesFrom(n, _Book){
-		for(var i = 0; i<n; i++){
+    _popNPagesFrom(nPages, _Book){
+		for(var i = 0; i<nPages; i++){
 			this._popPageFromBook(_Book);
 		}
 	}
@@ -139,15 +163,7 @@ export class Book{
         _Book.book['pageCount']=(parseInt(_Book.book['pageCount'])-1).toString();
     }
 
-    pushStringToBook(string, _Book, tools){
-        if(!string && !_Book.book){
-            throw Error("you need to provide a string and a book");
-        }
-        if(!tools){
-            tools=this.tools;
-        }
-		this.bookify(string, _Book, tools);
-	}
+    
     _pushPageToBook(page, _Book){
         _Book.book['pages'][(parseInt(_Book.book['pageCount'])+1).toString()]=page;
         _Book.book['pageCount']=(parseInt(_Book.book['pageCount'])+1).toString();
@@ -156,9 +172,4 @@ export class Book{
         page['lines'][(parseInt(page['lineCount'])+1).toString()]=line;
         page['lineCount']=(parseInt(page['lineCount'])+1).toString();
     }
-
-	printBook(_Book){
-		console.log(util.inspect(_Book.book, {showHidden: true, depth: null, colors: true}));
-	}
-
 }
