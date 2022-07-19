@@ -11,47 +11,53 @@ import {HALF_BOOKS} from "./Cases/Books/HalfBooks.js"
 
 class TestBook{
 	constructor(){
-		for(var i = 20000; i< 30000; i++){
-			console.log(i)
-			var _Book=this.createBook(i)
-			console.log(_Book.getPageCount(_Book))
-			this.scrollifyBook(i)
-			this.enscribeToBook(i)
-			this.getPageCount(i)
-			this.getLineCount(i)
-			// //TEMPORARY CLEAR BOX TEST UNTIL WE USE IT
-			this._popNPagesFrom(i)
-			this._removePagesNtoM(i)
-		}
-		
-
+		this.exportToBookFile(100)
+		//this.stressTest()
 	}
 
-	createBook(i){
-		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
+	stressTest(n, m){
+		for(var lineCount = n; lineCount< m; lineCount++){
+			console.log(lineCount)
+			var _Book=this.createBook(lineCount)
+			console.log(_Book.getPageCount(_Book))
+			this.scrollifyBook(lineCount)
+			this.enscribeToBook(lineCount)
+			this.getPageCount(lineCount)
+			this.getLineCount(lineCount)
+			// //TEMPORARY CLEAR BOX TEST UNTIL WE USE IT
+			this._popNPagesFrom(lineCount)
+			this._removePagesNtoM(lineCount)
+		}
+	}
+	exportToBookFile(lineCount){
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
+		_Book.exportToBookFile(_Book, "TheIliad")
+	}
+	createBook(lineCount){
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
 		//_Book.printBook(_Book)
 		return _Book
 	}
 
-	scrollifyBook(i){
-		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
+	scrollifyBook(lineCount){
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
 		assert.equal(THE_ILIAD, _Book.scrollifyBook(_Book));
 	}
 
-	enscribeToBook(i){
-		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
-		_Book.enscribeToBook(THE_ODYSSEY, _Book, {'lineCount':i, 'anchor': '\n'});
+	enscribeToBook(lineCount){
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
+		_Book.enscribeToBook(THE_ODYSSEY, _Book, {'lineCount':lineCount, 'anchor': '\n'});
 		assert.equal(THE_ILIAD+THE_ODYSSEY, _Book.scrollifyBook(_Book));
 	}
 
 	//probabalistic token match (specify how many pages to search through)
-	nextToken(i){
+	nextToken(lineCount){
 		//specify number of lines, that will determine the number of pages searched on
-		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})
 
 	}
 
-	getPageCount(i){
+	getPageCount(lineCount){
 		//every string has n number of newlines
 		//we can divide that by 100 here, to get the number of pages
 		var count=0
@@ -64,7 +70,7 @@ class TestBook{
 		if(this._isFloat(expectedPageCount)){
 			expectedPageCount=Math.trunc(expectedPageCount)+1
 		}
-		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
 		assert.equal(expectedPageCount, _Book.getPageCount(_Book))
 	}
 
@@ -72,7 +78,7 @@ class TestBook{
 		return Number(n) === n && n % 1 !== 0;
 	}
 
-	getLineCount(i){
+	getLineCount(lineCount){
 		var count=0
 		for(var n = 0; n<THE_ILIAD.length; n++){
 			if(THE_ILIAD[n]=='\n'){
@@ -81,7 +87,7 @@ class TestBook{
 				count+=1;
 			}
 		}
-		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
 		//we need to check the first and last page
 		//expected 100 for first page
 		assert.equal(i, _Book.getLineCount(_Book.book['pages']['1']))
@@ -91,15 +97,15 @@ class TestBook{
 	}
 
 	//TEMPORARY Clear Box test until we use it
-	_popNPagesFrom(i){
-		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
+	_popNPagesFrom(lineCount){
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
 		var originalPageCount = _Book.getPageCount(_Book)
 		_Book._popNPagesFrom(10, _Book)
 		assert.equal(_Book.getPageCount(_Book), originalPageCount-10) //this is just a pop operation
 		//not a range operation, so there is no inclusive case we need to worry about 
 	}
-	_removePagesNtoM(i){
-		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
+	_removePagesNtoM(lineCount){
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
 		var pageCount = _Book.getPageCount(_Book)
 		_Book._removePagesNtoM(_Book, 10, 20)
 		assert.equal(pageCount-11, _Book.getPageCount(_Book))

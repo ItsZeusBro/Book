@@ -1,5 +1,6 @@
 import * as assert from "node:assert"
 import * as util from "node:util"
+import * as fs from "node:fs"
 
 //Its just a book...
 export class Book{
@@ -56,6 +57,10 @@ export class Book{
 		}
 	}
 
+    exportToBookFile(_Book, fileName){
+        fs.writeFileSync(fileName+'.book', JSON.stringify(_Book.book))
+    }
+
     scrollifyBook(_Book){
         return this.scrollifyPagesNtoM(_Book)
     }
@@ -106,10 +111,10 @@ export class Book{
     }
 
     _getEmptyLine(){
-        return {'charCount':0, 'line':""}
+        return {'charCount':'0', 'line':""}
     }
     _getEmptyPage(){
-		return {'lineCount':'0','lines':{}, 'charOffset':0};
+		return {'lineCount':'0','lines':{}, 'charOffset':'0'};
 	}
 	_getEmptyBook(){
 		return {'pageCount':'0','pages':{}};
