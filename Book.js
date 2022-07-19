@@ -1,5 +1,3 @@
-import {Finding} from "./Source/Finding.js"
-import { MOBY_DICK } from "./Source/Test/Cases/Books/IndividualBooks/MobyDick.js";
 import * as assert from "node:assert"
 import * as util from "node:util"
 
@@ -56,7 +54,7 @@ export class Book{
 	}
 
     stringifyBook(_Book){
-
+        return this.stringifyPagesNtoM(_Book)
     }
 
     //if you need to stringify large ranges, your pages are too small
@@ -103,7 +101,7 @@ export class Book{
     _getPageN(_Book, pageN){
         return _Book.book['pages'][pageN.toString()];
     }
-    
+
     _getEmptyLine(){
         return {'charCount':0, 'line':""}
     }

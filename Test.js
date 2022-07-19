@@ -1,6 +1,4 @@
-import {Finding} from "../Finding.js"
-import {Sherlock, Book} from "../../Sherlock.js"
-import {CHAR, WORD, LINE} from "../Patterns/Patterns.js"
+import {Book} from "./Book.js"
 import * as util from "node:util"
 import * as assert from "node:assert"
 // import {MOBY_DICK} from "./Cases/Books/IndividualBooks/MobyDick.js"
@@ -16,11 +14,11 @@ class TestBook{
 		for(var i = 20000; i< 30000; i++){
 			console.log(i)
 			var _Book=this.createBook(i)
-			console.log(_Book.pageCount(_Book))
-			this.stringify(i)
+			console.log(_Book.getPageCount(_Book))
+			this.stringifyBook(i)
 			this.pushStringToBook(i)
-			this.pageCount(i)
-			this.lineCount(i)
+			this.getPageCount(i)
+			this.getLineCount(i)
 			// //TEMPORARY CLEAR BOX TEST UNTIL WE USE IT
 			this._popNPagesFrom(i)
 			this._removePagesNtoM(i)
@@ -35,17 +33,15 @@ class TestBook{
 		return _Book
 	}
 
-	stringify(i){
+	stringifyBook(i){
 		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
-		assert.equal(THE_ILIAD, _Book.stringify(_Book));
-		
-		assert.equal(THE_ILIAD, _Book.stringify(_Book));
+		assert.equal(THE_ILIAD, _Book.stringifyBook(_Book));
 	}
 
 	pushStringToBook(i){
 		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
 		_Book.pushStringToBook(THE_ODYSSEY, _Book, {'lineCount':i, 'anchor': '\n'});
-		assert.equal(THE_ILIAD+THE_ODYSSEY, _Book.stringify(_Book));
+		assert.equal(THE_ILIAD+THE_ODYSSEY, _Book.stringifyBook(_Book));
 	}
 
 	//probabalistic token match (specify how many pages to search through)
@@ -55,7 +51,7 @@ class TestBook{
 
 	}
 
-	pageCount(i){
+	getPageCount(i){
 		//every string has n number of newlines
 		//we can divide that by 100 here, to get the number of pages
 		var count=0
@@ -69,14 +65,14 @@ class TestBook{
 			expectedPageCount=Math.trunc(expectedPageCount)+1
 		}
 		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
-		assert.equal(expectedPageCount, _Book.pageCount(_Book))
+		assert.equal(expectedPageCount, _Book.getPageCount(_Book))
 	}
 
 	_isFloat(n){
 		return Number(n) === n && n % 1 !== 0;
 	}
 
-	lineCount(i){
+	getLineCount(i){
 		var count=0
 		for(var n = 0; n<THE_ILIAD.length; n++){
 			if(THE_ILIAD[n]=='\n'){
@@ -88,25 +84,25 @@ class TestBook{
 		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
 		//we need to check the first and last page
 		//expected 100 for first page
-		assert.equal(i, _Book.lineCount(_Book.book['pages']['1']))
+		assert.equal(i, _Book.getLineCount(_Book.book['pages']['1']))
 		//_Book.printBook(_Book)
-		assert.equal((count%i)+1, _Book.lineCount(_Book.book['pages'][_Book.pageCount(_Book).toString()]))
+		assert.equal((count%i)+1, _Book.getLineCount(_Book.book['pages'][_Book.getPageCount(_Book).toString()]))
 
 	}
 
 	//TEMPORARY Clear Box test until we use it
 	_popNPagesFrom(i){
 		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
-		var originalPageCount = _Book.pageCount(_Book)
+		var originalPageCount = _Book.getPageCount(_Book)
 		_Book._popNPagesFrom(10, _Book)
-		assert.equal(_Book.pageCount(_Book), originalPageCount-10) //this is just a pop operation
+		assert.equal(_Book.getPageCount(_Book), originalPageCount-10) //this is just a pop operation
 		//not a range operation, so there is no inclusive case we need to worry about 
 	}
 	_removePagesNtoM(i){
 		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
-		var pageCount = _Book.pageCount(_Book)
+		var pageCount = _Book.getPageCount(_Book)
 		_Book._removePagesNtoM(_Book, 10, 20)
-		assert.equal(pageCount-11, _Book.pageCount(_Book))
+		assert.equal(pageCount-11, _Book.getPageCount(_Book))
 	}
 
 
