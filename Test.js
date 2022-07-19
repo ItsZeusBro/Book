@@ -12,6 +12,8 @@ import {HALF_BOOKS} from "./Cases/Books/HalfBooks.js"
 class TestBook{
 	constructor(){
 		this.exportToBookFile(100)
+		var _Book = this.importBookFile(100)
+		console.log(_Book.getPageCount(_Book))
 		//this.stressTest()
 	}
 
@@ -29,9 +31,13 @@ class TestBook{
 			this._removePagesNtoM(lineCount)
 		}
 	}
+	importBookFile(lineCount){
+		var _Book = new Book("./TheIliad.book")
+		return _Book
+	}
 	exportToBookFile(lineCount){
 		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
-		_Book.exportToBookFile(_Book, "TheIliad")
+		_Book.exportToBookFile(_Book, "TheIliad");
 	}
 	createBook(lineCount){
 		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});

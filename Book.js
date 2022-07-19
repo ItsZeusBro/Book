@@ -4,13 +4,21 @@ import * as fs from "node:fs"
 
 //Its just a book...
 export class Book{
-    constructor(string, tools){
-        this.string=string;
+    constructor(file, string, tools){
         this.tools=tools;
-		this.pages;
+        if(file && string){
+            tools=string
+            string=file
+            
+        }
+        this.string=string;
         this.book;
         this.index;//for the future!
-		this.bookify(string, this, tools);
+        if(file&&string){
+            this.bookify(string, this, tools);
+        }else{
+            this.import(file, this)
+        }
     }
 
     //PUBLIC GETTERS
@@ -56,7 +64,10 @@ export class Book{
 			this._addPageToBook(page, _Book);
 		}
 	}
-
+    import(file, _Book){
+        _Book.book = JSON.parse(fs.readFileSync(file))
+    }
+    
     exportToBookFile(_Book, fileName){
         fs.writeFileSync(fileName+'.book', JSON.stringify(_Book.book))
     }
