@@ -12,7 +12,15 @@ class TestBook{
 	constructor(){
 		this.exportToBookFile(100)
 		var _Book = this.importBookFile(100)
-		this.stressTest(26048,30000)
+		//this.stressTest(1,26049)
+		var i;
+		var matches = []
+		for(i =1;i<261; i++){
+			if(_Book.matchOnPageRange(/Zeus/, i, i+1, _Book)){
+				matches.push([i, _Book.matchOnPageRange(/Zeus/, i, i+1, _Book)])
+			}
+		}
+		console.log(matches)
 	}
 
 	stressTest(n, m){
@@ -82,7 +90,6 @@ class TestBook{
 				count+=1;
 			}
 		}
-		console.log(count, lineCount)
 		var expectedPageCount=count/lineCount;
 		if(this._isFloat(expectedPageCount)){
 			expectedPageCount=Math.trunc(expectedPageCount)+1
@@ -93,7 +100,6 @@ class TestBook{
 		}
 		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})
 		_Book.printBook()
-		console.log(expectedPageCount, _Book.getPageCount(_Book))
 		assert.equal(expectedPageCount, _Book.getPageCount(_Book))
 	}
 
@@ -119,7 +125,6 @@ class TestBook{
 			//because the linecount is not going to equal the getLineCount if it is greater
 			assert.equal(lineCount, _Book.getLineCount(_Book.book['pages']['1']))
 			//_Book.printBook(_Book)
-			console.log("here")
 			assert.equal((count%lineCount)+1, _Book.getLineCount(_Book.book['pages'][_Book.getPageCount(_Book).toString()]))
 
 		}

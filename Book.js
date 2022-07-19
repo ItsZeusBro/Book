@@ -70,9 +70,11 @@ export class Book{
         if(!_Book){_Book=this;}
         _Book.book = JSON.parse(fs.readFileSync(file))
     }
-    matchOnPageRange(regexObj, pageN, pageM, _Book){
+    matchOnPageRange(regex, pageN, pageM, _Book){
         if(!_Book){_Book=this;}
 
+        var scroll = this.scrollifyPagesNtoM(pageN, pageM, _Book)
+        return scroll.match(regex)
 	}
 
     exportToBookFile(fileName, _Book){
@@ -156,6 +158,9 @@ export class Book{
     //to avoid performance issues
     _scrollifyPagesNtoM(pageN, pageM, _Book){
         if(!_Book){_Book=this;}
+        if(pageN>_Book.getPageCount()||pageM>_Book.getPageCount()){
+            throw Error("pages must be within range of 0 and _Book.pageCount()")
+        }
         var string="";
         for (var i = pageN; i<=pageM; i++){
             var page = _Book.book['pages'][i.toString()];
