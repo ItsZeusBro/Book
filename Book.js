@@ -15,7 +15,7 @@ export class Book{
         this.book;
         this.index;//for the future!
         if(file&&string){
-            this.bookify(string, this, tools);
+            this.bookify(string, tools, this);
         }else{
             this.import(file, this)
         }
@@ -30,7 +30,7 @@ export class Book{
     }
 
     //PUBLIC UTILS
-    bookify(string, _Book, tools){
+    bookify(string, tools, _Book){
 		if(!(string&&tools)){
 			tools = this.tools;
 		}
@@ -67,8 +67,11 @@ export class Book{
     import(file, _Book){
         _Book.book = JSON.parse(fs.readFileSync(file))
     }
-    
-    exportToBookFile(_Book, fileName){
+    matchOnPageRange(regexObj, pageN, pageM, _Book){
+
+	}
+
+    exportToBookFile(fileName, _Book){
         fs.writeFileSync(fileName+'.book', JSON.stringify(_Book.book))
     }
 
@@ -77,17 +80,17 @@ export class Book{
     }
 
     //if you need to scrollify large ranges, your pages are too small
-    scrollifyPagesNtoM(_Book, pageN, pageM){
+    scrollifyPagesNtoM(pageN, pageM, _Book){
         if(!_Book.book){
             throw Error("Book is needed for scrollify to work")
         }
         if(pageN && pageM){
             //if pageN or pageM
-            return _Book._scrollifyNtoM(_Book, pageN, pageM);
+            return _Book._scrollifyNtoM(pageN, pageM, _Book);
         }else if(pageN){
-            return _Book._scrollifyNtoM(_Book, pageN, _Book.getPageCount(_Book));
+            return _Book._scrollifyNtoM(pageN, _Book.getPageCount(_Book), _Book);
         }else if(pageM){
-            return _Book._scrollifyNtoM(_Book, 0, pageM);
+            return _Book._scrollifyNtoM(0, pageM, _Book);
         }else{
             var string="";
             for (const [pageNumber, page] of Object.entries(_Book.book['pages'])) {
@@ -99,14 +102,14 @@ export class Book{
         }
     }
 
-    enscribeToBook(string, _Book, tools){
+    enscribeToBook(string, tools, _Book){
         if(!string && !_Book.book){
             throw Error("you need to provide a string and a book");
         }
         if(!tools){
             tools=this.tools;
         }
-		this.bookify(string, _Book, tools);
+		this.bookify(string, tools, _Book);
 	}
 
     printBook(_Book){
@@ -114,10 +117,10 @@ export class Book{
 	}
 
     //PRIVATE GETTERS
-    _getLineNFromPageM(_Book, pageM, lineN){
-        return this.getPageN(_Book, pageM)['lines'][lineN.toString];
+    _getLineNFromPageM(pageM, lineN, _Book){
+        return this.getPageN(pageM, _Book)['lines'][lineN.toString];
     }
-    _getPageN(_Book, pageN){
+    _getPageN(pageN, _Book){
         return _Book.book['pages'][pageN.toString()];
     }
 
@@ -140,7 +143,7 @@ export class Book{
     
     //O(n^2) where n is the number of pages n to m, pagination should be balanced
     //to avoid performance issues
-    _scrollifyPagesNtoM(_Book, pageN, pageM){
+    _scrollifyPagesNtoM(pageN, pageM, _Book){
         var string="";
         for (var i = pageN; i<=pageM; i++){
             var page = _Book.book['pages'][i.toString()];
@@ -151,19 +154,19 @@ export class Book{
         return string;
     }
 
-    _scrollifyPageN(_Book, pageN){
-        return this._scrollifyNtoM(_Book, pageN, pageN);
+    _scrollifyPageN(pageN, _Book){
+        return this._scrollifyNtoM(pageN, pageN, _Book);
     }
 
 
-    _removePagesNtoM(_Book, pageN, pageM){
+    _removePagesNtoM(pageN, pageM, _Book){
 		assert.equal(pageM>=pageN, true);
 		for (var i=pageN; i<=pageM; i++){
-			this._removePageN(_Book, i);
+			this._removePageN(i, _Book);
 		}
 	}
 
-	_removePageN(_Book, n){
+	_removePageN(n, _Book){
 		delete _Book.book['pages'][n.toString()];
 		var tmp = _Book.book['pages'][(n+1).toString()];
 		delete _Book.book['pages'][(n+1).toString()];

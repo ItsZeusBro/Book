@@ -4,7 +4,6 @@ import * as assert from "node:assert"
 // import {MOBY_DICK} from "./Cases/Books/IndividualBooks/MobyDick.js"
 import {THE_ILIAD} from "./Cases/Books/IndividualBooks/TheIliad.js"
 import {THE_ODYSSEY} from "./Cases/Books/IndividualBooks/TheOdyssey.js"
-
 import {HALF_BOOKS} from "./Cases/Books/HalfBooks.js"
 //import {BOOKS} from "./Cases/Books/Books.js"
 
@@ -31,28 +30,29 @@ class TestBook{
 			this._removePagesNtoM(lineCount)
 		}
 	}
+
 	importBookFile(lineCount){
 		var _Book = new Book("./TheIliad.book")
-		return _Book
+		return _Book;
 	}
 	exportToBookFile(lineCount){
-		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
-		_Book.exportToBookFile(_Book, "TheIliad");
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'});
+		_Book.exportToBookFile("TheIliad", _Book);
 	}
 	createBook(lineCount){
-		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'});
 		//_Book.printBook(_Book)
 		return _Book
 	}
 
 	scrollifyBook(lineCount){
-		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'});
 		assert.equal(THE_ILIAD, _Book.scrollifyBook(_Book));
 	}
 
 	enscribeToBook(lineCount){
-		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
-		_Book.enscribeToBook(THE_ODYSSEY, _Book, {'lineCount':lineCount, 'anchor': '\n'});
+		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'});
+		_Book.enscribeToBook(THE_ODYSSEY, {'lineCount':lineCount, 'anchor': '\n'}, _Book);
 		assert.equal(THE_ILIAD+THE_ODYSSEY, _Book.scrollifyBook(_Book));
 	}
 
@@ -113,7 +113,7 @@ class TestBook{
 	_removePagesNtoM(lineCount){
 		var _Book = new Book(THE_ILIAD, {'lineCount':lineCount, 'anchor': '\n'})//, 'pageLookAhead':true});
 		var pageCount = _Book.getPageCount(_Book)
-		_Book._removePagesNtoM(_Book, 10, 20)
+		_Book._removePagesNtoM(10, 20, _Book)
 		assert.equal(pageCount-11, _Book.getPageCount(_Book))
 	}
 }
