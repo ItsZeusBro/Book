@@ -23,6 +23,7 @@ export class Book{
 
     //PUBLIC GETTERS
     getPageCount(_Book){
+        if(!_Book){_Book=this;}
 		return parseInt(_Book.book['pageCount']);
 	}
 	getLineCount(page){
@@ -31,6 +32,7 @@ export class Book{
 
     //PUBLIC UTILS
     bookify(string, tools, _Book){
+        if(!_Book){_Book=this;}
 		if(!(string&&tools)){
 			tools = this.tools;
 		}
@@ -65,22 +67,27 @@ export class Book{
 		}
 	}
     import(file, _Book){
+        if(!_Book){_Book=this;}
         _Book.book = JSON.parse(fs.readFileSync(file))
     }
     matchOnPageRange(regexObj, pageN, pageM, _Book){
+        if(!_Book){_Book=this;}
 
 	}
 
     exportToBookFile(fileName, _Book){
+        if(!_Book){_Book=this;}
         fs.writeFileSync(fileName+'.book', JSON.stringify(_Book.book))
     }
 
     scrollifyBook(_Book){
+        if(!_Book){_Book=this;}
         return this.scrollifyPagesNtoM(_Book)
     }
 
     //if you need to scrollify large ranges, your pages are too small
     scrollifyPagesNtoM(pageN, pageM, _Book){
+        if(!_Book){_Book=this;}
         if(!_Book.book){
             throw Error("Book is needed for scrollify to work")
         }
@@ -103,6 +110,7 @@ export class Book{
     }
 
     enscribeToBook(string, tools, _Book){
+        if(!_Book){_Book=this;}
         if(!string && !_Book.book){
             throw Error("you need to provide a string and a book");
         }
@@ -113,14 +121,17 @@ export class Book{
 	}
 
     printBook(_Book){
+        if(!_Book){_Book=this;}
 		console.log(util.inspect(_Book.book, {showHidden: true, depth: null, colors: true}));
 	}
 
     //PRIVATE GETTERS
     _getLineNFromPageM(pageM, lineN, _Book){
+        if(!_Book){_Book=this;}
         return this.getPageN(pageM, _Book)['lines'][lineN.toString];
     }
     _getPageN(pageN, _Book){
+        if(!_Book){_Book=this;}
         return _Book.book['pages'][pageN.toString()];
     }
 
@@ -144,6 +155,7 @@ export class Book{
     //O(n^2) where n is the number of pages n to m, pagination should be balanced
     //to avoid performance issues
     _scrollifyPagesNtoM(pageN, pageM, _Book){
+        if(!_Book){_Book=this;}
         var string="";
         for (var i = pageN; i<=pageM; i++){
             var page = _Book.book['pages'][i.toString()];
@@ -155,11 +167,13 @@ export class Book{
     }
 
     _scrollifyPageN(pageN, _Book){
+        if(!_Book){_Book=this;}
         return this._scrollifyNtoM(pageN, pageN, _Book);
     }
 
 
     _removePagesNtoM(pageN, pageM, _Book){
+        if(!_Book){_Book=this;}
 		assert.equal(pageM>=pageN, true);
 		for (var i=pageN; i<=pageM; i++){
 			this._removePageN(i, _Book);
@@ -167,6 +181,7 @@ export class Book{
 	}
 
 	_removePageN(n, _Book){
+        if(!_Book){_Book=this;}
 		delete _Book.book['pages'][n.toString()];
 		var tmp = _Book.book['pages'][(n+1).toString()];
 		delete _Book.book['pages'][(n+1).toString()];
@@ -177,18 +192,21 @@ export class Book{
     
     //this should be tested when its actually used, leave it here for now.
     _popNPagesFrom(nPages, _Book){
+        if(!_Book){_Book=this;}
 		for(var i = 0; i<nPages; i++){
 			this._popPageFromBook(_Book);
 		}
 	}
 	
     _popPageFromBook(_Book){
+        if(!_Book){_Book=this;}
         delete _Book.book['pages'][_Book.book['pageCount']]; 
         _Book.book['pageCount']=(parseInt(_Book.book['pageCount'])-1).toString();
     }
 
     
     _addPageToBook(page, _Book){
+        if(!_Book){_Book=this;}
         _Book.book['pages'][(parseInt(_Book.book['pageCount'])+1).toString()]=page;
         _Book.book['pageCount']=(parseInt(_Book.book['pageCount'])+1).toString();
     }
