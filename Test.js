@@ -15,8 +15,8 @@ class TestBook{
 			console.log(i)
 			var _Book=this.createBook(i)
 			console.log(_Book.getPageCount(_Book))
-			this.stringifyBook(i)
-			this.pushStringToBook(i)
+			this.scrollifyBook(i)
+			this.enscribeToBook(i)
 			this.getPageCount(i)
 			this.getLineCount(i)
 			// //TEMPORARY CLEAR BOX TEST UNTIL WE USE IT
@@ -33,15 +33,15 @@ class TestBook{
 		return _Book
 	}
 
-	stringifyBook(i){
+	scrollifyBook(i){
 		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
-		assert.equal(THE_ILIAD, _Book.stringifyBook(_Book));
+		assert.equal(THE_ILIAD, _Book.scrollifyBook(_Book));
 	}
 
-	pushStringToBook(i){
+	enscribeToBook(i){
 		var _Book = new Book(THE_ILIAD, {'lineCount':i, 'anchor': '\n'})//, 'pageLookAhead':true});
-		_Book.pushStringToBook(THE_ODYSSEY, _Book, {'lineCount':i, 'anchor': '\n'});
-		assert.equal(THE_ILIAD+THE_ODYSSEY, _Book.stringifyBook(_Book));
+		_Book.enscribeToBook(THE_ODYSSEY, _Book, {'lineCount':i, 'anchor': '\n'});
+		assert.equal(THE_ILIAD+THE_ODYSSEY, _Book.scrollifyBook(_Book));
 	}
 
 	//probabalistic token match (specify how many pages to search through)
