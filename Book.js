@@ -70,12 +70,7 @@ export class Book{
         if(!_Book){_Book=this;}
         _Book.book = JSON.parse(fs.readFileSync(file))
     }
-    matchOnPageRange(regex, pageN, pageM, _Book){
-        if(!_Book){_Book=this;}
-
-        var scroll = this.scrollifyPagesNtoM(pageN, pageM, _Book)
-        return scroll.match(regex)
-	}
+    
 
     exportToBookFile(fileName, _Book){
         if(!_Book){_Book=this;}
@@ -151,6 +146,28 @@ export class Book{
     _setCharOffsetToPage(offset, page){
         
     }
+    //calls regex once on every n pages (non-cumulative way), and returns the first non null regex value
+    matchOnEveryNPages(nPages){
+		var i;
+		var matches = []
+
+        for(var i = 1; i<=this.pageCount(); i++){
+            matches.push(_Book.matchOnPageRange(regex, i, i+nPages, _Book))
+        }
+        return matches;
+    }
+
+    //calls regex once on n pages (in cumulative way), and returns the first non null regex value
+    matchEveryNPagesCumulitive(nPages){
+
+    }
+    //calls regex once on a page range, and returns the regex return value
+    matchPageRange(regex, pageN, pageM, _Book){
+        if(!_Book){_Book=this;}
+
+        var scroll = this.scrollifyPagesNtoM(pageN, pageM, _Book)
+        return scroll.match(regex)
+	}
 
    //PRIVATE UTILS
     

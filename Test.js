@@ -10,19 +10,15 @@ import {HALF_BOOKS} from "./Cases/Books/HalfBooks.js"
 
 class TestBook{
 	constructor(){
-		this.exportToBookFile(100)
-		var _Book = this.importBookFile(100)
+		//this.exportToBookFile(100)
+		this.matchOnPageRange()
 		//this.stressTest(1,26049)
-		var i;
-		var matches = []
-		for(i =1;i<261; i++){
-			if(_Book.matchOnPageRange(/Zeus/, i, i+1, _Book)){
-				matches.push([i, _Book.matchOnPageRange(/Zeus/, i, i+1, _Book)])
-			}
-		}
-		console.log(matches)
+		
 	}
-
+	matchOnPageRange(){
+		var _Book = this.importBookFile(100)
+		console.log(_Book.matchOnPageRange(/Zeus/, 251, 254, _Book))
+	}
 	stressTest(n, m){
 		for(var lineCount = n; lineCount< m; lineCount++){
 			console.log(lineCount)
