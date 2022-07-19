@@ -1,6 +1,9 @@
 import * as assert from "node:assert"
 import * as util from "node:util"
 
+//This is for reading and analysis, not for writing
+//It provides a format to help you analyze a large string document
+//in chunks
 export class Book{
     constructor(string, tools){
         this.string=string;
@@ -35,6 +38,7 @@ export class Book{
 				if(string[i]==tools['anchor'] && this.getLineCount(page)==tools['lineCount']-1){
 					line+=string[i];	//adds the anchor to the string
 					this._pushLineToPage(line, page);
+                    this._setCharOffsetToPage(i, page);
 					this._pushPageToBook(page, _Book);
 					page=this._getEmptyPage();
 					line="";
@@ -112,7 +116,12 @@ export class Book{
 		return {'pageCount':'0','pages':{}};
 	}
     
-   
+    //PRIVATE SETTERS
+    _setCharOffsetToPage(offset, page){
+        
+    }
+
+   //PRIVATE UTILS
     
     //O(n^2) where n is the number of pages n to m, pagination should be balanced
     //to avoid performance issues
@@ -146,7 +155,6 @@ export class Book{
 		_Book.book['pages'][n.toString()]=tmp;
 		_Book.book['pageCount']=(parseInt(_Book.book['pageCount'])-1).toString();
 	}
-
 
     
     //this should be tested when its actually used, leave it here for now.
