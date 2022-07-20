@@ -9,10 +9,11 @@ import * as fs from "node:fs"
 //Pages can be delimited by a litteral, or a pattern (you don't suffer regex performance hit more than once
 //if you store into book file)
 
-//Pages can be delimited by a byte or bitty count 
-//(a bitty count is a bit count that adds bits at the end to be Octal compliant buffer)
+//Pages can be delimited by a byte or bit count (with a bitty count)
+//(a bitty count is the number of bits at the end of a bit buffer that allows it to be an Octal 
+//compliant buffer)
 //it matters because you might be parsing nibbles or actual bit patterns and not necessarily
-//byte patterns
+//byte patterns, but you still need the return of a page to be octal for processing
 
 //Its just a book...
 export class Book{
