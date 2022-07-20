@@ -48,8 +48,8 @@ export class Buk{
 }
 
 
-console.log(THE_ILIAD.length)
-var buk = new Buk(THE_ILIAD, {"charsPerPage":2000, "delim":'\n'});
+console.log(BOOKS.length)
+var buk = new Buk(BOOKS, {"charsPerPage":10000, "delim":'\n'});
 buk.prnt_n_bytes()
-buk.xport('Odyssey.buk')
+buk.xport('Books.buk')
 // assert.equal(buk.strngfy(), BOOKS)
