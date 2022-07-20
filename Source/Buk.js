@@ -1,7 +1,7 @@
 import * as assert from "node:assert"
 import * as util from "node:util"
 import * as fs from "node:fs"
-import {Line} from "./Line.js"
+import {Page} from "./Page.js"
 import {THE_ODYSSEY} from "../Cases/Books/IndividualBooks/TheOdyssey.js"
 
 //Its just a buk...
@@ -19,10 +19,10 @@ export class Buk{
 		var i;
 		for(i = 0; i<strng.length;){
 			strng=strng.slice(i, i+charsPerPage)
-			this.push(new Line(strng))
+			this.push(new Page(strng))
 			i+=charsPerPage;
 		}
-		this.push(new Line(strng))
+		this.push(new Page(strng))
 		                                                                                                                                                                                                                                                                                                                                            
 	}
 

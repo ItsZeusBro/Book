@@ -1,7 +1,7 @@
 import { Char } from "./Char"
 
 export class Line{
-    constructor(strng, indx, encdng){
+    constructor(strng, indx={}, encdng='utf-8'){
 		this.indx=indx;
 		this.chars=this.charify(strng, encdng);
     }
@@ -10,7 +10,7 @@ export class Line{
 		//creates an array of char objects
 		var chars=[];
 		for(var i = 0; i<strng.length; i++){
-			this.push(strng[i])
+			this.push(strng[i], encdng)
 		}
 		return chars;
 	}
