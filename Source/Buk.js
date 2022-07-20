@@ -23,7 +23,6 @@ export class Buk{
 			pages.push(new Page(str, delim));
 			j+=charsPerPage;
 		}
-
 		return pages;
 	}
 
@@ -42,15 +41,10 @@ export class Buk{
 		})
 		return buk;
 	}
-
-	
 }
 
 
 
-var buk = new Buk("lets\nfind\n", {"charsPerPage":7, "delim":'\n'});
-buk.prnt()
-// buk.xport('Odyssey.buk')
-
-// const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
-// console.log(animals.slice(0,7))
+var buk = new Buk(THE_ODYSSEY+THE_ILIAD, {"charsPerPage":2000, "delim":'\n'});
+//buk.xport('Odyssey.buk')
+assert.equal(buk.strngfy(), THE_ODYSSEY+THE_ILIAD)
