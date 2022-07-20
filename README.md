@@ -1,5 +1,5 @@
 # Buk 
-### (Please refer to Codelish Standard if you are confused with the method of communication)
+
 
 Its lyk a rlly long strng, but bettr.
 
@@ -26,3 +26,7 @@ Othr benefits:
   - Basically evry line in a docmnt (with some arbtry delmtr) can be vrtualy associatd with other lines by a computr (with map association to its orgnl location in the orgnl documnt)
   - This alows us to srch documnts logicly irespectiv of its ordrng.
   - The eficiency of this can be toned down to aide human readrs, n evntualy train them to be as eficient as computrs
+
+
+
+<<Codelish>>
