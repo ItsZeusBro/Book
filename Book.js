@@ -15,6 +15,11 @@ import * as fs from "node:fs"
 //it matters because you might be parsing nibbles or actual bit patterns and not necessarily
 //byte patterns, but you still need the return of a page to be octal for processing
 
+//Chapters are meant for loose association virtual indexing.
+//Pages are are meant for closer NLP associations
+//Line ordering can be optimized for even faster searches, or for helping humans visualize a page
+//or chapter...
+
 //Its just a book...
 export class Book{
     constructor(file, string, tools){
