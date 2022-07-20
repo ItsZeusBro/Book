@@ -1,4 +1,4 @@
-# Buk
+# Buk (Please refer to Codelish Standard if you are confused with the method of communication)
 
 Its lyk a rlly long strng, but bettr.
 
