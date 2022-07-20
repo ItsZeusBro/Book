@@ -1,17 +1,17 @@
-import {Book} from "./Book.js"
+import {Buk} from "./Buk.js"
 import * as util from "node:util"
 import * as assert from "node:assert"
 // import {MOBY_DICK} from "./Cases/Books/IndividualBooks/MobyDick.js"
-import {THE_ILIAD} from "./Cases/Books/IndividualBooks/TheIliad.js"
-import {THE_ODYSSEY} from "./Cases/Books/IndividualBooks/TheOdyssey.js"
-import {HALF_BOOKS} from "./Cases/Books/HalfBooks.js"
-//import {BOOKS} from "./Cases/Books/Books.js"
+import {THE_ILIAD} from "../Cases/Books/IndividualBooks/TheIliad.js"
+import {THE_ODYSSEY} from "../Cases/Books/IndividualBooks/TheOdyssey.js"
 
 
 class TestBook{
 	constructor(){
+		var _Buk = this.imprt()
+		
 		//this.exportToBookFile(100)
-		this.matchOnPageRange()
+		//this.matchOnPageRange()
 		//this.stressTest(1,26049)
 		
 	}
@@ -32,11 +32,11 @@ class TestBook{
 		}
 	}
 
-	importBookFile(lineCount){
+	imprt(lineCount){
 		console.log("IMPORT BOOK TEST")
 
-		var _Book = new Book("./TheIliad.book")
-		return _Book;
+		var _Buk = new Buk('TheIlliad.buk')
+		return _Buk;
 	}
 	exportToBookFile(lineCount){
 		console.log("EXPORT BOOK TEST")
