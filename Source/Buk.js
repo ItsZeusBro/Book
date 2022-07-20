@@ -3,7 +3,7 @@ import * as util from "node:util"
 import * as fs from "node:fs"
 import {Page} from "./Page.js"
 import {THE_ODYSSEY} from "../Cases/Books/IndividualBooks/TheOdyssey.js"
-
+import {THE_ILIAD} from "../Cases/Books/IndividualBooks/TheIliad.js"
 //Its just a buk...
 
 //each buk has a char count per page
@@ -16,13 +16,14 @@ export class Buk{
 	bukify(strng, charsPerPage, delim){
 		var pages=[];
 		//slice the string every charsPerPage
-		var i;
-		for(i = 0; i<strng.length;){
-			strng=strng.slice(i, i+charsPerPage);
-			pages.push(new Page(strng, delim));
-			i+=charsPerPage;
+		var str=strng
+		var j=0;
+		while(j<strng.length){
+			str=strng.slice(j, j+charsPerPage);
+			pages.push(new Page(str, delim));
+			j+=charsPerPage;
 		}
-		pages.push(new Page(strng, delim));
+
 		return pages;
 	}
 
@@ -31,7 +32,7 @@ export class Buk{
 	}
 
 	xport(fylNm){
-		fs.writeFileSync(fylNm, JSON.stringify(this.pages))
+		fs.writeFileSync(fylNm, JSON.stringify(this, null, 2))
 	}
 
 	strngfy(){
@@ -46,6 +47,10 @@ export class Buk{
 }
 
 
-var buk = new Buk(THE_ODYSSEY, {"charsPerPage":2000, "delim":'\n'});
-//buk.xport('Odyssey.buk')
-console.log(buk.strngfy())
+
+var buk = new Buk("lets\nfind\n", {"charsPerPage":7, "delim":'\n'});
+buk.prnt()
+// buk.xport('Odyssey.buk')
+
+// const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+// console.log(animals.slice(0,7))

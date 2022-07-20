@@ -16,9 +16,13 @@ export class Page{
 				_strng+=strng[i];
 				_Line = new Line(_strng);
 				lines.push(_Line);
+				_strng=""
 			}else{
 				_strng+=strng[i];
 			}
+		}
+		if(_strng!=""){
+			lines.push(new Line(_strng))
 		}
 		return lines
 	}
