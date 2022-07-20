@@ -4,7 +4,7 @@ import {Line} from "./Line.js"
 //the delim is what represents the ending of a logical line that are terminated arbitrarily
 export class Page{
     constructor(strng, delim){
-        this.lines=this.linify(strng, delim);
+        this.ls=this.linify(strng, delim);
     }
 
 	linify(strng, delim){
@@ -29,11 +29,11 @@ export class Page{
 
 	push(strng){
 		var _Line=new Line(strng);
-		this.lines.push(_Line);
+		this.ls.push(_Line);
 	}
 	get_raw(){
 		var page="";
-		this.lines.forEach((line)=>{
+		this.ls.forEach((line)=>{
 			page+=line.get_raw()
 		})
 		return page;
