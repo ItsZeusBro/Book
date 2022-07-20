@@ -26,12 +26,26 @@ export class Buk{
 		return pages;
 	}
 
-	print(){
+	prnt(){
 		console.log(util.inspect(this.pages, {showHidden: false, depth: null, colors: true}))
 	}
+
+	xport(fylNm){
+		fs.writeFileSync(fylNm, JSON.stringify(this.pages))
+	}
+
+	strngfy(){
+		var buk="";
+		this.pages.forEach((page)=>{
+			buk+=page.get_raw()
+		})
+		return buk;
+	}
+
 	
 }
 
 
 var buk = new Buk(THE_ODYSSEY, {"charsPerPage":2000, "delim":'\n'});
-buk.print()
+//buk.xport('Odyssey.buk')
+console.log(buk.strngfy())

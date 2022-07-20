@@ -27,4 +27,11 @@ export class Page{
 		var _Line=new Line(strng);
 		this.lines.push(_Line);
 	}
+	get_raw(){
+		var page="";
+		this.lines.forEach((line)=>{
+			page+=line.get_raw()
+		})
+		return page;
+	}
 }
