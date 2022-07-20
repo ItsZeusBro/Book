@@ -81,11 +81,13 @@ export class Book{
 					line="";
 				}else{
 					line+=string[i];
+					if(i==string.length-1){
+						//THIS IS ALWAYS HIDDEN BECAUSE END OF STRING DOESNT GET CAUGHT BY LOGIC
+						this.wrt_ln2Pg(line, page);
+						this.psh_pg(page);
+					}
 				}
         	}
-			//THIS IS ALWAYS HIDDEN BECAUSE END OF STRING DOESNT GET CAUGHT BY LOGIC
-            this.wrt_ln2Pg(line, page);
-			this.psh_pg(page);
 		}
 	}
 
