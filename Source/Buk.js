@@ -48,8 +48,8 @@ export class Buk{
 }
 
 
-console.log(BOOKS.length)
-var buk = new Buk(BOOKS, {"charsPerPage":10000, "delim":'\n'});
-buk.prnt_n_bytes()
-buk.xport('Books.buk')
+// console.log((BOOKS+BOOKS+BOOKS+BOOKS).length)
+// var buk = new Buk(BOOKS+BOOKS+BOOKS+BOOKS, {"charsPerPage":10000, "delim":'\n'});
+// buk.prnt_n_bytes()
+// buk.xport('Books.buk')
 // assert.equal(buk.strngfy(), BOOKS)
