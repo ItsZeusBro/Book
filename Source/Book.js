@@ -6,163 +6,158 @@ import {Scroll} from "./Scroll.js"
 //st_ = setters
 //2 serves as an underscore that means "to"
 //updt_ = updaters
-//pg = page
-//ln = line
-//cnt = count
+//page = page
+//lyn = line
+//fs = file or strng
+//cnt = Cnt
 //bukify = bookify
 //mport = import
-//eport = export
-//crss_rf = cross reference
-//wrt2buk = write to book
-//prnt_buk = print book
-//psh_pg = push page
+//xport = export
+//crss_ref = cross reference
+//wrt2buk = write to buk
+//prnt_buk = print buk
+//psh_page = push page
 //vrtlz = virtualize
-//gt_mpty_ln = get empty line
-
+//gt_mpty_lyn = get empty line
 //If you have a variable that refers to the number of the 
 //preceding object just append the variable in camelCase
 //For example:
-//gt_lnN_pgM
+//gt_lynN_pageM
 
-//Its just a book...
-export class Book{
-    constructor(file, string, tools){
-		this.indx;
-		this.pgs;
-		this.pg_cnt;
-		if(!string){
-			this.indx=tools['index'];
-			this.pgs=tools['pages'];
-			this.pg_cnt=this.updt_pg_cnt()
-		}
-
+//Its just a buk...
+export class Buk{
+    constructor(tuls){
+		this.fyl=tuls['fyl']
+		this.indx=tuls['indx'];
+		this.pages=tuls['pages'];
+		this.page_cnt=this.updt_page_cnt()
     }
-	gt_mpty_ln(){
+	gt_mpty_lyn(){
         return new Line();
     }
-    gt_mpty_pg(){
+    gt_mpty_page(){
 		return new Page();
 	}
 
     //PUBLIC GETTERS
-    gt_pg_cnt(){
-		return this.pg_cnt;
+    gt_page_cnt(){
+		return this.page_cnt;
 	}
-	gt_ln_cnt(pageN){
-        return this.pages[pageN].gt_ln_cnt();
+	gt_lyn_cnt(pageN){
+        return this.pages[pageN].gt_lyn_cnt();
     }
-	updt_pg_cnt(){
+	updt_page_cnt(){
 
 	}
 
     //PUBLIC UTILS
-    bukify(string, tools){
-		if(!(string&&tools)){
-			tools = this.tools;
+    bukify(strng, tuls){
+		if(!(strng&&tuls)){
+			tuls = this.tuls;
 		}
-		if(!this.book){
-			this.book=this.gt_mpty_buk();
+		if(!this.buk){
+			this.buk=this.gt_mpty_buk();
 		}
-		var page=this.gt_mpty_pg();
+		var page=this.gt_mpty_page();
 
-        if(('lnCnt' in tools)&&('dlm' in tools)){
-            var line="";
-            for(var i=0; i<string.length; i++){
-				if(string[i]==tools['dlm'] && this.gt_ln_cnt(page)==tools['lnCnt']-1){
-					line+=string[i];
-					this.wrt_ln2Pg(line, page);
-					this.psh_pg(page);
-					page=this.gt_mpty_pg();
-					line="";
+        if(('lynCnt' in tuls)&&('delim' in tuls)){
+            var lyn="";
+            for(var i=0; i<strng.length; i++){
+				if(strng[i]==tuls['delim'] && this.gt_lyn_cnt(page)==tuls['lynCnt']-1){
+					lyn+=strng[i];
+					this.wrt_lyn2page(lyn, page);
+					this.psh_page(page);
+					page=this.gt_mpty_page();
+					lyn="";
 
-				}else if(string[i]==tools['dlm'] && this.gt_ln_cnt(page)<tools['lnCnt']-1){
-					line+=string[i];
-                    this.wrt_ln2Pg(line, page);
-					line="";
+				}else if(strng[i]==tuls['delim'] && this.gt_lyn_cnt(page)<tuls['lynCnt']-1){
+					lyn+=strng[i];
+                    this.wrt_lyn2page(lyn, page);
+					lyn="";
 				}else{
-					line+=string[i];
-					if(i==string.length-1){
-						//THIS IS ALWAYS HIDDEN BECAUSE END OF STRING DOESNT GET CAUGHT BY LOGIC
-						this.wrt_ln2Pg(line, page);
-						this.psh_pg(page);
+					lyn+=strng[i];
+					if(i==strng.length-1){
+						//THIS IS ALWAYS HIDDEN BECAUSE END OF strng DOESNT GET CAUGHT BY LOGIC
+						this.wrt_lyn2page(lyn, page);
+						this.psh_page(page);
 					}
 				}
         	}
 		}
 	}
 
-    mport(file){
-        this.book = JSON.parse(fs.readFileSync(file))
+    mport(fyl){
+        this.buk = JSON.parse(fs.readFileSync(fyl))
     }
-    xport(fileName){
-        fs.writeFileSync(fileName+'.book', JSON.stringify(this.book))
+    xport(fyl_name){
+        fs.writeFileSync(fyl_name+'.buk', JSON.strngify(this.buk))
     }
     
-    vrtlz(string){
+    vrtlz(strng){
         
     }
-	crss_rf(_Book){
+	crss_ref(_Book){
 
 	}
 
-    wrt2buk(string, tools){
-        if(!string){
-            throw Error("you need to provide a string");
+    wrt2buk(strng, tuls){
+        if(!strng){
+            throw Error("you need to provide a strng");
         }
-        if(!tools){
-            tools=this.tools;
+        if(!tuls){
+            tuls=this.tuls;
         }
-		this.bukify(string, tools);
+		this.bukify(strng, tuls);
 	}
 
     prnt_buk(){
-		console.log(util.inspect(this.book, {showHidden: true, depth: null, colors: true}));
+		console.log(util.inspect(this.buk, {showHidden: true, depth: null, colors: true}));
 	}
 
     //PRIVATE GETTERS
-    gt_lnN_pgM(pgM, lnN){
-        return this.getPageN(pgM, this)['lines'][lnN.toString];
+    gt_lynN_pageM(pageM, lynN){
+        return this.getPageN(pageM, this)['lyns'][lynN.tostrng];
     }
 
-    gt_pgN(pgN){
-        return this.book['pages'][pgN.toString()];
+    gt_pageN(pageN){
+        return this.buk['pages'][pageN.tostrng()];
     }
 
-	gt_ln_cnt(pg){
+	gt_lyn_cnt(page){
 
 	}
     
-    rmv_pg_n2m(pageN, pageM){
+    rmv_page_n2m(pageN, pageM){
 		assert.equal(pageM>=pageN, true);
 		for (var i=pageN; i<=pageM; i++){
-			this._rmvPgN(i);
+			this._rmvpageN(i);
 		}
 	}
 
-	rmv_pg_n(n){
-		delete this.book['pages'][n.toString()];
-		var tmp = this.book['pages'][(n+1).toString()];
-		delete this.book['pages'][(n+1).toString()];
-		this.book['pages'][n.toString()]=tmp;
-		this.book['pageCount']=(parseInt(this.book['pageCount'])-1).toString();
+	rmv_page_n(n){
+		delete this.buk['pages'][n.tostrng()];
+		var tmp = this.buk['pages'][(n+1).tostrng()];
+		delete this.buk['pages'][(n+1).tostrng()];
+		this.buk['pages'][n.tostrng()]=tmp;
+		this.buk['pageCnt']=(parseInt(this.buk['pageCnt'])-1).tostrng();
 	}
 
     //this should be tested when its actually used, leave it here for now.
-    pop_n_pgs(n_pgs){
-		for(var i = 0; i<n_pgs; i++){
-			this.pop_pg();
+    pop_n_pages(n_pages){
+		for(var i = 0; i<n_pages; i++){
+			this.pop_page();
 		}
 	}
 	
-    pop_pg(){
+    pop_page(){
         
     }
 
-    psh_pg(page){
+    psh_page(page){
 
     }
 
-    wrt_ln2Pg(line, page){
+    wrt_lyn2page(lyn, page){
 
     }
 }
