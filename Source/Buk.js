@@ -9,25 +9,29 @@ import {THE_ODYSSEY} from "../Cases/Books/IndividualBooks/TheOdyssey.js"
 //each buk has a char count per page
 export class Buk{
     constructor(strng, tuls){
-		this.pages = this.bukify(strng, tuls['charsPerPage'], tuls['delim'])
+		this.pages = this.bukify(strng, tuls['charsPerPage'], tuls['delim']);
     }
 
 	//PUBLIC UTILS
 	bukify(strng, charsPerPage, delim){
-		var pages=[]
+		var pages=[];
 		//slice the string every charsPerPage
 		var i;
 		for(i = 0; i<strng.length;){
-			strng=strng.slice(i, i+charsPerPage)
-			this.push(new Page(strng))
+			strng=strng.slice(i, i+charsPerPage);
+			pages.push(new Page(strng, delim));
 			i+=charsPerPage;
 		}
-		this.push(new Page(strng))
-		                                                                                                                                                                                                                                                                                                                                            
+		pages.push(new Page(strng, delim));
+		return pages;
 	}
 
+	print(){
+		console.log(util.inspect(this.pages, {showHidden: false, depth: null, colors: true}))
+	}
 	
 }
 
 
-new Buk(THE_ODYSSEY, {"charsPerPage":2000, "delim":'\n'})
+var buk = new Buk(THE_ODYSSEY, {"charsPerPage":2000, "delim":'\n'});
+buk.print()

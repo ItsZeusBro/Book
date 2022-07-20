@@ -1,18 +1,18 @@
-import { Char } from "./Char"
+import { Char } from "./Char.js"
 
 export class Line{
     constructor(strng, indx={}, encdng='utf-8'){
+		this.encdng=encdng;
 		this.indx=indx;
-		this.chars=this.charify(strng, encdng);
+		this.chars=[]
+		this.charify(strng, encdng);
     }
 
 	charify(strng, encdng){
 		//creates an array of char objects
-		var chars=[];
 		for(var i = 0; i<strng.length; i++){
 			this.push(strng[i], encdng)
 		}
-		return chars;
 	}
 
 	get_raw(){
@@ -23,7 +23,7 @@ export class Line{
 		return line;
 	}
 	push(rawChar){
-		this.chars.push(new Char(rawChar, {'encdng':encdng}))
+		this.chars.push(new Char(rawChar, {'encdng':this.encdng}))
 	}
 	
 }
