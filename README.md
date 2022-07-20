@@ -1,23 +1,23 @@
 # Buk
-Its like a really long strng, but better.
+Its lyk a rlly long strng, but bttr.
 
-Books solved the problem of searching and sorting a long time ago! Since then, computer science and mathematics has provided a set of tools that aide in the same problem. The issue is that computer science looks at scrolls of data, and not at books. Books are better.
+Buks slvd the prblm of srchng and srtng a long tym ago... 
 
-<img src="https://github.com/ItsZeusBro/Book/blob/36d7bec2d3ca3d23673540738009e4be8ca37863/Neanderthals.jpeg"/>
+Snce then, computr science and mathematics has provided a set of prmtve tuls that aide in the same problem. The issue is that computr science looks at fyls that luk and act like "scrolls" of data. In my opnyn, fyls that luk and act like buks r bttr.
 
 Jokes aside: 
-- Ai might help us actually index large string documents in the form of book files one day.
-This suggests that one day we may only have "page files" and "book files". 
-A profound prophecy is that Ai may actually need to produce and consume its own books one day just like other forms of intelligence.
+- Ai might help us actually indx large strng docs in the form of book files one day.
+This suggests that one day we may only hav "page files" and "buk files". 
+A profound prophecy is that Ai may actually need to produce and consume its own buks one day just like other forms of intllgence.
 
-Other benefits: 
-- Partial searching is better than exhaustive searching when you don't want redundant search results, and when statistical relevancy can be apart of your indexing strategy. It's especially important on huge data sets when the single best answer to a question is not important to answering the question you want
+Othr benefits: 
+- Partial searching is better than exhaustv searching when you dont want rdundnt srch rsults, and when statistical relevancy can be apart of your indxing stratgy. Its specially importnt on huge data sets when the sngle best answr to a qstion is not important to answrng the qstion you want
 
-- Indexes are functionally about content within a page or chapter. Things are ordered by Ai based on content similarity in a virtual way without changing the underlying string document
-- Glossaries are functionally "translation units", and anything having to do with translations.
+- Indxs r functnly bout content withn a page or chptr. Thngs r ordrd by Ai based on content similarity in a vrtual way without chngng the undrlyng strng docs
+- Glossaries r functionally "translation units", and anything havng to do with translations.
 - References can just be hyperlinks
 
-- Virtual Indexing and Ordering
-  - Basically every line in a document (with some arbitrary delimiter) can be virtually associated with other lines by a computer (with map association to its original location in the original document)
-  - This allows us to search documents logically irrespective of its ordering.
-  - The efficiency of this can be toned down to aide human readers, and eventually train them to be as efficient as computers
+- Vrtual Indxng and Ordrng
+  - Basically evry line in a docmnt (with some arbtry delmtr) can be vrtualy associatd with other lines by a computr (with map association to its orgnl location in the orgnl documnt)
+  - This alows us to srch documents logicly irespectiv of its ordering.
+  - The eficiency of this can be toned down to aide human readrs, and evntualy train them to be as eficient as computrs
