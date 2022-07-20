@@ -2,87 +2,25 @@ import * as assert from "node:assert"
 import * as util from "node:util"
 import * as fs from "node:fs"
 
-//Every line needs a map to the original file location
-//A size field (for choosing the most efficent search types)
-//Some sort of indexing metadata
-
-//Pages can be delimited by a litteral, or a pattern (you don't suffer regex performance hit more than once
-//if you store into book file)
-
-//Pages can be delimited by a byte or bit count (with a bitty count)
-//(a bitty count is the number of bits at the end of a bit buffer that allows it to be an Octal 
-//compliant buffer)
-//it matters because you might be parsing nibbles or actual bit patterns and not necessarily
-//byte patterns, but you still need the return of a page to be octal for processing
-
-//Chapters are meant for loose association virtual indexing.
-//Pages are are meant for closer NLP associations
-//Line ordering can be optimized for even faster searches, or for helping humans visualize a page
-//or chapter...
-//This can index the entire world of information (maybe even dna)
-// "Library":{
-//     "book index":{
-
-//     },
-//     "book":{
-//         "chapter_index":{
-    
-//         },
-//         //chapter 1
-//         "1":{
-//             "page_index":{
-    
-//             },
-//             "pages":{
-//                 "line_index":{
-    
-//                 },
-//                 "lines":{
-//                     "1":{
-    
-//                     }
-                
-//                 }
-//             },
-//         },
-//         //chapter 2
-//         "2":{
-//             "page_index":{
-    
-//             },
-//             "pages":{
-//                 "line_index":{
-                    
-//                 },
-    
-//             },
-//         }
-    
-//     }
-// }
-
-//well formed book files should be indexed first in the world of information
-//then something more general can be indexed second
-export class Library {
-    constructor(){
-
-    }
-
-}
-
-
 
 //Its just a book...
 export class Book{
     constructor(file, string, tools){
         this.tools=tools;
-        this._Scroll=new Scroll()
+        this._Scroll=new Scroll(string)
         if(file && string){
             tools=string
             string=file
         }
-        this.string=string;
-        this.book;
+
+        this.book={
+            'index':{
+
+            },
+            'pages':{
+                
+            }
+        }
         this.index;//for the future!
         if(file&&string){
             this.bookify(string, tools, this);
@@ -137,6 +75,7 @@ export class Book{
 			this._addPageToBook(page, _Book);
 		}
 	}
+
     import(file, _Book, virtualize=false){
         if(!_Book){_Book=this;}
         _Book.book = JSON.parse(fs.readFileSync(file))
@@ -146,12 +85,9 @@ export class Book{
         fs.writeFileSync(fileName+'.book', JSON.stringify(_Book.book))
     }
     
-
     virtualize(string){
         
     }
-
-    
 
     enscribeToBook(string, tools, _Book){
         if(!_Book){_Book=this;}
@@ -190,21 +126,15 @@ export class Book{
 		return {'pageCount':'0','pages':{}};
 	}
     
-    //PRIVATE SETTERS
-
-    
-   //PRIVATE UTILS
-    
-    
-    _removePagesNtoM(pageN, pageM, _Book){
+    _removePgsNM(pageN, pageM, _Book){
         if(!_Book){_Book=this;}
 		assert.equal(pageM>=pageN, true);
 		for (var i=pageN; i<=pageM; i++){
-			this._removePageN(i, _Book);
+			this._removePgN(i, _Book);
 		}
 	}
 
-	_removePageN(n, _Book){
+	_removePgN(n, _Book){
         if(!_Book){_Book=this;}
 		delete _Book.book['pages'][n.toString()];
 		var tmp = _Book.book['pages'][(n+1).toString()];
@@ -213,23 +143,21 @@ export class Book{
 		_Book.book['pageCount']=(parseInt(_Book.book['pageCount'])-1).toString();
 	}
 
-    
     //this should be tested when its actually used, leave it here for now.
-    _popNPagesFrom(nPages, _Book){
+    _popNPgs(nPages, _Book){
         if(!_Book){_Book=this;}
 		for(var i = 0; i<nPages; i++){
-			this._popPageFromBook(_Book);
+			this._popPg(_Book);
 		}
 	}
 	
-    _popPageFromBook(_Book){
+    _popPg(_Book){
         if(!_Book){_Book=this;}
         delete _Book.book['pages'][_Book.book['pageCount']]; 
         _Book.book['pageCount']=(parseInt(_Book.book['pageCount'])-1).toString();
     }
 
-    
-    _addPageToBook(page, _Book){
+    _pushPg(page, _Book){
         if(!_Book){_Book=this;}
         _Book.book['pages'][(parseInt(_Book.book['pageCount'])+1).toString()]=page;
         _Book.book['pageCount']=(parseInt(_Book.book['pageCount'])+1).toString();

@@ -48,8 +48,4 @@ export class Scroll{
         }
         return string;
     }
-
-
-
-
 }

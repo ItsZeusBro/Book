@@ -12,7 +12,7 @@ export class Search{
             if(i+nPages>this.pageCount()){
                 return matches
             }else{
-                matches.push(_Book.matchOnPageRange(regex, i, i+nPages, _Book))
+                matches.push(_Book.srchPgRange(regex, i, i+nPages, _Book))
             }
         }
         return matches;
@@ -25,7 +25,7 @@ export class Search{
     //calls regex once on a page range, and returns the regex return value
     srchPgRange(regex, pageN, pageM, _Book){
         if(!_Book){_Book=this;}
-        var scroll = this._Scroll.scrollifyPagesNtoM(pageN, pageM, _Book)
+        var scroll = this._Scroll.scrollifyPgsNM(pageN, pageM, _Book)
         return scroll.match(regex)
 	}
 
