@@ -5,23 +5,23 @@ Its lyk a rlly long strng, but bettr.
 
 <img src="https://github.com/ItsZeusBro/Buk/blob/06aaa791a99c9a02fe292a6f2d92fdc676caa0f1/Neanderthals.jpeg" height=300 width=350/>
 
-Buks slvd the prblm of srchng nd srtng a long tym ago... 
+Buks slvd the prblm of srchng n srtng a long tym ago... 
 
-Snce then, computr science nd mathematics has provided a set of prmtve tuls that aide in the same problm. The issue is that computr science looks at fyls that luk nd act like "scrolls" of data. In my opnyn, fyls that luk nd act like buks r bettr.
+Snce then, computr science n mathematics has provided a set of prmtve tuls that aide in the same problm. The issue is that computr science looks at fyls that luk n act like "scrolls" of data. In my opnyn, fyls that luk nd act like buks r bettr.
 
 Jokes aside: 
 - Ai might help us actualy indx large strng docs in the form of book files one day.
-This suggests that one day we may only hav "page files" nd "buk files". 
-A profound prophecy is that Ai may actualy need to produce nd consume its own buks one day just like other forms of intlgence.
+This suggests that one day we may only hav "page files" n "buk files". 
+A profound prophecy is that Ai may actualy need to produce n consume its own buks one day just like other forms of intlgence.
 
 Othr benefits: 
-- Partial srchng is better than exhaustv srchng when you dont want rdundnt srch rsults, nd when statistical relevancy can be apart of your indxng stratgy. Its specialy importnt on huge data sets when the sngle best answr to a qstion is not imprtnt to answrng the qstion you want
+- Partial srchng is better than exhaustv srchng when you dont want rdundnt srch rsults, n when statistical relevancy can be apart of your indxng stratgy. Its specialy importnt on huge data sets when the sngle best answr to a qstion is not imprtnt to answrng the qstion you want
 
 - Indxs r functionly bout contnt withn a page or chptr. Thngs r ordrd by Ai based on contnt similarity in a vrtual way without chngng the undrlyng strng docs
-- Glosaries r fnctionaly "trnslation units", nd anythng havn to do with trnslations.
+- Glosaries r fnctionaly "trnslation units", n anythng havn to do with trnslations.
 - Rfrnces can just be hyperlinks
 
-- Vrtual Indxng nd Ordrng
+- Vrtual Indxng n Ordrng
   - Basically evry line in a docmnt (with some arbtry delmtr) can be vrtualy associatd with other lines by a computr (with map association to its orgnl location in the orgnl documnt)
   - This alows us to srch documnts logicly irespectiv of its ordrng.
-  - The eficiency of this can be toned down to aide human readrs, nd evntualy train them to be as eficient as computrs
+  - The eficiency of this can be toned down to aide human readrs, n evntualy train them to be as eficient as computrs
