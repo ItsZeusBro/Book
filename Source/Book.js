@@ -2,7 +2,7 @@ import * as assert from "node:assert"
 import * as util from "node:util"
 import * as fs from "node:fs"
 import {Scroll} from "./Scroll.js"
-//gt_ = getters
+//get_ = getters
 //st_ = setters
 //2 serves as an underscore that means "to"
 //updt_ = updaters
@@ -18,11 +18,11 @@ import {Scroll} from "./Scroll.js"
 //prnt_buk = print buk
 //psh_page = push page
 //vrtlz = virtualize
-//gt_mpty_lyn = get empty line
+//get_mpty_lyn = get empty line
 //If you have a variable that refers to the number of the 
 //preceding object just append the variable in camelCase
 //For example:
-//gt_lynN_pageM
+//get_lynN_pageM
 
 //Its just a buk...
 export class Buk{
@@ -32,19 +32,19 @@ export class Buk{
 		this.pages=tuls['pages'];
 		this.page_cnt=this.updt_page_cnt()
     }
-	gt_mpty_lyn(){
+	get_mpty_lyn(){
         return new Line();
     }
-    gt_mpty_page(){
+    get_mpty_page(){
 		return new Page();
 	}
 
     //PUBLIC GETTERS
-    gt_page_cnt(){
+    get_page_cnt(){
 		return this.page_cnt;
 	}
-	gt_lyn_cnt(pageN){
-        return this.pages[pageN].gt_lyn_cnt();
+	get_lyn_cnt(pageN){
+        return this.pages[pageN].get_lyn_cnt();
     }
 	updt_page_cnt(){
 
@@ -56,21 +56,21 @@ export class Buk{
 			tuls = this.tuls;
 		}
 		if(!this.buk){
-			this.buk=this.gt_mpty_buk();
+			this.buk=this.get_mpty_buk();
 		}
-		var page=this.gt_mpty_page();
+		var page=this.get_mpty_page();
 
         if(('lynCnt' in tuls)&&('delim' in tuls)){
             var lyn="";
             for(var i=0; i<strng.length; i++){
-				if(strng[i]==tuls['delim'] && this.gt_lyn_cnt(page)==tuls['lynCnt']-1){
+				if(strng[i]==tuls['delim'] && this.get_lyn_cnt(page)==tuls['lynCnt']-1){
 					lyn+=strng[i];
 					this.wrt_lyn2page(lyn, page);
 					this.psh_page(page);
-					page=this.gt_mpty_page();
+					page=this.get_mpty_page();
 					lyn="";
 
-				}else if(strng[i]==tuls['delim'] && this.gt_lyn_cnt(page)<tuls['lynCnt']-1){
+				}else if(strng[i]==tuls['delim'] && this.get_lyn_cnt(page)<tuls['lynCnt']-1){
 					lyn+=strng[i];
                     this.wrt_lyn2page(lyn, page);
 					lyn="";
@@ -86,7 +86,7 @@ export class Buk{
 		}
 	}
 
-    mport(fyl){
+    import(fyl){
         this.buk = JSON.parse(fs.readFileSync(fyl))
     }
     xport(fyl_name){
@@ -96,7 +96,7 @@ export class Buk{
     vrtlz(strng){
         
     }
-	crss_ref(_Book){
+	crss_ref(Buk){
 
 	}
 
@@ -115,15 +115,15 @@ export class Buk{
 	}
 
     //PRIVATE GETTERS
-    gt_lynN_pageM(pageM, lynN){
+    get_lynN_pageM(pageM, lynN){
         return this.getPageN(pageM, this)['lyns'][lynN.tostrng];
     }
 
-    gt_pageN(pageN){
+    get_pageN(pageN){
         return this.buk['pages'][pageN.tostrng()];
     }
 
-	gt_lyn_cnt(page){
+	get_lyn_cnt(page){
 
 	}
     
