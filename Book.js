@@ -20,6 +20,50 @@ import * as fs from "node:fs"
 //Line ordering can be optimized for even faster searches, or for helping humans visualize a page
 //or chapter...
 
+// "Library":{
+//     "book index":{
+
+//     },
+//     "book":{
+//         "chapter_index":{
+    
+//         },
+//         //chapter 1
+//         "1":{
+//             "page_index":{
+    
+//             },
+//             "pages":{
+//                 "line_index":{
+    
+//                 },
+//                 "lines":{
+//                     "1":{
+    
+//                     }
+                
+//                 }
+//             },
+//         },
+//         //chapter 2
+//         "2":{
+//             "page_index":{
+    
+//             },
+//             "pages":{
+//                 "line_index":{
+                    
+//                 },
+    
+//             },
+//         }
+    
+//     }
+// }
+
+
+
+
 //Its just a book...
 export class Book{
     constructor(file, string, tools){
@@ -83,12 +127,14 @@ export class Book{
 			this._addPageToBook(page, _Book);
 		}
 	}
-    import(file, _Book){
+    import(file, _Book, virtualize=false){
         if(!_Book){_Book=this;}
         _Book.book = JSON.parse(fs.readFileSync(file))
     }
     
-
+    virtualize(string){
+        
+    }
     exportToBookFile(fileName, _Book){
         if(!_Book){_Book=this;}
         fs.writeFileSync(fileName+'.book', JSON.stringify(_Book.book))
