@@ -19,7 +19,7 @@ import * as fs from "node:fs"
 //Pages are are meant for closer NLP associations
 //Line ordering can be optimized for even faster searches, or for helping humans visualize a page
 //or chapter...
-
+//This can index the entire world of information (maybe even dna)
 // "Library":{
 //     "book index":{
 
