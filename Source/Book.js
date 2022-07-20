@@ -17,7 +17,7 @@ import {Scroll} from "./Scroll.js"
 //prnt_buk = print book
 //psh_pg = push page
 //vrtlz = virtualize
-//gt_mty_ln = get empty line
+//gt_mpty_ln = get empty line
 
 //If you have a variable that refers to the number of the 
 //preceding object just append the variable in camelCase
@@ -37,10 +37,10 @@ export class Book{
 		}
 
     }
-	gt_mty_ln(){
+	gt_mpty_ln(){
         return new Line();
     }
-    gt_mty_pg(){
+    gt_mpty_pg(){
 		return new Page();
 	}
 
@@ -61,21 +61,21 @@ export class Book{
 			tools = this.tools;
 		}
 		if(!this.book){
-			this.book=this.gt_mty_buk();
+			this.book=this.gt_mpty_buk();
 		}
-		var page=this.gt_mty_pg();
+		var page=this.gt_mpty_pg();
 
-        if(('lineCount' in tools)&&('anchor' in tools)){
+        if(('lnCnt' in tools)&&('dlm' in tools)){
             var line="";
             for(var i=0; i<string.length; i++){
-				if(string[i]==tools['anchor'] && this.gt_ln_cnt(page)==tools['lineCount']-1){
+				if(string[i]==tools['dlm'] && this.gt_ln_cnt(page)==tools['lnCnt']-1){
 					line+=string[i];
 					this.wrt_ln2Pg(line, page);
 					this.psh_pg(page);
-					page=this.gt_mty_pg();
+					page=this.gt_mpty_pg();
 					line="";
 
-				}else if(string[i]==tools['anchor'] && this.gt_ln_cnt(page)<tools['lineCount']-1){
+				}else if(string[i]==tools['dlm'] && this.gt_ln_cnt(page)<tools['lnCnt']-1){
 					line+=string[i];
                     this.wrt_ln2Pg(line, page);
 					line="";
