@@ -18,10 +18,10 @@ Othr benefits:
 - Partial srchng is better than exhaustv srchng when you dont want rdundnt srch rsults, and when statistical relevancy can be apart of your indxng stratgy. Its specialy importnt on huge data sets when the sngle best answr to a qstion is not imprtnt to answrng the qstion you want
 
 - Indxs r functionly bout contnt withn a page or chptr. Thngs r ordrd by Ai based on contnt similarity in a vrtual way without chngng the undrlyng strng docs
-- Glosaries r fnctionaly "trnslation units", nd anythng havn to do with translations.
-- References can just be hyperlinks
+- Glosaries r fnctionaly "trnslation units", nd anythng havn to do with trnslations.
+- Rfrnces can just be hyperlinks
 
 - Vrtual Indxng and Ordrng
   - Basically evry line in a docmnt (with some arbtry delmtr) can be vrtualy associatd with other lines by a computr (with map association to its orgnl location in the orgnl documnt)
-  - This alows us to srch documents logicly irespectiv of its ordrng.
+  - This alows us to srch documnts logicly irespectiv of its ordrng.
   - The eficiency of this can be toned down to aide human readrs, and evntualy train them to be as eficient as computrs
