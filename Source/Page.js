@@ -12,7 +12,6 @@ export class Page{
 		var _Line=new Line()
 		var _strng=""
 		for(var i=0; i<strng.length; i++){
-
 			if(strng[i]==delim){
 				_strng+=strng[i]
 				_Line = new Line(_strng);
@@ -28,5 +27,4 @@ export class Page{
 		var _Line=new Line(strng)
 		this.lines.push(_Line)
 	}
-
 }
