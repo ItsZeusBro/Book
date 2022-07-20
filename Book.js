@@ -61,6 +61,14 @@ import * as fs from "node:fs"
 //     }
 // }
 
+//well formed book files should be indexed first in the world of information
+//then something more general can be indexed second
+export class Library {
+    constructor(){
+
+    }
+
+}
 
 
 
@@ -68,6 +76,7 @@ import * as fs from "node:fs"
 export class Book{
     constructor(file, string, tools){
         this.tools=tools;
+        this._Scroll=new Scroll()
         if(file && string){
             tools=string
             string=file
@@ -80,6 +89,7 @@ export class Book{
         }else{
             this.import(file, this)
         }
+
     }
 
     //PUBLIC GETTERS
@@ -131,43 +141,17 @@ export class Book{
         if(!_Book){_Book=this;}
         _Book.book = JSON.parse(fs.readFileSync(file))
     }
-    
-    virtualize(string){
-        
-    }
     exportToBookFile(fileName, _Book){
         if(!_Book){_Book=this;}
         fs.writeFileSync(fileName+'.book', JSON.stringify(_Book.book))
     }
+    
 
-    scrollify(_Book){
-        if(!_Book){_Book=this;}
-        return this.scrollifyPagesNtoM(null, null, _Book)
+    virtualize(string){
+        
     }
 
-    //if you need to scrollify large ranges, your pages are too small
-    scrollifyPagesNtoM(pageN, pageM, _Book){
-        if(!_Book){_Book=this;}
-        if(!_Book.book){
-            throw Error("Book is needed for scrollify to work")
-        }
-        if(pageN && pageM){
-            //if pageN or pageM
-            return _Book._scrollifyPagesNtoM(pageN, pageM, _Book);
-        }else if(pageN){
-            return _Book._scrollifyPagesNtoM(pageN, _Book.getPageCount(_Book), _Book);
-        }else if(pageM){
-            return _Book._scrollifyPagesNtoM(0, pageM, _Book);
-        }else{
-            var string="";
-            for (const [pageNumber, page] of Object.entries(_Book.book['pages'])) {
-                for (const [lineNumber, line] of Object.entries(page['lines'])){
-                    string+=line;
-                }
-            }    
-            return string;
-        }
-    }
+    
 
     enscribeToBook(string, tools, _Book){
         if(!_Book){_Book=this;}
@@ -208,56 +192,10 @@ export class Book{
     
     //PRIVATE SETTERS
 
-    //calls regex once on every n pages (non-cumulative way), and returns the first non null regex value
-    matchOnEveryNPages(nPages, first=true){
-		var i;
-		var matches = []
-        for(var i = 1; i<=this.pageCount(); i++){
-            if(i+nPages>this.pageCount()){
-                return matches
-            }else{
-                matches.push(_Book.matchOnPageRange(regex, i, i+nPages, _Book))
-            }
-        }
-        return matches;
-    }
-
-    //calls regex once on n pages (in cumulative way), and returns the first non null regex value
-    matchEveryNPagesCumulitive(nPages){
-
-    }
-    //calls regex once on a page range, and returns the regex return value
-    matchPageRange(regex, pageN, pageM, _Book){
-        if(!_Book){_Book=this;}
-        var scroll = this.scrollifyPagesNtoM(pageN, pageM, _Book)
-        return scroll.match(regex)
-	}
-
+    
    //PRIVATE UTILS
     
-    //O(n^2) where n is the number of pages n to m, pagination should be balanced
-    //to avoid performance issues
-    _scrollifyPagesNtoM(pageN, pageM, _Book){
-        if(!_Book){_Book=this;}
-        if(pageN>_Book.getPageCount()||pageM>_Book.getPageCount()){
-            throw Error("pages must be within range of 0 and _Book.pageCount()")
-        }
-        var string="";
-        for (var i = pageN; i<=pageM; i++){
-            var page = _Book.book['pages'][i.toString()];
-            for(const [lineNumber, line] of Object.entries(page['lines'])){
-                string+=line;
-            }
-        }
-        return string;
-    }
-
-    _scrollifyPageN(pageN, _Book){
-        if(!_Book){_Book=this;}
-        return this._scrollifyPagesNtoM(pageN, pageN, _Book);
-    }
-
-
+    
     _removePagesNtoM(pageN, pageM, _Book){
         if(!_Book){_Book=this;}
 		assert.equal(pageM>=pageN, true);
