@@ -2,118 +2,142 @@ import * as assert from "node:assert"
 import * as util from "node:util"
 import * as fs from "node:fs"
 import {Scroll} from "./Scroll.js"
+//gt_ = getters
+//st_ = setters
+//2 serves as an underscore that means "to"
+//updt_ = updaters
+//pg = page
+//ln = line
+//cnt = count
+//bukify = bookify
+//mport = import
+//eport = export
+//crss_rf = cross reference
+//wrt2buk = write to book
+//prnt_buk = print book
+//psh_pg = push page
+//vrtlz = virtualize
+//gt_mty_ln = get empty line
+
+//If you have a variable that refers to the number of the 
+//preceding object just append the variable in camelCase
+//For example:
+//gt_lnN_pgM
 
 //Its just a book...
 export class Book{
     constructor(file, string, tools){
-		this.index;
-		this.pages;
+		this.indx;
+		this.pgs;
+		this.pg_cnt;
 		if(!string){
-			this.index=tools['index'];
-			this.pages=tools['pages'];
+			this.indx=tools['index'];
+			this.pgs=tools['pages'];
+			this.pg_cnt=this.updt_pg_cnt()
 		}
 
     }
+	gt_mty_ln(){
+        return new Line();
+    }
+    gt_mty_pg(){
+		return new Page();
+	}
 
     //PUBLIC GETTERS
-    getPageCount(){
-		return parseInt(this.book['pageCount']);
+    gt_pg_cnt(){
+		return this.pg_cnt;
 	}
-	getLineCount(page){
-        return parseInt(page['lineCount']);
+	gt_ln_cnt(pageN){
+        return this.pages[pageN].gt_ln_cnt();
     }
+	updt_pg_cnt(){
+
+	}
 
     //PUBLIC UTILS
-    bookify(string, tools){
+    bukify(string, tools){
 		if(!(string&&tools)){
 			tools = this.tools;
 		}
 		if(!this.book){
-			this.book=this._getEmptyBook();
+			this.book=this.gt_mty_buk();
 		}
-		var page=this._getEmptyPage();
+		var page=this.gt_mty_pg();
 
         if(('lineCount' in tools)&&('anchor' in tools)){
             var line="";
             for(var i=0; i<string.length; i++){
-				//LEAVE THIS -1 after tools['lineCount'] because we are looking for the last enscribe to the queue!
-				if(string[i]==tools['anchor'] && this.getLineCount(page)==tools['lineCount']-1){
-					line+=string[i];	//adds the anchor to the string
-					this._enscribeLineToPage(line, page);
-                    this._setCharOffsetToPage(i, page);
-					this._addPageToBook(page);
-					page=this._getEmptyPage();
+				if(string[i]==tools['anchor'] && this.gt_ln_cnt(page)==tools['lineCount']-1){
+					line+=string[i];
+					this.wrt_ln2Pg(line, page);
+					this.psh_pg(page);
+					page=this.gt_mty_pg();
 					line="";
-				//LEAVE THIS -1 after tools['lineCount'] because we are looking for anything BEFORE THE LAST enscribe TO THE QUEUE!
-				}else if(string[i]==tools['anchor'] && this.getLineCount(page)<tools['lineCount']-1){
-					line+=string[i];	//adds the anchor to the string
-                    this._enscribeLineToPage(line, page);
+
+				}else if(string[i]==tools['anchor'] && this.gt_ln_cnt(page)<tools['lineCount']-1){
+					line+=string[i];
+                    this.wrt_ln2Pg(line, page);
 					line="";
 				}else{
 					line+=string[i];
 				}
         	}
-			//THIS IS ALWAYS HIDDEN
-            this._enscribeLineToPage(line, page);
-			this._addPageToBook(page);
+			//THIS IS ALWAYS HIDDEN BECAUSE END OF STRING DOESNT GET CAUGHT BY LOGIC
+            this.wrt_ln2Pg(line, page);
+			this.psh_pg(page);
 		}
 	}
 
-    import(file){
+    mport(file){
         this.book = JSON.parse(fs.readFileSync(file))
     }
-    export(fileName){
+    xport(fileName){
         fs.writeFileSync(fileName+'.book', JSON.stringify(this.book))
     }
     
-    virtualize(string){
+    vrtlz(string){
         
     }
-	crssRef(_Book){
+	crss_rf(_Book){
 
 	}
 
-    write2Bk(string, tools){
+    wrt2buk(string, tools){
         if(!string){
             throw Error("you need to provide a string");
         }
         if(!tools){
             tools=this.tools;
         }
-		this.bookify(string, tools);
+		this.bukify(string, tools);
 	}
 
-    printBk(){
+    prnt_buk(){
 		console.log(util.inspect(this.book, {showHidden: true, depth: null, colors: true}));
 	}
 
     //PRIVATE GETTERS
-    getLnNPgM(pageM, lineN){
-        return this.getPageN(pageM, this)['lines'][lineN.toString];
+    gt_lnN_pgM(pgM, lnN){
+        return this.getPageN(pgM, this)['lines'][lnN.toString];
     }
 
-    getPgN(pageN){
-        return this.book['pages'][pageN.toString()];
+    gt_pgN(pgN){
+        return this.book['pages'][pgN.toString()];
     }
 
-    _getEmtyLn(){
-        return {'charCount':'0', 'line':""}
-    }
-    _getEmtyPg(){
-		return {'lineCount':'0','lines':{}, 'charOffset':'0'};
-	}
-	_getEmtyBk(){
-		return {'pageCount':'0','pages':{}};
+	gt_ln_cnt(pg){
+
 	}
     
-    rmvPgsNM(pageN, pageM){
+    rmv_pg_n2m(pageN, pageM){
 		assert.equal(pageM>=pageN, true);
 		for (var i=pageN; i<=pageM; i++){
 			this._rmvPgN(i);
 		}
 	}
 
-	rmvPgN(n){
+	rmv_pg_n(n){
 		delete this.book['pages'][n.toString()];
 		var tmp = this.book['pages'][(n+1).toString()];
 		delete this.book['pages'][(n+1).toString()];
@@ -122,23 +146,21 @@ export class Book{
 	}
 
     //this should be tested when its actually used, leave it here for now.
-    popNPgs(nPages){
-		for(var i = 0; i<nPages; i++){
-			this._popPg();
+    pop_n_pgs(n_pgs){
+		for(var i = 0; i<n_pgs; i++){
+			this.pop_pg();
 		}
 	}
 	
-    popPg(){
-        delete this.book['pages'][this.book['pageCount']]; 
-    	this.book['pageCount']=(parseInt(this.book['pageCount'])-1).toString();
+    pop_pg(){
+        
     }
 
-    _pushPg(page){
-        this.book['pages'][(parseInt(this.book['pageCount'])+1).toString()]=page;
-        this.book['pageCount']=(parseInt(this.book['pageCount'])+1).toString();
+    psh_pg(page){
+
     }
-    _enscribeLineToPage(line, page){
-        page['lines'][(parseInt(page['lineCount'])+1).toString()]=line;
-        page['lineCount']=(parseInt(page['lineCount'])+1).toString();
+
+    wrt_ln2Pg(line, page){
+
     }
 }
