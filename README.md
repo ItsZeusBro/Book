@@ -1,5 +1,5 @@
-# Book
-Its like a really long string, but better.
+# Buk
+Its like a really long strng, but better.
 
 Books solved the problem of searching and sorting a long time ago! Since then, computer science and mathematics has provided a set of tools that aide in the same problem. The issue is that computer science looks at scrolls of data, and not at books. Books are better.
 
