@@ -2,6 +2,18 @@ import * as assert from "node:assert"
 import * as util from "node:util"
 import * as fs from "node:fs"
 
+//Every line needs a map to the original file location
+//A size field (for choosing the most efficent search types)
+//Some sort of indexing metadata
+
+//Pages can be delimited by a litteral, or a pattern (you don't suffer regex performance hit more than once
+//if you store into book file)
+
+//Pages can be delimited by a byte or bitty count 
+//(a bitty count is a bit count that adds bits at the end to be Octal compliant buffer)
+//it matters because you might be parsing nibbles or actual bit patterns and not necessarily
+//byte patterns
+
 //Its just a book...
 export class Book{
     constructor(file, string, tools){
@@ -9,7 +21,6 @@ export class Book{
         if(file && string){
             tools=string
             string=file
-            
         }
         this.string=string;
         this.book;
@@ -127,6 +138,7 @@ export class Book{
         if(!_Book){_Book=this;}
         return this.getPageN(pageM, _Book)['lines'][lineN.toString];
     }
+
     _getPageN(pageN, _Book){
         if(!_Book){_Book=this;}
         return _Book.book['pages'][pageN.toString()];
@@ -143,16 +155,17 @@ export class Book{
 	}
     
     //PRIVATE SETTERS
-    _setCharOffsetToPage(offset, page){
-        
-    }
+
     //calls regex once on every n pages (non-cumulative way), and returns the first non null regex value
-    matchOnEveryNPages(nPages){
+    matchOnEveryNPages(nPages, first=true){
 		var i;
 		var matches = []
-
         for(var i = 1; i<=this.pageCount(); i++){
-            matches.push(_Book.matchOnPageRange(regex, i, i+nPages, _Book))
+            if(i+nPages>this.pageCount()){
+                return matches
+            }else{
+                matches.push(_Book.matchOnPageRange(regex, i, i+nPages, _Book))
+            }
         }
         return matches;
     }
@@ -164,7 +177,6 @@ export class Book{
     //calls regex once on a page range, and returns the regex return value
     matchPageRange(regex, pageN, pageM, _Book){
         if(!_Book){_Book=this;}
-
         var scroll = this.scrollifyPagesNtoM(pageN, pageM, _Book)
         return scroll.match(regex)
 	}
