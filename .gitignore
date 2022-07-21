@@ -1,4 +1,5 @@
 # Logs
+*.buk
 logs
 *.log
 npm-debug.log*

@@ -5,25 +5,24 @@ export class Line{
 		this.e=encdng;
 		this.i=indx;
 		this.s=strng
-
+		this.cs;
+		if(!optimized){
+			this.s=""
+			this.charify(strng, encdng);
+		}
     }
 
-	get_raw(){
+	get_raw_opt(){
 		return this.s
 	}
 
-	
-}
-
-import { Char } from "./Char.js"
-
-export class Line{
-    constructor(strng, indx={}, encdng='utf-8'){
-		this.encdng=encdng;
-		this.indx=indx;
-		this.chars=[]
-		this.charify(strng, encdng);
-    }
+	get_raw(){
+		var line="";
+		this.cs.forEach((c)=>{
+			line+=c.get_raw()
+		})
+		return line;
+	}
 
 	charify(strng, encdng){
 		//creates an array of char objects
@@ -32,15 +31,7 @@ export class Line{
 		}
 	}
 
-	get_raw(){
-		var line="";
-		this.chars.forEach((char)=>{
-			line+=char.get_raw()
-		})
-		return line;
-	}
 	push(rawChar){
-		this.chars.push(new Char(rawChar, {'encdng':this.encdng}))
+		this.cs.push(new Char(rawChar, {'e':this.e}))
 	}
-	
 }
