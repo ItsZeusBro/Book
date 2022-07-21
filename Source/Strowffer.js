@@ -11,6 +11,8 @@ export class Strowffer{
     }
 
 	process(strwfr, type, indx){
+		console.log(strwfr, type, indx)
+
 		if(this.isString(strwfr) && this.isEncoding(type)){
 			this.strwfr=strwfr
 			this.t=type
@@ -24,7 +26,7 @@ export class Strowffer{
 			if(indx){this.i=indx}
 
 		}else if (this.isBuffer(strwfr) && this.isEncoding(type)){
-			this.strwfr=wrap(strwfr, 'buffer', type)
+			this.strwfr=this.wrap(strwfr, 'buffer', type)
 			this.t=type
 			this.c='buffer'
 			if(indx){this.i=indx}
@@ -56,7 +58,6 @@ export class Strowffer{
 		}else{
 			throw Error("Strowfer is corrupted, has no context variable defined")
 		}
-	
 	}
 	
 	//takes a stwrfer, context, and type and either
@@ -65,20 +66,19 @@ export class Strowffer{
 	wrap(strwfr, context, type){
 
 		if(context=='row' && this.isArray(strwfr) && this.isEncoding(type)){
-
+			var arr=[]
 			if(!type){
 				for(var i=0; i<strwfr.length; i++){
-					strwfr.push(new Cell(strwfr[i], 'utf-8'))
+					arr.push(new Cell(strwfr[i], 'utf-8'))
 				}
 	
 			}else{
 	
 				if(this.isArray(type)){
-	
+					
 					if((type.length==strwfr.length)){
-	
 						for(var i=0; i<strwfr.length; i++){
-							strwfr.push(new Cell(strwfr[i], type[i]))
+							arr.push(new Cell(strwfr[i], type[i]))
 						}
 	
 					}else{
@@ -88,12 +88,12 @@ export class Strowffer{
 				}else{
 	
 					for(var i=0; i<strwfr.length; i++){
-						strwfr.push(new Cell(strwfr[i], type))
+						arr.push(new Cell(strwfr[i], type))
 					}
 				}
 			}
 
-			return strwfr
+			return arr
 
 		}else if(context=='buffer'&& this.isBuffer(strwfr) && this.isEncoding(type)){
 
