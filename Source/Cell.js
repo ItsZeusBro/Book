@@ -25,7 +25,7 @@ export class Cell{
 	}
 }
 
-//a word can be a byte, a collection of bytes, a char word delimited with a space, and Cells can fit many words
+//a word can be a byte, a collection of bytes, a char word delimited with a space, and Cells can fit many words//
 export class Word{
 
 }
