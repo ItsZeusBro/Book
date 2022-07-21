@@ -45,24 +45,27 @@ export class Strowffer{
 	raw(){
 
 		if(this.c=='string'){
+
 			return [this.strwfr, this.t, this.i]
 
 		}else if(this.c=='buffer' || this.c =='row'){
-			return [this.unwrap(this.strwfr, this.c), this.t, this.i]
+
+			var unwrapped = this.unwrap(this.strwfr, this.c)
+			return [unwrapped[0], unwrapped[1], this.i]
 		
 		}else{
 			throw Error("Strowfer is corrupted, has no context variable defined")
 		}
 	
 	}
-
 	
 	//takes a stwrfer, context, and type and either
 	//encodes if its a buffer or
 	//creates an array of cell objects if an array
 	wrap(strwfr, context, type){
 
-		if(context=='row'&& this.isArray(strwfr) && this.isEncoding(type)){
+		if(context=='row' && this.isArray(strwfr) && this.isEncoding(type)){
+
 			if(!type){
 				for(var i=0; i<strwfr.length; i++){
 					strwfr.push(new Cell(strwfr[i], 'utf-8'))
@@ -92,8 +95,11 @@ export class Strowffer{
 
 			return strwfr
 
-		}else if(context=='buffer'&& this.isBuffer(strwfr)&&this.isEncoding(type)){
-			return Buffer.from(strwfr, type)
+		}else if(context=='buffer'&& this.isBuffer(strwfr) && this.isEncoding(type)){
+
+			return strwfr.toString(type)
+		}else{
+			throw Error("wrapping of", strwfr, context, "failed")
 		}
 
 	}
@@ -101,14 +107,20 @@ export class Strowffer{
 	//takes a strwfer, context and either
 	//creates a buffer if context is a buffer
 	//creates a raw array if its an array of cell objects
-	unwrap(strwfer, context){
-		if(context=='row'&& this.isArray(strwfr)){
-			
+	unwrap(strwfr, context){
+		if(context=='row' && this.isRow(strwfr)){
+			var vals = []
+			var types = []
+			strwfr.forEach((cell)=>{
+				vals.push(cell.v)
+				types.push(cell.t)
+			})
+			return [vals, types]
 
-			return strwfr
-
-		}else if(context=='buffer'&& this.isBuffer(strwfr)&&this.isEncoding(type)){
-			return //Buffer.from(strwfr, type)
+		}else if(context=='buffer' && this.isString(strwfr)){
+			return Buffer.from(strwfr)
+		}else{
+			throw Error("unwrapping of", strwfr, context, "failed")
 		}
 	}
 
@@ -130,8 +142,17 @@ export class Strowffer{
 			return Buffer.isEncoding(type); 
 		}
 	}
-
-	
+	isRow(strwfr){
+		strwfr.forEach((cell)=>{
+			if(!this.isCell(cell)){return false}
+		})
+		return true
+	}
+	isCell(cell){
+		if(cell instanceof Cell && cell.v && cell.t){
+			return true
+		}
+	}
 }
 
 console.log(new Strowffer([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ['int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int'], 'arbitrary row data'))
