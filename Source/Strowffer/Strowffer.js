@@ -52,7 +52,7 @@ export class Strowffer{
 
 		}else if(this.c=='buffer' || this.c =='row'){
 
-			var unwrapped = this.unwrap(this.strwfr, this.c)
+			var unwrapped = this.unwrap(this.strwfr, this.t, this.c)
 			return [unwrapped[0], unwrapped[1], this.i]
 		
 		}else{
@@ -107,7 +107,7 @@ export class Strowffer{
 	//takes a strwfer, context and either
 	//creates a buffer if context is a buffer
 	//creates a raw array if its an array of cell objects
-	unwrap(strwfr, context){
+	unwrap(strwfr, type, context){
 		if(context=='row' && this.isRow(strwfr)){
 			var vals = []
 			var types = []
@@ -118,7 +118,7 @@ export class Strowffer{
 			return [vals, types]
 
 		}else if(context=='buffer' && this.isString(strwfr)){
-			return Buffer.from(strwfr)
+			return [Buffer.from(strwfr, type), type]
 		}else{
 			throw Error("unwrapping of", strwfr, context, "failed")
 		}

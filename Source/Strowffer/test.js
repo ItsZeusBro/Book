@@ -182,16 +182,55 @@ class StrowfferTest{
 
 
 	rowData(){
+		var arr=[]
+		for(var i=0; i<100000; i++){
+			arr.push(i)
+		}
+		console.log('rowInterface() with large array, SHOULD PASS')
+		assert.doesNotThrow(
+			()=>{
+				var strwfr = new Strowffer(
+					arr
+					)
+
+				assert.deepEqual(strwfr.raw()[0], arr)
+			}
+		)
 
 
 	}
 
 	stringData(){
-
+		var str=""
+		for(var i=0; i<100000; i++){
+			str+=i.toString()
+		}
+		console.log('rowInterface() with large str, SHOULD PASS')
+		assert.doesNotThrow(
+			()=>{
+				var strwfr = new Strowffer(
+					str
+					)
+				assert.deepEqual(strwfr.raw()[0], str)
+			}
+		)
 	}
 
 	bufferData(){
-
+		var str=""
+		for(var i=0; i<100000; i++){
+			str+=i.toString()
+		}
+		console.log('rowInterface() with large buffer, SHOULD PASS')
+		assert.doesNotThrow(
+			()=>{
+				var strwfr = new Strowffer(
+					Buffer.from(str, 'utf-8'),
+					'utf-8'
+					)
+				assert.deepEqual(strwfr.raw()[0], Buffer.from(str, 'utf-8'))
+			}
+		)
 	}
 }
 
