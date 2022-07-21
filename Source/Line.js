@@ -5,16 +5,21 @@ import { Cell } from "./Cell.js"
 //output
 //there are different usecases
 export class Strow{
-    constructor(strow, indx={}, cntxt='str', encdng="utf-8"){
-		//if cntxt is a encoding, then its a string
-		//if cntxt is 'row', with strow as a string, we cellify the string with the same encoding
-		//if cntxt is 'row' with a strow as cell schema, we cellify the strow schema
+    constructor(strow, indx={}, cntxt, encdng="utf-8"){
+		if(cntxt=='str' && strow){
+			//if cntxt is a str its just a string in the strow variable
+		}else if(cntxt=='row' && this.isString(strow)){
+			//if cntxt is 'row', with strow as a string, we cellify the string with the same encoding
+		}else if (cntxt=='row' && this.isCellSchema()){
+			//if cntxt is 'row' with a strow as cell schema, we cellify the strow schema
+
+		}
+		
 		this.e;
 		this.i;
-		this.s;
+		this.strw;
 		this.ct;
 		this.cs=this.charify(strow, ctxt)
-
     }
 
 	//gets the single encoded line str or row cells as arbitrary chars (that's a 'strow')
@@ -39,10 +44,5 @@ export class Strow{
 		}
 	}
 
-	push_raw(rawChar, encdng){
-		this.cs.push(new Char(rawChar, {'e':encdng}))
-	}
-	push_row(){
 
-	}
 }
