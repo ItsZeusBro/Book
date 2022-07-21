@@ -4,66 +4,109 @@ import { Cell } from "./Cell.js"
 //at a higher level as decimal
 
 export class Strowffer{
-    constructor(strow, type, indx=""){
-		this.srb;//strow = string, buffer, or an array
+    constructor(strwfr, type, indx=""){
+		this.strwfr;//strwfr = string, buffer, or an array
 		this.t;//type
 		this.i;//index
 		this.c;//context
-		if(this.isString(strow)&&this.isEncoding(type)){
-			//if its a string, its stored locally as a string for optimization
-			//String operations can be performed in Strow class as well
-			this.srb=strow
+		this.init(strwfr, type, indx)
+    }
+
+	init(){
+		if(this.isString(strwfr)&&!type){
+			this.strwfr=strwfr
 			this.t=type
 			this.c='string'
+
 			if(indx){this.i=indx}
-		}else if (this.isArray(strow) && type){
-			//if its an array, each element of the array is in its own cell. if there is an index for the row, set it
-			//rowise operations can be performed in Strow class
-			this.srb=[]
+		} else if (this.isArray(strwfr) && type){
+			this.strwfr=[]
+
 			if(!type){
-				//type is utf-8
-				for(var i=0; i<strow.length; i++){
-					this.srb.push(new Cell(strow[i], 'utf-8'))
+
+				for(var i=0; i<strwfr.length; i++){
+					this.strwfr.push(new Cell(strwfr[i], 'utf-8'))
 				}
+
 			}else{
+
 				if(this.isArray(type)){
-					//if type is array, check to make sure length is equal to strow length
-					if((type.length==strow.length)){
-						for(var i=0; i<strow.length; i++){
-							this.srb.push(new Cell(strow[i], type[i]))
+
+					if((type.length==strwfr.length)){
+
+						for(var i=0; i<strwfr.length; i++){
+							this.strwfr.push(new Cell(strwfr[i], type[i]))
 						}
+
 					}else{
-						throw Error("If type is an array, it must be of length strow.length")
+						throw Error("If type is an array, it must be of length strwfr.length")
 					}
+
 				}else{
-					//if type is not array, just set the type for each strow to be of type type
-					for(var i=0; i<strow.length; i++){
-						this.srb.push(new Cell(strow[i], type))
+
+					for(var i=0; i<strwfr.length; i++){
+						this.strwfr.push(new Cell(strwfr[i], type))
 					}
 				}
 			}
 
 			this.c='row'
 			this.t=type
+
 			if(indx){this.i=indx}
-		}else if (this.isBuffer(strow)&&this.isEncoding(type)){
-			//if its a buffer, its stored locally with its encoding. 
-			//It's decoded with strngfy()
-			//its accessed with raw()
-			this.srb=strow
+
+		}else if (this.isBuffer(strwfr)&&this.isEncoding(type)){
+			this.strwfr=strwfr
 			this.t=type
-			this.c='buff'
+			this.c='buffer'
+
 			if(indx){this.i=indx}
+
 		}else{
-			throw Error("strow must be a string, array, or buffer type")
+			throw Error("strwfr must be a string, array, or buffer type")
 		}
-    }
+	}
 
 	isBuffer(buff){ return Buffer.isBuffer(buff); }
 	isString(strng){ if (typeof strng === 'string' || strng instanceof String) { return true; } }
 	isArray(arr){ return Array.isArray(arr); }
 	isEncoding(encdg){ return Buffer.isEncoding(encdg); }
 
+	raw(){
+
+		if(this.c=='string'){
+			return this.strwfr;
+
+		}else if(this.c=='buffer'){
+			return this.strwfr
+		
+		}else if(this.c=='row'){
+			return this.unwrap(this.strwfr)
+		}else{
+			throw Error("Strowfer is corrupted, has no context variable defined")
+		}
+		//if its a string, its not decoded, just returned
+		//if its a buffer, its not decoded, just returned
+		//if its a row, just return an array
+	}
+
+	strngfy(){
+		if(this.c=='string'){
+
+		}else if(this.c=='buffer'){
+		
+		
+		}else if(this.c=='row'){
+
+		}else{
+			throw Error("Strowfer is corrupted, has no context variable defined")
+		}
+		//if its a string, decode it if it has a encoding, and return
+		//if its a buffer, decode it and return
+		//if its a row, return it as a comma separated string
+	}
+	//
+	unwrap()
 }
 
 console.log(new Strowffer([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ['int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int'], 'arbitrary row data'))
