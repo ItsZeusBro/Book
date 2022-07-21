@@ -1,4 +1,4 @@
-import { Cell } from "./Cell.js"
+import { Cell } from "./WordCell.js"
 //input
 //if we iterate and fill inside the class from a constructor string, it requires a single encoding
 //if we are iterating and filling from the outside of the class, we have options for encoding for dataframes
@@ -10,39 +10,12 @@ export class Strow{
 			//if cntxt is a str its just a string in the strow variable
 		}else if(cntxt=='row' && this.isString(strow)){
 			//if cntxt is 'row', with strow as a string, we cellify the string with the same encoding
-		}else if (cntxt=='row' && this.isCellSchema()){
+		}else if (cntxt=='row' && this.isWordCell()){
 			//if cntxt is 'row' with a strow as cell schema, we cellify the strow schema
 
 		}
-		
-		this.e;
-		this.i;
-		this.strw;
-		this.ct;
-		this.cs=this.charify(strow, ctxt)
     }
 
-	//gets the single encoded line str or row cells as arbitrary chars (that's a 'strow')
-	get_strow(){
-		if(this.ct=='str'){
-			return this.s;
-		}else if(this.ct=='row'){
-			var row=[];
-			this.cs.forEach((c)=>{
-				row.push(c.get_cell())
-			})
-			return row;
-		}else{
-			throw Error("strow was not initialized with a context")
-		}
-	}
-
-	cellify(strng, encdng){
-		//creates an array of char objects
-		for(var i = 0; i<strng.length; i++){
-			this.push(strng[i], encdng)
-		}
-	}
 
 
 }
