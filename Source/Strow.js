@@ -9,11 +9,14 @@ export class Strow{
 			//if cntxt is a str its just a string in the strow variable
 		}else if(this.isString(strow)){
 			//if its a string, its stored locally as a string for optimization
+			//String operations can be performed in Strow class as well
 		}else if (this.isArray(strow) && indx){
 			//if its an array, each element of the array is in its own wordCell. if there is an index for the row, set it
+			//rowise operations can be performed in Strow class
 		}else if (this.isBuffer(strow)&&this.isEncoding(type)){
-			//if its a buffer, its stored locally with its encoding
-
+			//if its a buffer, its stored locally with its encoding. 
+			//It's decoded with strngfy()
+			//its accessed with raw()
 		}else{
 			throw Error("strow must be a string, array, or buffer type")
 		}
