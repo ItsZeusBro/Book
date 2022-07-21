@@ -1,22 +1,25 @@
 import { Char } from "./Char.js"
-
+//input
+//if we iterate and fill inside the class from a constructor string, it requires a single encoding
+//if we are iterating and filling from the outside of the class, we have options for encoding for dataframes
+//output
+//there are different usecases
 export class Line{
-    constructor(strng, indx={}, encdng='utf-8'){
-		this.e=encdng;
-		this.i=indx;
-		this.s=strng
+    constructor(strow, indx={}, cntxt='utf-8'){
+		//if cntxt is a encoding, then its a string
+		//if cntxt is 'row', we don't hold a string, we charify the strow schema
+		this.e;
+		this.i;
+		this.s;
 		this.cs;
-		if(!optimized){
-			this.s=""
-			this.charify(strng, encdng);
-		}
+
     }
 
-	get_raw_opt(){
-		return this.s
-	}
-
-	get_raw(){
+	//gets the single encoded line str or row cells as arbitrary chars (that's a 'strow')
+	get_strow(){
+		if(cntxt=='str'){
+			
+		}
 		var line="";
 		this.cs.forEach((c)=>{
 			line+=c.get_raw()
@@ -31,7 +34,10 @@ export class Line{
 		}
 	}
 
-	push(rawChar){
-		this.cs.push(new Char(rawChar, {'e':this.e}))
+	push_raw(rawChar, encdng){
+		this.cs.push(new Char(rawChar, {'e':encdng}))
+	}
+	push_row(){
+
 	}
 }
