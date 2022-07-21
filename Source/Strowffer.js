@@ -12,65 +12,48 @@ export class Strowffer{
 		this.init(strwfr, type, indx)
     }
 
-	init(){
-		if(this.isString(strwfr)&&!type){
+	init(strwfr, type, indx){
+		if(this.isString(strwfr)&& this.isEncoding(type)){
 			this.strwfr=strwfr
 			this.t=type
 			this.c='string'
-
 			if(indx){this.i=indx}
-		} else if (this.isArray(strwfr) && type){
-			this.strwfr=[]
 
-			if(!type){
-
-				for(var i=0; i<strwfr.length; i++){
-					this.strwfr.push(new Cell(strwfr[i], 'utf-8'))
-				}
-
-			}else{
-
-				if(this.isArray(type)){
-
-					if((type.length==strwfr.length)){
-
-						for(var i=0; i<strwfr.length; i++){
-							this.strwfr.push(new Cell(strwfr[i], type[i]))
-						}
-
-					}else{
-						throw Error("If type is an array, it must be of length strwfr.length")
-					}
-
-				}else{
-
-					for(var i=0; i<strwfr.length; i++){
-						this.strwfr.push(new Cell(strwfr[i], type))
-					}
-				}
-			}
-
+		} else if (this.isArray(strwfr) && this.isEncoding(type)){
+			this.strwfr=this.wrap(strwfr, 'row', type)
 			this.c='row'
 			this.t=type
-
 			if(indx){this.i=indx}
 
 		}else if (this.isBuffer(strwfr)&&this.isEncoding(type)){
-			this.strwfr=strwfr
+			this.strwfr=wrap(strwfr, 'buffer', type)
 			this.t=type
 			this.c='buffer'
-
 			if(indx){this.i=indx}
 
 		}else{
-			throw Error("strwfr must be a string, array, or buffer type")
+			throw Error("strwfr must be a string, array, or buffer OR you need to provide a type (which could be an array of types for rows, an encoding for buffers, or an encoding for strings)")
 		}
 	}
 
 	isBuffer(buff){ return Buffer.isBuffer(buff); }
+	
 	isString(strng){ if (typeof strng === 'string' || strng instanceof String) { return true; } }
+	
 	isArray(arr){ return Array.isArray(arr); }
-	isEncoding(encdg){ return Buffer.isEncoding(encdg); }
+
+	isEncoding(type){ 
+		if(this.isArray(type)){
+			type.forEach(typ => {
+				if(!Buffer.isEncoding(typ)){
+					return false
+				}
+			});
+			return true
+		}else{
+			return Buffer.isEncoding(type); 
+		}
+	}
 
 	raw(){
 
@@ -78,7 +61,7 @@ export class Strowffer{
 			return this.strwfr;
 
 		}else if(this.c=='buffer'){
-			return this.strwfr
+			return this.unwrap(this.strwfr, )
 		
 		}else if(this.c=='row'){
 			return this.unwrap(this.strwfr)
@@ -106,7 +89,49 @@ export class Strowffer{
 		//if its a row, return it as a comma separated string
 	}
 	//
-	unwrap()
+	unwrap(strwfer, context, type){
+		//takes a strwfer, context, and type and either
+		//decodes if its a buffer or
+		//creates a raw array if its an array of cell objects
+	}
+
+	wrap(strwfr, context, type){
+		if(context=='row'){
+			if(!type){
+				for(var i=0; i<strwfr.length; i++){
+					strwfr.push(new Cell(strwfr[i], 'utf-8'))
+				}
+	
+			}else{
+	
+				if(this.isArray(type)){
+	
+					if((type.length==strwfr.length)){
+	
+						for(var i=0; i<strwfr.length; i++){
+							strwfr.push(new Cell(strwfr[i], type[i]))
+						}
+	
+					}else{
+						throw Error("If type is an array, it must be of length strwfr.length")
+					}
+	
+				}else{
+	
+					for(var i=0; i<strwfr.length; i++){
+						strwfr.push(new Cell(strwfr[i], type))
+					}
+				}
+			}
+		}else if(context=='buffer'){
+
+		}
+		
+		return strwfr
+		//takes a stwrfer, context, and type and either
+		//encodes if its a buffer or
+		//creates an array of cell objects if an array
+	}
 }
 
 console.log(new Strowffer([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ['int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int'], 'arbitrary row data'))
