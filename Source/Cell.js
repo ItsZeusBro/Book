@@ -10,18 +10,26 @@
 
 
 export class Cell{
-    constructor(c, m){
-        this.c=c;
-		this.m=m;
+    constructor(words){
+		this.ws=this.wordify(words)
     }
-	get_cell(){
-		return this;
+	wordify(words){
+		//expects an array of bytes (buffer) and creates Words for each item
+		var words=[]
+		words.forEach((w)=>{
+			words.push(new Word(w));
+		})
+		return words
 	}
-	get_encdng(){
-		return this.m['e'];
+	get_ws(){
+		return this.ws;
 	}
 	get_raw(){
-		return this.c;
+		var words = [];
+		this.ws.forEach(w => {
+			words.push(w);
+		});	
+		return words;
 	}
 }
 
