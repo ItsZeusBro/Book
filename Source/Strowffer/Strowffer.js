@@ -18,7 +18,7 @@ export class Strowffer{
 			this.c='string'
 			if(indx){this.i=indx}
 
-		} else if (((this.isArray(strwfr) && strwfr.length) && (this.isEncoding(type)) || (this.isArray(type) && (type.length==strwfr.length)))){
+		} else if (((this.isArray(strwfr) && strwfr.length) && (this.isEncoding(type)) || (this.isArray(type) && type.length && (type.length==strwfr.length)))){
 
 			this.strwfr=this.wrap(strwfr, 'row', type)
 			this.t=type
