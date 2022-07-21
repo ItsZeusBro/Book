@@ -12,6 +12,7 @@ export class Strowffer{
 		if(this.isString(strow)&&this.isEncoding(type)){
 			//if its a string, its stored locally as a string for optimization
 			//String operations can be performed in Strow class as well
+			this.s=strow
 			this.t=type
 			this.c='string'
 			if(indx){this.i=indx}
@@ -58,21 +59,13 @@ export class Strowffer{
 		}
     }
 
-	isBuffer(){
-
-	}
-	isString(){
-
-	}
-	isArray(){
-
-	}
-	isEncoding(){
-		
-	}
+	isBuffer(buff){ return Buffer.isBuffer(buff); }
+	isString(strng){ if (typeof strng === 'string' || strng instanceof String) { return true; } }
+	isArray(arr){ return Array.isArray(arr); }
+	isEncoding(encdg){ return Buffer.isEncoding(encdg); }
 
 }
 
-new Strow([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ['int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int'], 'arbitrary row data')
-new Strow("hello world!", 'utf-8')
-new Strow(Buffer.from([10, 20, 30, 40, 50, 60, 70, 80, 90, 100]), 'utf-8')
+console.log(new Strowffer([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ['int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int', 'str', 'utf-8', 'int'], 'arbitrary row data'))
+console.log(new Strowffer("hello world!", 'utf-8'))
+console.log(new Strowffer(Buffer.from([10, 20, 30, 40, 50, 60, 70, 80, 90, 100]), 'utf-8'))
