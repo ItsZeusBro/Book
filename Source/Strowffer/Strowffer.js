@@ -13,7 +13,7 @@ export class Strowfer{
     }
 
 	strowferize(strofr, type){
-		if(this.isString(strofr) && this.isEncodedArray(type) && (type.length==strofr.length)){
+		if(this.isString(strofr) && this.isEncodedArray(type) && this.sameLength(strofr, type)){
 			this._stringEncodedArrayOrStringArrayEncodedArray(strofr, type) 		
 		}else if(this.isStringArray(strofr) && this.isEncodedArray(type)){
 			this._stringEncodedArrayOrStringArrayEncodedArray(strofr, type) 		
@@ -42,7 +42,7 @@ export class Strowfer{
 			this._bufferArrayEncoded(strofr, type)
 		}else if(this.isBufferArray(strofr) && !type){
 			this._bufferArray(strofr, 'utf-32')
-		}else if(this.isArray(strofr) && this.isEncodedArray(type)){
+		}else if(this.isArray(strofr) && this.isEncodedArray(type) && this.sameLength(strofr, type)){
 			this._arrayEncodedArray(strofr, type)
 		}else if(this.isArray(strofr) && this.isEncoded(type)){
 			this._arrayEncoded(strofr, type)
@@ -78,6 +78,7 @@ export class Strowfer{
 	//single string buffer decoded utf-32 (inferred), with code array for the string positions
 	_bufferEncodedArray(strofr, type){
 		strofr = Buffer.from(strofr, 'utf-32')
+		if(!this.sameLength(strofr, type)){throw Error("_bufferEncodedArray")};
 		this._stringEncodedArrayOrStringArrayEncodedArray(strofr, type)
 	}
 
@@ -107,28 +108,33 @@ export class Strowfer{
 		this._stringEncodedArrayOrStringArrayEncodedArray(strs, type)
 	}
 
-	//
+	//single buffer, encoding array for buffer chars
 	_bufferArrayEncoded(strofr, type){
-		strofr = Buffer.from(strofr, type)
-		this._stringArrayEncoded(strofr, type)
+		strofr = Buffer.from(strofr, type);
+		if(!this.sameLength(strofr, type)){throw Error("_bufferArrayEncoded")};
+		this._stringArrayEncoded(strofr, type);
 	}
 
+	//buffer array of strings, interpreted as utf-32 encoding
 	_bufferArray(strofr){
-		strofr = Buffer.from(strofr, 'utf-32')
-		this._stringArrayEncoded(strofr, 'utf-32')
+		strofr = Buffer.from(strofr, 'utf-32');
+		this._stringArrayEncoded(strofr, 'utf-32');
 	}
 
+	//array of objects, each stored with their own code type
 	_arrayEncodedArray(strofr, type){
+
 		for(var i = 0; i<strofr.length; i++){
 			this.strofr.push(new Cell(strofr[i], type[i]))
 		}
 	}
-
+	//array of objects all with same code
 	_arrayEncoded(strofr, type){
 		strofr.forEach((obj)=>{
 			this.strofr.push(new Cell(obj, type))
 		})
 	}
+
 	//sometimes an array of objects is typeless by design and should not be inferred
 	_array(strofr){
 		strofr.forEach((obj)=>{
@@ -153,7 +159,9 @@ export class Strowfer{
 		//but not syntax
 	}
 	
-
+	sameLength(arr1, arr2){
+		return (arr1.length==arr2.length)
+	}
 	isBuffer(buff){ return Buffer.isBuffer(buff); }
 	isBufferArray(arr){ 
 		arr.forEach((buff)=>{
