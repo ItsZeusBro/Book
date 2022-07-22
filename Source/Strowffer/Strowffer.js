@@ -13,11 +13,47 @@ export class Strowfer{
     }
 
 	strowferize(strwfr, type, indx){
-		//whatever it is, it need not be iterable!
-		//Because if it is a string, it should be contained in a single cell for optimization
-		//unless you have a different encoding for each charachter
-		//
+		if(this.isString(strwfr) && this.isEncodingArray(type) && (type.length==strwfr.length)){
+			//strwfr is a string with an iterable encoding
+
+		}else if(this.isString(strwfr) && this.isEncoding(type)){
+			//srwfr is a string with a single encoding
+
+		}else if(this.isString(strwfr) && this.isSeparated(type)){
+			//srwfr is a string separated list
+		}else if(this.isString(strwfr) && !type){
+			//srwfr is a string and has no type
+		}else if(this.isBuffer(strwfr) && this.isEncoding(type)){
+			//buffer with a single encoding
+
+		}else if(this.isBuffer(strwfr) && this.isSeparated(type)){
+			//buffer is assumed to be utf-32 type separated string
+
+		}else if(this.isBuffer(strwfr) && !type){
+			//buffer is assumed to be utf-32 string
+
+		}else if(this.isArrayOfBuffers(strwfr) && this.isEncodingArray(type)){
+			//array of buffers with multiple encodings
+
+		}else if(this.isArrayOfBuffers(strwfr) && this.isEncoding(type)){
+			//array of buffers with a single encoding
+
+		}else if(this.isArrayOfBuffers(strwfr) && !type){
+			//array of buffers with a single encoding
+
+		}else if(this.isArray(strwfr) && this.isEncodingArray(type)){
+
+		}else if(this.isArray(strwfr) && this.isEncoding(type)){
+
+		}else if(this.isArray(strwfr) && !type()){
+
+		}else{
+			throw Error("Strowfers do not accept giberish, unless its actual giberish")
+		}
+
 	}
+
+	isSeparated(type){ if(type.includes('s:')){ return true } }
 
 	toString(delim){
 		//the problem with a string is that its usually encoded monolithicly
@@ -36,12 +72,22 @@ export class Strowfer{
 	
 
 	isBuffer(buff){ return Buffer.isBuffer(buff); }
-	
+	isArrayOfBuffers(arr){ 
+		arr.forEach((buff)=>{
+			if(!Buffer.isBuffer(buff)){
+				return false
+			} 
+		})
+		return true
+	}
+
 	isString(strng){ if (typeof strng === 'string' || strng instanceof String) { return true; } }
 	
 	isArray(arr){ return Array.isArray(arr); }
 
-	isEncoding(type){ 
+	isEncoding(type){ return Buffer.isEncoding(type); }
+
+	isEncodingArray(type){ 
 		if(this.isArray(type)){
 			type.forEach(typ => {
 				if(!Buffer.isEncoding(typ)){
@@ -49,8 +95,6 @@ export class Strowfer{
 				}
 			});
 			return true
-		}else{
-			return Buffer.isEncoding(type); 
 		}
 	}
 	isRow(strwfr){
@@ -65,3 +109,6 @@ export class Strowfer{
 		}
 	}
 }
+
+const buf1 = [Buffer.from('1', 'utf-8'), Buffer.from('2', 'utf-8'), Buffer.from('3', 'utf-8')];
+console.log(buf1.toString('utf-8'))
