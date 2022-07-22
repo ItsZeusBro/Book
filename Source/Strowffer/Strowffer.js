@@ -1,9 +1,7 @@
 import { Cell } from "../Cell.js"
-
-//A STROWFER is bascially a String, Row, or Buffer that uses a single structure and api.
-//In otherwords it "sounds mathematical" on the most primitive data types used by a computer
-//and therefore is probably something incredible far into the future. That is, it's useful to think
-//about, but not too useful (for now).
+//Because there is a mathematical relationship between strings, arrays (rows), and buffers
+//we use a Strowffer, even though we do not know how to exploit those mathematical relationships
+//yet. The idea is that if we use them enough, we will find how to exploit that more. 
 export class Strowffer{
     constructor(strwfr, type='utf-8', indx=''){
 		this.strwfr;//strwfr = string, buffer, or an array
@@ -65,7 +63,8 @@ export class Strowffer{
 	
 	//takes a stwrfer, context, and type and either
 	//encodes if its a buffer or
-	//creates an array of cell objects if an array
+	//creates an array of cell objects if it was an array
+	//creates an encoded string from a string
 	wrap(strwfr, context, type){
 
 		if(context=='row' && this.isArray(strwfr) && this.isEncoding(type)){
