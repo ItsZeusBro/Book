@@ -14,17 +14,17 @@ export class Strowfer{
 
 	strowferize(strwfr, type){
 		if(this.isString(strwfr) && this.isEncodedArray(type) && (type.length==strwfr.length)){
-			this._stringEncodedArray(strwfr, type) 		//THESE
+			this._stringEncodedArrayOrStringArrayEncodedArray(strwfr, type) 		
 		}else if(this.isStringArray(strwfr) && this.isEncodedArray(type)){
-			this._stringEncodedArray(strwfr, type) 		//ARE
+			this._stringEncodedArrayOrStringArrayEncodedArray(strwfr, type) 		
 		}else if(this.isStringArray(strwfr) && this.isEncoded(type)){
-			this._stringEncodedArray(strwfr, type) 		//THE
+			this._stringArrayEncoded(strwfr, type) 									
 		}else if(this.isStringArray(strwfr) && !type){
-			this._stringEncodedArray(strwfr, 'utf-32')	//SAME
+			this._stringEncodedArrayOrStringArrayEncodedArray(strwfr, 'utf-32')
 		}else if(this.isString(strwfr) && this.isEncoded(type)){
-			this._stringEncoded(strwfr, type)			//SO
-		}else if(this.isString(strwfr) && !type){		//ARE
-			this._stringEncoded(strwfr, 'utf-32')		//THESE (BUT DIFFERENT)
+			this._stringEncoded(strwfr, type)			
+		}else if(this.isString(strwfr) && !type){		
+			this._stringEncoded(strwfr, 'utf-32')		
 		}else if(this.isString(strwfr) && this.isSeparated(type)){
 			this._stringSeparated(strwfr, type)
 		}
@@ -53,11 +53,17 @@ export class Strowfer{
 		}
 	}
 
-	_stringEncodedArray(strwfr, type){
+	_stringEncodedArrayOrStringArrayEncodedArray(strwfr, type){
 		for(var i = 0; i<strwfr.length; i++){
 			this.strwfr.push(new Cell(strwfr[i], type[i]))
 		}
 		
+	}
+
+	_stringArrayEncoded(strwfr, type){
+		strwfr.forEach((str)=>{
+			this.strwfr.push(new Cell(str, type))
+		})
 	}
 
 	_stringEncoded(strwfr, type){
@@ -73,12 +79,12 @@ export class Strowfer{
 
 	_bufferEncodedArray(strwfr, type){
 		strwfr = Buffer.from(strwfr, 'utf-32')
-		this._stringEncodedArray(strwfr, type)
+		this._stringEncodedArrayOrStringArrayEncodedArray(strwfr, type)
 	}
 
 	_bufferEncoded(strwfr, type){
 		strwfr = Buffer.from(strwfr, type)
-		this._stringEncodedArray(strwfr, type)
+		this._stringEncoded(strwfr, type)
 	}
 
 	_bufferSeparated(strwfr, type){
@@ -87,25 +93,44 @@ export class Strowfer{
 	}
 
 	_buffer(strwfr){
-		
+		strwfr = Buffer.from(strwfr, 'utf-32')
+		this._stringEncoded(strwfr, 'utf-32')
 	}
+
 	_bufferArrayEncodedArray(strwfr, type){
-
+		var strs=[]
+		strwfr.forEach((str)=>{
+			strs.push(Buffer.from(str, 'utf-32'))
+		})
+		this._stringEncodedArrayOrStringArrayEncodedArray(strs, type)
 	}
+
 	_bufferArrayEncoded(strwfr, type){
-
+		strwfr = Buffer.from(strwfr, type)
+		this._stringArrayEncoded(strwfr, type)
 	}
+
 	_bufferArray(strwfr){
-
+		strwfr = Buffer.from(strwfr, 'utf-32')
+		this._stringArrayEncoded(strwfr, 'utf-32')
 	}
+
 	_arrayEncodedArray(strwfr, type){
-
+		for(var i = 0; i<strwfr.length; i++){
+			this.strwfr.push(new Cell(strwfr[i], type[i]))
+		}
 	}
+
 	_arrayEncoded(strwfr, type){
-
+		strwfr.forEach((obj)=>{
+			this.strwfr.push(new Cell(obj, type))
+		})
 	}
+	//sometimes an array of objects is typeless by design and should not be inferred
 	_array(strwfr){
-
+		strwfr.forEach((obj)=>{
+			this.strwfr.push(new Cell(obj))
+		})
 	}
 
 	isSeparated(type){ if(type.includes('s:')){ return true } }
