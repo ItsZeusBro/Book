@@ -15,38 +15,72 @@ export class Strowfer{
 	strowferize(strwfr, type, indx){
 		if(this.isString(strwfr) && this.isEncodingArray(type) && (type.length==strwfr.length)){
 			//strwfr is a string with an iterable encoding
-
-		}else if(this.isString(strwfr) && this.isEncoding(type)){
+			this._stringEncodedArray(strwfr, type, indx)
+		}else if(this.isArrayOfStrings(strwfr) && this.isEncodingArray(type)){
 			//srwfr is a string with a single encoding
+			this._stringArrayEncodedArray(strwfr, type, indx)
+
+		}
+		else if(this.isArrayOfStrings(strwfr) && this.isEncoding(type)){
+			//srwfr is a string with a single encoding
+			this._stringArrayEncoded(strwfr, type, indx)
+
+		}
+		else if(this.isArrayOfStrings(strwfr) && !type){
+			//srwfr is a string with infered encoding
+			this._stringArrayEncoded(strwfr, 'utf-32', indx)
+
+		}
+		else if(this.isString(strwfr) && this.isEncoding(type)){
+			//srwfr is a string with a single encoding
+			this._stringEncoded(strwfr, type, indx)
 
 		}else if(this.isString(strwfr) && this.isSeparated(type)){
 			//srwfr is a string separated list
+			this._stringSeparated(strwfr, type, indx)
+
 		}else if(this.isString(strwfr) && !type){
-			//srwfr is a string and has no type
+			//srwfr is a string and assumed to be utf-32
+			this._stringEncoded(strwfr, 'utf-32', indx)
+
+		}else if(this.isBuffer(strwfr) && this.isEncodingArray(type) ){
+			//buffer with a single encoding
+			//convert buffer to string here
+			strwfr = strwfr.toString('utf-32')
+			if(type.length==strwfr.length){
+				this._stringEncodedArray(strwfr, type, indx)
+			}else{
+				throw Error("utf32 buffer must be of length equal to type array length")
+			}
 		}else if(this.isBuffer(strwfr) && this.isEncoding(type)){
 			//buffer with a single encoding
+			this._stringEncoded(strwfr, type, indx)
 
 		}else if(this.isBuffer(strwfr) && this.isSeparated(type)){
 			//buffer is assumed to be utf-32 type separated string
+			this._stringSeparated(strwfr, 'utf-32', indx)
 
 		}else if(this.isBuffer(strwfr) && !type){
 			//buffer is assumed to be utf-32 string
+			this._string(strwfr, indx)
 
 		}else if(this.isArrayOfBuffers(strwfr) && this.isEncodingArray(type)){
-			//array of buffers with multiple encodings
-
+			//array of string buffers with multiple encodings
+			this._stringArrayEncodedArray(strwfr, type, indx)
 		}else if(this.isArrayOfBuffers(strwfr) && this.isEncoding(type)){
 			//array of buffers with a single encoding
+			this._stringArrayEncoded(strwfr, type, indx)
 
 		}else if(this.isArrayOfBuffers(strwfr) && !type){
-			//array of buffers with a single encoding
+			//array of buffers with a utf-32 type
+			this._stringArrayEncoded(strwfr, 'utf-32', indx)
 
 		}else if(this.isArray(strwfr) && this.isEncodingArray(type)){
-
+			//array of whatever, and encoding array
 		}else if(this.isArray(strwfr) && this.isEncoding(type)){
-
+			//array of whatever and single encoding type
 		}else if(this.isArray(strwfr) && !type()){
-
+			//array of whatever, with utf-32 type
 		}else{
 			throw Error("Strowfers do not accept giberish, unless its actual giberish")
 		}
