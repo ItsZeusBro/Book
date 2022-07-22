@@ -6,84 +6,105 @@ export class Strowfer{
 	//if there are no separators defined for a string (if strwfr is a string)
 	//the string is held in a single cell
 	//if the strwfr is an array or buffer, it is (decoded if a buffer and) separated into cells 
-    constructor(strwfr, type='utf-8', indx=''){
+    constructor(strwfr, type='utf-8', indx=undefined){
 		this.strwfr;//strwfr = string, buffer, or an array
-		this.i;//index
-		this.strowferize(strwfr, type, indx)
+		this.i=indx;//index
+		this.strowferize(strwfr, type)
     }
 
-	strowferize(strwfr, type, indx){
-		if(this.isString(strwfr) && this.isEncodingArray(type) && (type.length==strwfr.length)){
-			//strwfr is a string with an iterable encoding
-			this._stringEncodedArray(strwfr, type, indx)
-		}else if(this.isArrayOfStrings(strwfr) && this.isEncodingArray(type)){
-			//srwfr is a string with a single encoding
-			this._stringArrayEncodedArray(strwfr, type, indx)
-
-		}
-		else if(this.isArrayOfStrings(strwfr) && this.isEncoding(type)){
-			//srwfr is a string with a single encoding
-			this._stringArrayEncoded(strwfr, type, indx)
-
-		}
-		else if(this.isArrayOfStrings(strwfr) && !type){
-			//srwfr is a string with infered encoding
-			this._stringArrayEncoded(strwfr, 'utf-32', indx)
-
-		}
-		else if(this.isString(strwfr) && this.isEncoding(type)){
-			//srwfr is a string with a single encoding
-			this._stringEncoded(strwfr, type, indx)
-
+	strowferize(strwfr, type){
+		if(this.isString(strwfr) && this.isEncodedArray(type) && (type.length==strwfr.length)){
+			this._stringEncodedArray(strwfr, type)
+		}else if(this.isStringArray(strwfr) && this.isEncodedArray(type)){
+			this._stringArrayEncodedArray(strwfr, type)
+		}else if(this.isStringArray(strwfr) && this.isEncoded(type)){
+			this._stringArrayEncoded(strwfr, type)
+		}else if(this.isStringArray(strwfr) && !type){
+			this._stringArray(strwfr)
+		}else if(this.isString(strwfr) && this.isEncoded(type)){
+			this._stringEncoded(strwfr, type)
 		}else if(this.isString(strwfr) && this.isSeparated(type)){
-			//srwfr is a string separated list
-			this._stringSeparated(strwfr, type, indx)
-
+			this._stringSeparated(strwfr, type)
 		}else if(this.isString(strwfr) && !type){
-			//srwfr is a string and assumed to be utf-32
-			this._stringEncoded(strwfr, 'utf-32', indx)
-
-		}else if(this.isBuffer(strwfr) && this.isEncodingArray(type) ){
-			//buffer with a single encoding
-			//convert buffer to string here
-			strwfr = strwfr.toString('utf-32')
-			if(type.length==strwfr.length){
-				this._stringEncodedArray(strwfr, type, indx)
-			}else{
-				throw Error("utf32 buffer must be of length equal to type array length")
-			}
-		}else if(this.isBuffer(strwfr) && this.isEncoding(type)){
-			//buffer with a single encoding
-			this._stringEncoded(strwfr, type, indx)
-
+			this._string(strwfr)
+		}else if(this.isBuffer(strwfr) && this.isEncodedArray(type) ){
+			this._bufferEncodedArray(strwfr, type)
+		}else if(this.isBuffer(strwfr) && this.isEncoded(type)){
+			this._bufferEncoded(strwfr, type)
 		}else if(this.isBuffer(strwfr) && this.isSeparated(type)){
-			//buffer is assumed to be utf-32 type separated string
-			this._stringSeparated(strwfr, 'utf-32', indx)
-
+			this._bufferSeparated(strwfr, type)
 		}else if(this.isBuffer(strwfr) && !type){
-			//buffer is assumed to be utf-32 string
-			this._string(strwfr, indx)
-
-		}else if(this.isArrayOfBuffers(strwfr) && this.isEncodingArray(type)){
-			//array of string buffers with multiple encodings
-			this._stringArrayEncodedArray(strwfr, type, indx)
-		}else if(this.isArrayOfBuffers(strwfr) && this.isEncoding(type)){
-			//array of buffers with a single encoding
-			this._stringArrayEncoded(strwfr, type, indx)
-
-		}else if(this.isArrayOfBuffers(strwfr) && !type){
-			//array of buffers with a utf-32 type
-			this._stringArrayEncoded(strwfr, 'utf-32', indx)
-
-		}else if(this.isArray(strwfr) && this.isEncodingArray(type)){
-			//array of whatever, and encoding array
-		}else if(this.isArray(strwfr) && this.isEncoding(type)){
-			//array of whatever and single encoding type
+			this._buffer(strwfr)
+		}else if(this.isBufferArray(strwfr) && this.isEncodedArray(type)){
+			this._bufferArrayEncodedArray(strwfr, type)
+		}else if(this.isBufferArray(strwfr) && this.isEncoded(type)){
+			this._bufferArrayEncoded(strwfr, type)
+		}else if(this.isBufferArray(strwfr) && !type){
+			this._bufferArray(strwfr)
+		}else if(this.isArray(strwfr) && this.isEncodedArray(type)){
+			this._arrayEncodedArray(strwfr, type)
+		}else if(this.isArray(strwfr) && this.isEncoded(type)){
+			this._arrayEncoded(strwfr, type)
 		}else if(this.isArray(strwfr) && !type()){
-			//array of whatever, with utf-32 type
+			this._array(strwfr)
 		}else{
 			throw Error("Strowfers do not accept giberish, unless its actual giberish")
 		}
+	}
+
+	_stringEncodedArray(strwfr, type){
+		var cells=[]
+		for(var i = 0; i<strwfr.length; i++){
+			cells.push(new Cell(strwfr[i], type[i]))
+		}
+		this.strwfr=cells;
+	}
+	_stringArrayEncodedArray(strwfr, type){
+
+	}
+	_stringArrayEncoded(strwfr, type){
+
+	}
+	_stringArray(strwfr){
+
+	}
+	_stringEncoded(strwfr, type){
+
+	}
+	_stringSeparated(strwfr, type){
+
+	}
+	_string(strwfr){
+
+	}
+	_bufferEncodedArray(strwfr, type){
+
+	}
+	_bufferEncoded(strwfr, type){
+
+	}
+	_bufferSeparated(strwfr, type){
+
+	}
+	_buffer(strwfr){
+
+	}
+	_bufferArrayEncodedArray(strwfr, type){
+
+	}
+	_bufferArrayEncoded(strwfr, type){
+
+	}
+	_bufferArray(strwfr){
+
+	}
+	_arrayEncodedArray(strwfr, type){
+
+	}
+	_arrayEncoded(strwfr, type){
+
+	}
+	_array(strwfr){
 
 	}
 
@@ -106,7 +127,7 @@ export class Strowfer{
 	
 
 	isBuffer(buff){ return Buffer.isBuffer(buff); }
-	isArrayOfBuffers(arr){ 
+	isBufferArray(arr){ 
 		arr.forEach((buff)=>{
 			if(!Buffer.isBuffer(buff)){
 				return false
@@ -119,9 +140,9 @@ export class Strowfer{
 	
 	isArray(arr){ return Array.isArray(arr); }
 
-	isEncoding(type){ return Buffer.isEncoding(type); }
+	isEncoded(type){ return Buffer.isEncoding(type); }
 
-	isEncodingArray(type){ 
+	isEncodedArray(type){ 
 		if(this.isArray(type)){
 			type.forEach(typ => {
 				if(!Buffer.isEncoding(typ)){
