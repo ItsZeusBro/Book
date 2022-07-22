@@ -1,7 +1,9 @@
 import { Cell } from "../Cell.js"
 
-//A STROWFER IS ONE ABSTRACT THING THAT CAN BE REPRESENTED AS AN ARRAY, STRING, OR BUFFER SIMULTANEOUSLY
-//for example, if you initialize it one way, you should be able to return it as one of the other types at any time.
+//A STROWFER is bascially a String, Row, or Buffer that uses a single structure and api.
+//In otherwords it "sounds mathematical" on the most primitive data types used by a computer
+//and therefore is probably something incredible far into the future. That is, it's useful to think
+//about, but not too useful (for now).
 export class Strowffer{
     constructor(strwfr, type='utf-8', indx=''){
 		this.strwfr;//strwfr = string, buffer, or an array
