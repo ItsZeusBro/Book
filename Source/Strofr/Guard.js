@@ -150,6 +150,7 @@ export class Guard{
                         //check if both keys present, default and 
                         //make sure there are two keys
                         if(this.isNKeys(obj[key0], 2)){
+                            queue.push(key0)
                             if(Object.keys(obj[key0])[0]!='DEFAULT'||Object.keys(obj[key0])[0]!='FUNCTION'){
                                 if(Object.keys(obj[key0][1])!='DEFAULT'||Object.keys(obj[key0][1]!='FUNCTION')){
                                     queue.push(obj[key0]['DEFAULT'])
