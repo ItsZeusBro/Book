@@ -104,30 +104,32 @@ export class Guard{
     //https://stackoverflow.com/questions/4339288/typeof-for-regexp
     //https://bobbyhadz.com/blog/javascript-check-if-object-is-empty
     //v is just a schema that get passed in
-    constructor(v, obj){
+    constructor(v, obj, schema){
 
     }
     guard(v, obj, schema){
         //we want to take in the schema to build a queue of typechecks leading to a helper function call
         var queue=[]
         //step 1:
-        //guardMap(v, queue, schema)
+        queue = guardMap(queue, schema)
             
     }
     //base case is when the key yields an object or a string 
-    guardMap(v, queue, schema){
+    guardMap(queue, schema){
         //step1:
         schema.forEach((obj)=>{
-            if(this.isGuardMapBase(obj)){
-                queue.push(this.isGuardMapBase(obj))
+            if(this.isGuardMapBase(queue, obj)){
+                queue = this.isGuardMapBase(queue, obj)
+                return queue;
             }else{
-
+                //push to queue
+                if(this.isNKeys(obj, 1)){
+                    queue.push(Object.keys(obj)[0])
+                    queue = this.guardMap(queue, obj[Object.keys(obj)[0]])
+                }
             }
         })
-        //iterate through schema array
-            //step1: check if at base case, if so call basecase(v, queue)
-
-            //step2:
+        return queue
     }
 
     isGuardMapBase(obj, queue){
