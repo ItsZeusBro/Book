@@ -1,8 +1,6 @@
 //you cant have two optional variables with default behavior
 //at the same level in a subschema
-export const GUARD_MAP={
-        'Strofr':
-        [
+export const GUARD_MAP=[
                     {
                             'isStringArray':[
                                     {
@@ -93,8 +91,7 @@ export const GUARD_MAP={
                             }
                         ]
                     }
-        ]
-}
+    ]
 
 
 export class Guard{
@@ -109,8 +106,19 @@ export class Guard{
     constructor(v, obj){
 
     }
-    guard(){
-
+    guard(v, obj, schema){
+        //we want to take in the schema to build a queue of typechecks leading to a helper function call
+        var queue=[]
+        //step 1:
+        //guardMap(v, queue, schema)
+            
+    }
+    //base case is when the key yields an object or a string 
+    guardMap(v, queue, schema){
+        //step1:
+        //iterate through schema array
+            //step1: check if at base case, if so call basecase(v, queue, )
+            //step2:
     }
 
     isArray(v){ return ((Array.isArray(v)) && v.length) }
