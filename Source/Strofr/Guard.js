@@ -2,27 +2,39 @@ import {Strofr} from './Strofr.js'
 const GUARD={
     'ENCODING':''
 }
+//you cant have two optional variables with default behavior
+//at the same level in a subschema
 const GUARD_MAP={
     'v':{
         'STRING_ARRAY':{
                 'ENCODING_ARRAY':'_stringEncodedArrayOrStringArrayEncodedArray',
-                'ENCODING':'_stringArrayEncodedOrStringEncoded',
-                'NULL':'_stringArrayEncodedOrStringEncoded',
+                'ENCODING':{
+                    'DEFAULT':'utf-32',
+                    'FUNCTION':'_stringArrayEncodedOrStringEncoded',
+
+                }
                 'ELSE': 'ERROR' //we do this because we can easily generate meaningful error messages here from what we know
         }, 
 
         'STRING':{
                 'SEPARATOR':{
-
+                    //This subschema means accept an encoding
+                    //or use this default
+                    'ENCODING': {
+                        //class needs three constructor
+                        //variables because we are three
+                        //layers deep
+                        'DEFAULT':'utf-32',
+                        'FUNCTION': '_stringSeparated'
+                    },
+                    'ELSE':'ERROR'
+                    
                 }, 
                 'ENCODING':{
 
                 },
                 'ENCODING_ARRAY':{
 
-                }
-                'NULL':{
-                    
                 }
 
         }, 
