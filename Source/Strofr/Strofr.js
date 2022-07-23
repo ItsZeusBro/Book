@@ -60,7 +60,9 @@ class StrofrGuard extends Guard{
 
 }
 export class Strofr{
-	constructor(...v)
+	constructor(...v){
+		new StrofrGuard(v, this)
+	}
 
 	//strofr is an object (not a string, buffer, or cell)
 	_objEncoded(...v){
