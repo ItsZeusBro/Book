@@ -8,22 +8,27 @@ const GUARD_MAP={
     'v':{
         'STRING_ARRAY':{
                 'ENCODING_ARRAY':'_stringEncodedArrayOrStringArrayEncodedArray',
+                //This subschema means accept an encoding
+                //or use this default
+                //ENCODING acts as a switch that calls the same
+                //function using the variable passed as encoding
+                //or default variable passed below
                 'ENCODING':{
+                    //class needs three constructor
+                    //variables because we are three
+                    //layers deep
                     'DEFAULT':'utf-32',
-                    'FUNCTION':'_stringArrayEncodedOrStringEncoded',
-
+                    'FUNCTION':'_stringArrayEncodedOrStringEncoded'
                 }
-                'ELSE': 'ERROR' //we do this because we can easily generate meaningful error messages here from what we know
+                //if there was no default behavior, guard implicitly calls else
+                //with general error message, unless provided with an error message
         }, 
 
         'STRING':{
                 'SEPARATOR':{
-                    //This subschema means accept an encoding
-                    //or use this default
+
                     'ENCODING': {
-                        //class needs three constructor
-                        //variables because we are three
-                        //layers deep
+
                         'DEFAULT':'utf-32',
                         'FUNCTION': '_stringSeparated'
                     },
@@ -31,11 +36,10 @@ const GUARD_MAP={
                     
                 }, 
                 'ENCODING':{
-
+                    'DEFAULT':'utf-32',
+                    'FUNCTION': '_stringSeparated'
                 },
-                'ENCODING_ARRAY':{
-
-                }
+                'ENCODING_ARRAY':'_stringEncodedArrayOrStringArrayEncodedArray'
 
         }, 
         "BUFFER_ARRAY":{
