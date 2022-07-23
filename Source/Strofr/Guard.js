@@ -4,27 +4,15 @@ export const GUARD_MAP={
     'Strofr':{
         'isStringArray':{
                 'isEncodingArray':'_stringEncodedArrayOrStringArrayEncodedArray',
-                //This subschema means accept an encoding
-                //or use this default
-                //ENCODING acts as a switch that calls the same
-                //function using the variable passed as encoding
-                //or default variable passed below
                 'isEncoding':{
-                    //class needs three constructor
-                    //variables because we are three
-                    //layers deep
                     'DEFAULT':'utf-32',
                     'FUNCTION':'_stringArrayEncodedOrStringEncoded'
                 }
-                //if there was no default behavior, guard implicitly calls else
-                //with general error message, unless provided with an error message
         }, 
 
         'isString':{
                 'isSeparator':{
-
                     'isEncoding': {
-
                         'DEFAULT':'utf-32',
                         'FUNCTION': '_stringSeparated'
                     }                    
@@ -33,9 +21,7 @@ export const GUARD_MAP={
                     'DEFAULT':'utf-32',
                     'FUNCTION': '_stringSeparated'
                 },
-
                 'isEncodingArray':'_stringEncodedArrayOrStringArrayEncodedArray'
-
         }, 
         "isBufferArray":{
                 'isEncodingArray':'_bufferArrayEncodedArray', 
@@ -63,15 +49,18 @@ export const GUARD_MAP={
                 'DEFAULT':'utf-32',
                 'FUNCTION': '_rowEncoding'
             },
-
             'isEncodingArray':'_rowEncodedArray'
-
         }
     }
 }
 
 
 export class Guard{
+    //attributions
+    //https://stackoverflow.com/questions/14636536/how-to-check-if-a-variable-is-an-integer-in-javascript
+    //https://stackoverflow.com/questions/8511281/check-if-a-value-is-an-object-in-javascript
+    //https://stackoverflow.com/questions/4059147/check-if-a-variable-is-a-string-in-javascript
+    //https://javascript.plainenglish.io/how-to-check-for-null-in-javascript-dffab64d8ed5
     //v is just a schema that get passed in
     constructor(v, obj){
 
@@ -80,67 +69,71 @@ export class Guard{
 
     }
 
-    isString(v){
+    isArray(v){ return ((Array.isArray(v)) && v.length) }
 
+
+	isString(v){ return (typeof v === 'string' && v instanceof String) }
+
+
+    isStringArray(v){ 
+		if(!this.isArray(v)){ return }
+		v.forEach( (e) => { if( !this.isString(e) ) { return } } );
+		return true
+	}
+
+    isEncoding(v){ return Buffer.isEncoding(v); }
+
+	isEncodingArray(v){ 
+        if(!this.isArray(v)) {return}
+        v.forEach( (e) => { if( !Buffer.isEncoding(e) ) { return } } );
+        return true
+		
+	}
+
+    isObj(v){ return (typeof v === 'object' && !Array.isArray(v) && v !== null) }
+
+    isObjArray(v){
+        if(!this.isArray(v)) {return}
+		v.forEach( (e) => { if( !this.isObj(e) ) { return } } );
+		return true
     }
-    isArrayOfString(v){
 
-    }
-
-    isObj(v){
-
-    }
-    isArrayOfObj(v){
-
-    }
-    isDictionary(v){
-
-    }
-    isArrayOfDictionary(v){
-
-    }
     isInt(v){
-
+        var x;
+        return isNaN(value) ? !1 : (x = parseFloat(value), (0 | x) === x); //
     }
-    isArrayOfInt(v){
 
+    isIntArray(v){
+        if(!this.isArray(v)) {return}
+        v.forEach( (e) => { if( !this.isInt(e) ) { return } } );
+        return true
     }
-    isBuffer(v){
 
-    }
-    isArrayOfBuffer(v){
+    isBuffer(v){ return Buffer.isBuffer(v); }
+	
+	isBufferArray(v){ 
+        if(!this.isArray(v)) { return }
+        v.forEach((e)=>{ if(!Buffer.isBuffer(e)){ return } })
+        return true
+	}
 
-    }
-    isNull(v){
 
-    }
-    isArrayOfNull(v){
 
-    }
-    isUndefined(v){
+    isNull(v){ return (v==null && v===null) }
 
-    }
-    isArrayOfUndefined(v){
+    isUndefined(v){ return (typeof v === "undefined" && v===undefined) }
 
-    }
-    isRegX(v){
+    isRegX(v){ return (v instanceof RegExp && v.constructor == RegExp) }
 
-    }
     isArrayOfRegX(v){
 
     }
-    // isArrayOfGuards(v){
 
-    // }
-    // isGuardObject(v){
+    isGuarded(v){
 
-    // }
-    // isArrayOfGuardsInUse(v){
+    }
 
-    // }
-    // isGuardInUse(v){
-    //     //if variable context doesn't change, even though the program context 
-    //     //changes based on a guard variable already in use
-    // }
+    isArrayOfGuarded(v){
 
+    }
 }
