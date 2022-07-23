@@ -116,9 +116,20 @@ export class Guard{
     //base case is when the key yields an object or a string 
     guardMap(v, queue, schema){
         //step1:
+        schema.forEach((obj)=>{
+            isGuardMapBase(obj)
+        })
         //iterate through schema array
             //step1: check if at base case, if so call basecase(v, queue, )
+
             //step2:
+    }
+
+    isGuardMapBase(obj){
+        //if object[key0] is empty object, throw Error()
+        // if object[key0] is array, its not a base case, return false
+        // if object[key0] is string or object return true
+        return (isString(val)||isObj(val))
     }
 
     isArray(v){ return ((Array.isArray(v)) && v.length) }
