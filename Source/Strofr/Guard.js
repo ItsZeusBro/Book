@@ -1,19 +1,15 @@
-import {Strofr} from './Strofr.js'
-const GUARD={
-    'ENCODING':''
-}
 //you cant have two optional variables with default behavior
 //at the same level in a subschema
-const GUARD_MAP={
+export const GUARD_MAP={
     'Strofr':{
-        'STRING_ARRAY':{
-                'ENCODING_ARRAY':'_stringEncodedArrayOrStringArrayEncodedArray',
+        'isStringArray':{
+                'isEncodingArray':'_stringEncodedArrayOrStringArrayEncodedArray',
                 //This subschema means accept an encoding
                 //or use this default
                 //ENCODING acts as a switch that calls the same
                 //function using the variable passed as encoding
                 //or default variable passed below
-                'ENCODING':{
+                'isEncoding':{
                     //class needs three constructor
                     //variables because we are three
                     //layers deep
@@ -24,89 +20,66 @@ const GUARD_MAP={
                 //with general error message, unless provided with an error message
         }, 
 
-        'STRING':{
-                'SEPARATOR':{
+        'isString':{
+                'isSeparator':{
 
-                    'ENCODING': {
+                    'isEncoding': {
 
                         'DEFAULT':'utf-32',
                         'FUNCTION': '_stringSeparated'
                     }                    
                 }, 
-                'ENCODING':{
+                'isEncoding':{
                     'DEFAULT':'utf-32',
                     'FUNCTION': '_stringSeparated'
                 },
 
-                'ENCODING_ARRAY':'_stringEncodedArrayOrStringArrayEncodedArray'
+                'isEncodingArray':'_stringEncodedArrayOrStringArrayEncodedArray'
 
         }, 
-        "BUFFER_ARRAY":{
-                'ENCODING_ARRAY':'_bufferArrayEncodedArray', 
-                'ENCODING':{
+        "isBufferArray":{
+                'isEncodingArray':'_bufferArrayEncodedArray', 
+                'isEncoding':{
                     'DEFAULT':'utf-32',
                     'FUNCTION': '_bufferArrayEncoded'
                 }
         },
-        "BUFFER":{
-		        'SEPARATOR':'_bufferSeparated', 
-                'ENCODING_ARRAY':'_bufferEncodedArray', 
-                'ENCODING':{
+        "isBuffer":{
+		        'isSeparator':'_bufferSeparated', 
+                'isEncodingArray':'_bufferEncodedArray', 
+                'isEncoding':{
                     'DEFAULT':'utf-32',
                     'FUNCTION': '_bufferEncoded'
                 }
         }
-        "CELL":{
-            'ENCODING':{
+        "isCell":{
+            'isEncoding':{
                 'DEFAULT':'utf-32',
                 'FUNCTION': '_cellEncoding'
             }
         }
-        "ROW":{
-            'ENCODING':{
+        "isRow":{
+            'isEncoding':{
                 'DEFAULT':'utf-32',
                 'FUNCTION': '_rowEncoding'
             },
 
-            'ENCODING_ARRAY':'_rowEncodedArray'
+            'isEncodingArray':'_rowEncodedArray'
 
         }
     }
 }
 
-class Guard{
+
+export class Guard{
     //v is just a schema that get passed in
     constructor(v, obj){
-        this.cc;
-        this.fm;
-        this.contextChain(v)
-        this.functionMap()
-        this.guard(this.contextChain)
-        //what we want is to calculate the context chain of guards called
-        //v1 uses a set of types
-        //v2 uses a dictionary of context rules based on v1
-        //v3 follows v2 model
-    }
-    // {
-    //     "hash1":isFunction1,
-    //     "hash2":isFunction2
-    //     //whatever else
 
-    // }
+    }
     guard(){
-        //takes the context chain, (which maps the functions to the variables) and calls chain
-        for (const [key, value] of Object.entries(this.cc)) {
-            //this.cc[key] //holds the variable associated with key which is a hash mapped to a function
-            this.fm[key](this.cc[key]) //this calls the function mapped to the key on the variable mapped on the key
-        }
-    }
-    contextChain(){
-        //creates the context chain
-    }
-    functionMap(){
-        //this grabs the actual isFunctions() and maps them to a hash
 
     }
+
     isString(v){
 
     }
@@ -171,78 +144,3 @@ class Guard{
     // }
 
 }
-
-class StrofrGuard extends Guard{
-    constructor(){
-
-    }
-
-    isEncoding(){
-
-    }
-
-    isEncodingArray(){
-
-    }
-
-    isCell(){
-
-    }
-
-    isCellArray(){
-
-    }
-
-    //These are expected override functions 
-    //which checks for anything other than
-    //your guards in use
-    // isAnythingElse(v){
-
-    // }
-    // isGuardInUse(v){
-
-    // }
-    // isArrayOfGuardInUse(v){
-
-    // }
-
-}
-
-
-class ExceptionSet{
-    //this is an unordered ordered set where everything but the last element of the set
-    //is unordered, and the last element of the set is a catch all exception
-    constructor(array){
-
-    }
-}
-//Built in Guards: STRING, ARRAY_OF_STRING, OBJ, DICTIONARY, ARRAY_OF_DICTIONARY, INT, ARRAY_OF_INT
-//ARRAY_OF_OBJECTS, BUFFER, ARRAY_OF_BUFFER, NULL, 
-//RULES: 
-//1. NULL is an object because if it wasn't you couldn't accept it in an array of Objects
-//2. UNDEFINED is not an object, meaning GUARD will not accept it, unless specified
-//3. 
-
-//All of these constants represent predefined or base guard functions (its extensible)
-//This is an example of an "Exception Ordered Set" (OBJ means anything other than the )
-//[ARRAY_OF_STRINGS, STRING, ARRAY_OF_BUFFERS, BUFFER, CELL]
-//{
-//  "ARRAY_OF_STRINGS": [ARRAY_OF_STRINGS, STRING, NULL],
-// "STRING": [SEPARATOR, ARRAY_OF_STRINGS, ENCODING]
-//}
-//
-//
-//call the variables at the top level whatever you want, it doesn't matter to how underlying guards perform
-
-//
-//
-//
-
-
-
-//strofr can be a array of strings, objects, buffers, or cells
-		//it can also be a string, object, or cell
-		//it can also be a buffer that is any of the above	
-	//mod can be a separator (only if strofr is a string or array of strings) 
-		//mod can be an encoding if its anything else
-	//mod2 can be an encoding if mod1 is a separator for a string or buffer
