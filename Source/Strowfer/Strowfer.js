@@ -1,11 +1,7 @@
 import { Cell } from "../Cell.js"
-//Because there is a mathematical relationship between strings, arrays (rows), and buffers
-//we use a Strowffer, even though we do not know how to exploit those mathematical relationships
-//yet. The idea is that if we use them enough, we will find how to exploit that more. 
+
 export class Strowfer{
-	//if there are no separators defined for a string (if strofr is a string)
-	//the string is held in a single cell
-	//if the strofr is an array or buffer, it is (decoded if a buffer and) separated into cells 
+
     constructor(strofr, mod, indx){
 		this.strofr=[];//strofr = string, buffer, or an array
 		this.i=indx;//index
@@ -25,7 +21,7 @@ export class Strowfer{
 			this._arrayEncoded(strofr, mod)
 		}else if(this.isArray(strofr) && !this.isStringArray(strofr) && !this.isBufferArray(strofr) && !mod){
 			console.log("OBJECT ARRAY, NOT STRING ARRAY, NOT BUFFER ARRAY, NO MOD, ENCODING INFERRED AS DEF")
-			this._array(strofr)
+			this._arrayEncoded(strofr, def)
 		}
 		
 
@@ -37,16 +33,17 @@ export class Strowfer{
 			this._stringEncodedArrayOrStringArrayEncodedArray(strofr, mod) 		
 		}else if(this.isStringArray(strofr) && this.isEncoded(mod)){
 			console.log("STRING, ENCODING ARRAY MOD")	
-			this._stringArrayEncoded(strofr, mod) 									
+			this._stringArrayEncodedOrStringEncoded(strofr, mod)
+								
 		}else if(this.isStringArray(strofr) && !mod){
 			console.log("STRING ARRAY, NO MOD, ENCODING INFERRED AS DEF")		
-			this._stringArrayEncoded(strofr, def)
+			this._stringArrayEncodedOrStringEncoded(strofr, def)
 		}else if(this.isString(strofr) && this.isEncoded(mod)){
 			console.log("STRING, SINGLE ENCODING MOD")	
-			this._stringEncoded(strofr, mod)			
+			this._stringArrayEncodedOrStringEncoded(strofr, mod)
 		}else if(this.isString(strofr) && !mod){
-			console.log("STRING, NO MOD")		
-			this._stringEncoded(strofr, def)		
+			console.log("STRING, NO MOD, ENCODING INFERRED AS DEF")		
+			this._stringArrayEncodedOrStringEncoded(strofr, def)
 		}else if(this.isString(strofr) && this.isSeparated(mod)){
 			console.log("STRING, SEPARATOR MOD, ENCODING INFERRED AS DEF")
 			this._stringSeparated(strofr, mod, def)
@@ -64,7 +61,7 @@ export class Strowfer{
 			this._bufferSeparated(strofr, mod)
 		}else if(this.isBuffer(strofr) && !mod){
 			console.log("BUFFER, NO MOD, ENCODING INFERRED AS DEF")
-			this._buffer(strofr, def)
+			this._bufferEncoded(strofr, def)
 		}else if(this.isBufferArray(strofr) && this.isEncodedArray(mod)){
 			console.log("BUFFER ARRAY, ENCODING ARRAY MOD")
 			this._bufferArrayEncodedArray(strofr, mod)
@@ -81,22 +78,6 @@ export class Strowfer{
 	}
 
 
-	_rawString(){
-
-	}
-
-	_rawStringArray(){
-
-	}
-
-	_rawBuffer(){
-
-	}
-
-	_rawBufferArray(){
-
-	}
-
 	//it doesn't matter if strofr is an array or string, they act the same here
 	_stringEncodedArrayOrStringArrayEncodedArray(strofr, mod){
 		for(var i = 0; i<strofr.length; i++){
@@ -104,14 +85,12 @@ export class Strowfer{
 		}
 	}
 	//string array, single encoding mod
-	_stringArrayEncoded(strofr, mod){
+	_stringArrayEncodedOrStringEncoded(strofr, mod){
+		if(!this.isArray(strofr)){return this.strofr.push(new Cell(strofr, mod))}
+
 		for(var i = 0; i<strofr.length; i++){
 			this.strofr.push(new Cell(strofr[i], mod))
 		}
-	}
-	//single string single encoding
-	_stringEncoded(strofr, mod){
-		this.strofr.push(new Cell(strofr, mod))
 	}
 	//single string utf-32 (inferred), separated by sep
 	_stringSeparated(strofr, sep, def){
@@ -120,6 +99,8 @@ export class Strowfer{
 			this.strofr.push(new Cell(splt, def))
 		})
 	}
+
+
 	//single string buffer decoded utf-32 (inferred), with code array for the string positions
 	_bufferEncodedArray(strofr, mod, def){
 		strofr = Buffer.from(strofr, def)
@@ -137,11 +118,6 @@ export class Strowfer{
 	_bufferSeparated(strofr, sep, def){
 		strofr = Buffer.from(strofr, def)
 		this._stringSeparated(strofr, sep)
-	}
-	//single buffer, utf-32 decoding inferred
-	_buffer(strofr, def){
-		strofr = Buffer.from(strofr, def)
-		this._stringEncoded(strofr, def)
 	}
 
 	//buffer strings decoded using utf32, then mods in array stored with respective strings
@@ -166,6 +142,7 @@ export class Strowfer{
 		this._stringArrayEncoded(strofr, def);
 	}
 
+	
 	//array of objects, each stored with their own code mod
 	_arrayEncodedArray(strofr, mod){
 
@@ -177,13 +154,6 @@ export class Strowfer{
 	_arrayEncoded(strofr, mod){
 		strofr.forEach((obj)=>{
 			this.strofr.push(new Cell(obj, mod))
-		})
-	}
-
-	//sometimes an array of objects is modless by design and should not be inferred
-	_array(strofr){
-		strofr.forEach((obj)=>{
-			this.strofr.push(new Cell(obj))
 		})
 	}
 
