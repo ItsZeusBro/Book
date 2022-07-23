@@ -5,7 +5,7 @@ const GUARD={
 //you cant have two optional variables with default behavior
 //at the same level in a subschema
 const GUARD_MAP={
-    'v':{
+    'Strofr':{
         'STRING_ARRAY':{
                 'ENCODING_ARRAY':'_stringEncodedArrayOrStringArrayEncodedArray',
                 //This subschema means accept an encoding
@@ -31,52 +31,47 @@ const GUARD_MAP={
 
                         'DEFAULT':'utf-32',
                         'FUNCTION': '_stringSeparated'
-                    },
-                    'ELSE':'ERROR'
-                    
+                    }                    
                 }, 
                 'ENCODING':{
                     'DEFAULT':'utf-32',
                     'FUNCTION': '_stringSeparated'
                 },
+
                 'ENCODING_ARRAY':'_stringEncodedArrayOrStringArrayEncodedArray'
 
         }, 
         "BUFFER_ARRAY":{
-                'ENCODING_ARRAY':{
-
-                }, 
+                'ENCODING_ARRAY':'_bufferArrayEncodedArray', 
                 'ENCODING':{
-
-                }, 
-                'NULL':{
-
+                    'DEFAULT':'utf-32',
+                    'FUNCTION': '_bufferArrayEncoded'
                 }
         },
         "BUFFER":{
-		        'SEPARATOR':{
-
-                }, 
-                'ENCODING_ARRAY':{
-
-                }, 
+		        'SEPARATOR':'_bufferSeparated', 
+                'ENCODING_ARRAY':'_bufferEncodedArray', 
                 'ENCODING':{
-
-                }, 
-                'NULL':{
-
+                    'DEFAULT':'utf-32',
+                    'FUNCTION': '_bufferEncoded'
                 }
         }
         "CELL":{
-                'NULL':{
+            'ENCODING':{
+                'DEFAULT':'utf-32',
+                'FUNCTION': '_cellEncoding'
+            }
+        }
+        "ROW":{
+            'ENCODING':{
+                'DEFAULT':'utf-32',
+                'FUNCTION': '_rowEncoding'
+            },
 
-                },
-                'ENCODING':{
+            'ENCODING_ARRAY':'_rowEncodedArray'
 
-                }
         }
     }
-
 }
 
 class Guard{

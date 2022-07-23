@@ -100,7 +100,8 @@ export class Strofr{
 			this._bufferArrayEncoded(strofr, mod)
 		}else if(this.isBufferArray(strofr) && !mod){
 			console.log("BUFFER ARRAY, NO MOD, ENCODING INFERRED AS DEF")
-			this._bufferArray(strofr, this.def)
+			this._bufferArrayEncoded(strofr, mod)
+
 		}
 		
 		else if(this.isBuffer(strofr) && this.isSeparated(mod)){
