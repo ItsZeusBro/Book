@@ -77,7 +77,7 @@ export class Strofr{
 			console.log("STRING ARRAY, SINGLE ENCODING MOD")	
 			this._stringArrayEncodedOrStringEncoded(strofr, mod)
 		}
-
+		 
 		//separator condition needs to come first because it might be confused for an encoding
 		else if(this.isString(strofr) && this.isSeparated(mod)){
 			console.log("STRING, SEPARATOR MOD, ENCODING INFERRED AS DEF")
@@ -92,7 +92,7 @@ export class Strofr{
 			console.log("STRING, NO MOD, ENCODING INFERRED AS DEF")		
 			this._stringArrayEncodedOrStringEncoded(strofr, this.def)
 		}
-
+		
 		else if(this.isBufferArray(strofr) && this.isEncodedArray(mod)){
 			console.log("BUFFER ARRAY, ENCODING ARRAY MOD")
 			this._bufferArrayEncodedArray(strofr, mod)

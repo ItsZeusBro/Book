@@ -1,83 +1,160 @@
+const GUARD={
+    'v':{
+        'STRING_ARRAY':{
+                'ENCODING_ARRAY':null,
+                'ENCODING':null,
+                'NULL':null,
+                'ELSE': 'ERROR' //we do this because we can easily generate meaningful error messages here from what we know
+        }, 
+
+        'STRING':{
+                'SEPARATOR':{
+
+                }, 
+                'ENCODING':{
+
+                },
+                'ENCODING_ARRAY':{
+
+                }
+                'NULL':{
+                    
+                }
+
+        }, 
+        "BUFFER_ARRAY":{
+                'ENCODING_ARRAY':{
+
+                }, 
+                'ENCODING':{
+
+                }, 
+                'NULL':{
+
+                }
+        },
+        "BUFFER":{
+		        'SEPARATOR':{
+
+                }, 
+                'ENCODING_ARRAY':{
+
+                }, 
+                'ENCODING':{
+
+                }, 
+                'NULL':{
+
+                }
+        }
+        "CELL":{
+                'NULL':{
+
+                },
+                'ENCODING':{
+
+                }
+        }
+    }
+
+}
 
 class Guard{
-    constructor(v1, v2, v3, obj){
-        this.contextChain;
-        this.calculate(v1, v2, v3, obj)
+    //v is just a schema that get passed in
+    constructor(v, obj){
+        this.cc;
+        this.fm;
+        this.contextChain(v)
+        this.functionMap()
         this.guard(this.contextChain)
         //what we want is to calculate the context chain of guards called
         //v1 uses a set of types
         //v2 uses a dictionary of context rules based on v1
         //v3 follows v2 model
     }
+    // {
+    //     "hash1":isFunction1,
+    //     "hash2":isFunction2
+    //     //whatever else
+
+    // }
     guard(){
+        //takes the context chain, (which maps the functions to the variables) and calls chain
+        for (const [key, value] of Object.entries(this.cc)) {
+            //this.cc[key] //holds the variable associated with key which is a hash mapped to a function
+            this.fm[key](this.cc[key]) //this calls the function mapped to the key on the variable mapped on the key
+        }
+    }
+    contextChain(){
+        //creates the context chain
+    }
+    functionMap(){
+        //this grabs the actual isFunctions() and maps them to a hash
 
     }
-    calculate(){
+    isString(v){
 
     }
-    isString(){
-
-    }
-    isArrayOfString(){
+    isArrayOfString(v){
 
     }
 
-    isObj(){
+    isObj(v){
 
     }
-    isArrayOfObj(){
+    isArrayOfObj(v){
 
     }
-    isDictionary(){
+    isDictionary(v){
 
     }
-    isArrayOfDictionary(){
+    isArrayOfDictionary(v){
 
     }
-    isInt(){
+    isInt(v){
 
     }
-    isArrayOfInt(){
+    isArrayOfInt(v){
 
     }
-    isBuffer(){
+    isBuffer(v){
 
     }
-    isArrayOfBuffer(){
+    isArrayOfBuffer(v){
 
     }
-    isNull(){
+    isNull(v){
 
     }
-    isArrayOfNull(){
+    isArrayOfNull(v){
 
     }
-    isUndefined(){
+    isUndefined(v){
 
     }
-    isArrayOfUndefined(){
+    isArrayOfUndefined(v){
 
     }
-    isRegX(){
+    isRegX(v){
 
     }
-    isArrayOfRegX(){
+    isArrayOfRegX(v){
 
     }
-    isArrayOfGuards(){
+    isArrayOfGuards(v){
 
     }
-    isGuardObject(){
+    isGuardObject(v){
 
     }
-    isArrayOfGuardsInUse(){
+    isArrayOfGuardsInUse(v){
 
     }
-    isGuardInUse(){
+    isGuardInUse(v){
         //if variable context doesn't change, even though the program context 
         //changes based on a guard variable already in use
     }
-    isAnythingElse(){
+    isAnythingElse(v){
 
     }
 }
@@ -87,7 +164,7 @@ class StrofrGuard extends Guard{
 
     }
 
-    
+
 }
 
 
@@ -107,12 +184,15 @@ class ExceptionSet{
 
 //All of these constants represent predefined or base guard functions (its extensible)
 //This is an example of an "Exception Ordered Set" (OBJ means anything other than the )
-//[ARRAY_OF_STRINGS, STRING, ARRAY_OF_BUFFERS, BUFFER, CELL, EXCEPTION]
+//[ARRAY_OF_STRINGS, STRING, ARRAY_OF_BUFFERS, BUFFER, CELL]
 //{
 //  "ARRAY_OF_STRINGS": [ARRAY_OF_STRINGS, STRING, NULL],
 // "STRING": [SEPARATOR, ARRAY_OF_STRINGS, ENCODING]
 //}
 //
+//
+//call the variables at the top level whatever you want, it doesn't matter to how underlying guards perform
+
 //
 //
 //
