@@ -1,4 +1,4 @@
-import { Cell } from "../Cell.js"
+import { Cell } from "./Cell.js"
 import { Guard, GUARD_MAP } from "./Guard.js"
 
 class StrofrGuard extends Guard{
@@ -6,12 +6,11 @@ class StrofrGuard extends Guard{
 		
 	}
 
-	isSeparator(v){
+	isSeparator(v){ if(v.includes('s:')){ return true } }
 
+	sameLength(arr1, arr2){
+		if( this.isArray(arr1) && this.isArray(arr2) ){ return ( arr1.length == arr2.length ) }	
 	}
-
-	
-
 
 	
 	isRow(strofr){
@@ -24,7 +23,7 @@ class StrofrGuard extends Guard{
 	}
 	
 	isCell(cell){
-		if(cell instanceof Cell && cell.v && cell.t){
+		if(cell instanceof Cell && cell.v && cell.e && cell.i){
 			return true
 		}
 	}
