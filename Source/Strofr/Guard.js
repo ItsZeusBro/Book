@@ -1,97 +1,105 @@
+import {Cell} from "./Cell.js"
 //you cant have two optional variables with default behavior
 //at the same level in a subschema
-export const GUARD_MAP=[
-                    {
-                            'isStringArray':[
-                                    {
-                                        'isEncodingArray':'_stringEncodedArrayOrStringArrayEncodedArray'
-                                    },
-                                    {
-                                        'isEncoding':{
-                                            'DEFAULT':'utf-32',
-                                            'FUNCTION':'_stringArrayEncodedOrStringEncoded'
-                                        }
-                                    }
-                            ]
-                    },
-                    {
-                            'isString':[
-                                    {
-                                            'isSeparator':[
-                                                {
-                                                    'isEncoding': {
-                                                        'DEFAULT':'utf-32',
-                                                        'FUNCTION': '_stringSeparated'
-                                                    }    
-                                                }
-                                            ]
-                                    }, 
-                                    {
-                                            'isEncoding':{
-                                                'DEFAULT':'utf-32',
-                                                'FUNCTION': '_stringSeparated'
-                                            }
-                                    },
-                                    {
-                                            'isEncodingArray':'_stringEncodedArrayOrStringArrayEncodedArray'
-
-                                    }   
-                            ]
-                    },
-                    {
-                            "isBufferArray":[
-                                    {
-                                            'isEncodingArray':'_bufferArrayEncodedArray'
-                                    },
-                                    {
-                                            'isEncoding':{
-                                                'DEFAULT':'utf-32',
-                                                'FUNCTION': '_bufferArrayEncoded'
-                                            }
-                                    }
-                            ]
-                    },
-                    {
-                            "isBuffer":[
-                                    {
-                                        'isSeparator':'_bufferSeparated'
-                                    },
-                                    {
-                                        'isEncodingArray':'_bufferEncodedArray'
-                                    },
-                                    {
-                                        'isEncoding':{
-                                            'DEFAULT':'utf-32',
-                                            'FUNCTION': '_bufferEncoded'
-                                        }
-                                    }
-                            ]
-                    },
-                    {
-                            "isCell":[
+class GuardMap{
+    constructor(){
+        var guard = new Guard()
+        this.Strofr=new Strofr()
+        guardMap=[
+                {
+                        guard.prototype.isStringArray:[
                                 {
-                                        'isEncoding':{
+                                    guard.prototype.isEncodingArray:'_stringEncodedArrayOrStringArrayEncodedArray'
+                                },
+                                {
+                                    guard.prototype.isEncoding:{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION':'_stringArrayEncodedOrStringEncoded'
+                                    }
+                                }
+                        ]
+                },
+                {
+                        guard.prototype.isString:[
+                                {
+                                        guard.prototype.isSeparator:[
+                                            {
+                                                guard.prototype.isEncoding: {
+                                                    'DEFAULT':'utf-32',
+                                                    'FUNCTION': '_stringSeparated'
+                                                }    
+                                            }
+                                        ]
+                                }, 
+                                {
+                                        guard.prototype.isEncoding:{
                                             'DEFAULT':'utf-32',
-                                            'FUNCTION': '_cellEncoding'
+                                            'FUNCTION': '_stringSeparated'
+                                        }
+                                },
+                                {
+                                        guard.prototype.isEncodingArray:'_stringEncodedArrayOrStringArrayEncodedArray'
+
+                                }   
+                        ]
+                },
+                {
+                        guard.prototype.isBufferArray:[
+                                {
+                                        guard.prototype.isEncodingArray:'_bufferArrayEncodedArray'
+                                },
+                                {
+                                        guard.prototype.isEncoding:{
+                                            'DEFAULT':'utf-32',
+                                            'FUNCTION': '_bufferArrayEncoded'
                                         }
                                 }
-
-                            ]
-                    },       
-                    {
-                        "isRow":[
-                            {
-                                'isEncoding':{
-                                    'DEFAULT':'utf-32',
-                                    'FUNCTION': '_rowEncoding'
-                                }
-                            },
-                            {
-                                'isEncodingArray':'_rowEncodedArray'
-                            }
                         ]
-                    }
-    ]
+                },
+                {
+                        guard.prototype.isBuffer:[
+                                {
+                                    guard.prototype.isSeparator:'_bufferSeparated'
+                                },
+                                {
+                                    guard.prototype.isEncodingArray:'_bufferEncodedArray'
+                                },
+                                {
+                                    guard.prototype.isEncoding:{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION': '_bufferEncoded'
+                                    }
+                                }
+                        ]
+                },
+                {
+                        guard.prototype.isCell:[
+                            {
+                                    guard.prototype.isEncoding:{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION': '_cellEncoding'
+                                    }
+                            }
+
+                        ]
+                },       
+                {
+                    guard.prototype.isRow:[
+                        {
+                            guard.prototype.isEncoding:{
+                                'DEFAULT':'utf-32',
+                                'FUNCTION': '_rowEncoding'
+                            }
+                        },
+                        {
+                            guard.prototype.isEncodingArray:'_rowEncodedArray'
+                        }
+                    ]
+                }
+        ]
+    }
+}
+ 
 
 
 export class Guard{
@@ -104,42 +112,62 @@ export class Guard{
     //https://stackoverflow.com/questions/4339288/typeof-for-regexp
     //https://bobbyhadz.com/blog/javascript-check-if-object-is-empty
     //v is just a schema that get passed in
-    constructor(v, obj, schema){
 
-    }
-    guard(v, obj, schema){
+    guard(v, schema, obj){
         //we want to take in the schema to build a queue of typechecks leading to a helper function call
         var queue=[]
         //step 1:
-        queue = guardMap(queue, schema)
-        
+        queue = guardMap(v, queue, schema)
+        this.execute(v, queue)
     }
     execute(v, queue){
+        //console.log(v)
+        //console.log(queue)
         //v is an array
         //queue holds the operations
         //This is another complex algorithm 
     }
     //base case is when the key yields an object or a string 
-    guardMap(queue, schema){
+    guardMap(v, queue, schema){
         //step1:
-        schema.forEach((obj)=>{
-            if(this.isGuardMapBase(queue, obj)){
-                queue = this.isGuardMapBase(queue, obj)
-                return queue;
-            }else{
-                //push to queue
-                if(this.isNKeys(obj, 1)){
-                    queue.push(Object.keys(obj)[0])
-                    queue = this.guardMap(queue, obj[Object.keys(obj)[0]])
-                }
+        var _v = v.shift()
+
+        for(var i = 0; i<schema.length; i++){
+            //var obj = schema[Object.keys(schema)[i]]
+            //console.log(Object.keys(schema[i])[0])
+            
+            if(this.callOn(Object.keys(schema[i])[0], _v)){
+                console.log("IT CAUGHT")
+                // if(this.isGuardMapBase(_v, queue, obj)){
+                //     //console.log(obj)
+                //     return
+                // }else{
+                //     //push to queue
+                //     if(this.isNKeys(obj, 1)){
+                //         queue.push(Object.keys(obj)[0])
+                //         //console.log(Object.keys(obj)[0])
+                //         guardMap(v, queue, obj[Object.keys(obj)[0]])
+                //     }
+                // }
             }
-        })
-        return queue
+
+        }
+        return
     }
 
-    isGuardMapBase(obj, queue){
+    callOn(func, _v){
+        func+='('+'"' +_v + '"' + ')'
+        func='this.'+func
+        console.log(func)
+
+        if(eval(func)){
+            return true
+        }
+    }
+    isGuardMapBase(_v, queue, obj){
         if(this.isObj(obj) && !this.isEmptyObject(obj)){
             var key0 = Object.keys(obj)[0]
+
             //if object[key0] is empty object, throw Error()
             if(this.isObj(obj[key0]) && this.isEmptyObject(obj[key0])){
                 throw Error("Schema contains empty object")
@@ -152,7 +180,7 @@ export class Guard{
                     if (this.isString(obj[key0])){
                         queue.push(key0)
                         queue.push(obj[key0])
-                        return queue
+                        return true
                     }else if(this.isObj(obj[key0])){
                         //check if both keys present, default and 
                         //make sure there are two keys
@@ -162,7 +190,7 @@ export class Guard{
                                 if(Object.keys(obj[key0][1])!='DEFAULT'||Object.keys(obj[key0][1]!='FUNCTION')){
                                     queue.push(obj[key0]['DEFAULT'])
                                     queue.push(obj[key0]['FUNCTION'])
-                                    return queue
+                                    return true
                                 }
                             }else{
                                 throw Error("Base case object lacks maximum of 2 keys (DEFAULT, FUNCTION)")
@@ -170,7 +198,6 @@ export class Guard{
                         }else{
                             throw Error("Base case object lacks maximum of 2 keys (DEFAULT, FUNCTION)")
                         }
-
                     }else{
                         throw Error("obj[key0] is not an object or a string")
                     }
@@ -210,9 +237,9 @@ export class Guard{
 		v.forEach( (e) => { if( !this.isObj(e) ) { return } } );
 		return true
     }
-    isEmptyObject(obj)[
+    isEmptyObject(obj){
         return Object.keys(obj).length === 0;
-    ]
+    }
 
     isInt(v){
         var x;
@@ -245,6 +272,34 @@ export class Guard{
         return true
     }
 
+    isSeparator(v){ if(v.includes('s:')){ return true } }
+
+	sameLength(arr1, arr2){
+		if( this.isArray(arr1) && this.isArray(arr2) ){ return ( arr1.length == arr2.length ) }	
+	}
+
+	
+	isRow(strofr){
+		if(this.isArray(strofr)){
+			strofr.forEach((cell)=>{
+				if(!this.isCell(cell)){return false}
+			})
+			return true
+		}
+	}
+	
+	isCell(cell){
+		if(cell instanceof Cell && cell.v && cell.e && cell.i){
+			return true
+		}
+	}
+
+	
+
+	sameLength(...v){
+		if( this.isArray(arr1) && this.isArray(arr2) ){ return ( arr1.length == arr2.length ) }	
+	}
+
     // isGuarded(v){
 
     // }
@@ -253,3 +308,5 @@ export class Guard{
 
     // }
 }
+
+new Guard().guard(["strng", "s:separator", "utf-32"], GUARD_MAP, undefined)
