@@ -12,69 +12,91 @@ export class Strowfer{
 		this.strowferize(strofr, mod)
     }
 
-	strowferize(strofr, mod){
+	strowferize(strofr, mod, def='utf-32'){
 		if(!strofr && !mod){
 			throw Error("If you dont know how to use this, take my advice and leave!")
 		}
-		else if(this.isArray(strofr) && !this.isStringArray(strofr)&& this.isEncodedArray(mod) && this.sameLength(strofr, mod)){
-			console.log("is array has encoded array, and are same length")
+
+		else if(this.isArray(strofr) && !this.isStringArray(strofr) && !this.isBufferArray(strofr) && this.isEncodedArray(mod) && this.sameLength(strofr, mod)){
+			console.log("OBJECT ARRAY, NOT STRING ARRAY, NOT BUFFER ARRAY, ENCODING ARRAY MOD")
 			this._arrayEncodedArray(strofr, mod)
-		}else if(this.isArray(strofr) && !this.isStringArray(strofr) && this.isEncoded(mod)){
-			console.log("is array and is encoded")
+		}else if(this.isArray(strofr) && !this.isStringArray(strofr) && !this.isBufferArray(strofr) && this.isEncoded(mod)){
+			console.log("OBJECT ARRAY, NOT STRING ARRAY, NOT BUFFER ARRAY, SINGLE ENCODING MOD")
 			this._arrayEncoded(strofr, mod)
-		}else if(this.isArray(strofr) && !this.isStringArray(strofr) && !mod){
-			console.log("isArray and no mod")
+		}else if(this.isArray(strofr) && !this.isStringArray(strofr) && !this.isBufferArray(strofr) && !mod){
+			console.log("OBJECT ARRAY, NOT STRING ARRAY, NOT BUFFER ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			this._array(strofr)
 		}
 		
+
 		else if(this.isString(strofr) && this.isEncodedArray(mod) && this.sameLength(strofr, mod)){
-			console.log("is string with an encoding array and of same length")		
+			console.log("STRING, ENCODING ARRAY MOD")	
 			this._stringEncodedArrayOrStringArrayEncodedArray(strofr, mod) 		
 		}else if(this.isStringArray(strofr) && this.isEncodedArray(mod)){
-			console.log("is string array with an encoding array")		
+			console.log("STRING ARRAY, ENCODING ARRAY MOD")		
 			this._stringEncodedArrayOrStringArrayEncodedArray(strofr, mod) 		
 		}else if(this.isStringArray(strofr) && this.isEncoded(mod)){
-			console.log("is string with a encoding array")		
+			console.log("STRING, ENCODING ARRAY MOD")	
 			this._stringArrayEncoded(strofr, mod) 									
 		}else if(this.isStringArray(strofr) && !mod){
-			console.log("STRING ARRAY, NO ENCODING, SHARED ENCODING BY INFERENCE")		
-			this._stringArrayEncoded(strofr, 'utf-32')
+			console.log("STRING ARRAY, NO MOD, ENCODING INFERRED AS DEF")		
+			this._stringArrayEncoded(strofr, def)
 		}else if(this.isString(strofr) && this.isEncoded(mod)){
-			console.log("is string with a single encoding")		
+			console.log("STRING, SINGLE ENCODING MOD")	
 			this._stringEncoded(strofr, mod)			
 		}else if(this.isString(strofr) && !mod){
-			console.log("is string without a mod")		
-			this._stringEncoded(strofr, 'utf-32')		
+			console.log("STRING, NO MOD")		
+			this._stringEncoded(strofr, def)		
 		}else if(this.isString(strofr) && this.isSeparated(mod)){
-			console.log("is string, and has a separator, string is inferred to be utf")
-			this._stringSeparated(strofr, mod)
+			console.log("STRING, SEPARATOR MOD, ENCODING INFERRED AS DEF")
+			this._stringSeparated(strofr, mod, def)
 		}
+
+
 		else if(this.isBuffer(strofr) && this.isEncodedArray(mod) ){
-			console.log("is buffer, has encoding array for buffer string")
+			console.log("BUFFER, ENCODING ARRAY MOD")
 			this._bufferEncodedArray(strofr, mod)
 		}else if(this.isBuffer(strofr) && this.isEncoded(mod)){
-			console.log("is buffer, has single encoding")
+			console.log("BUFFER, SINGLE ENCODING MOD")
 			this._bufferEncoded(strofr, mod)
 		}else if(this.isBuffer(strofr) && this.isSeparated(mod)){
-			console.log("is buffer, has a separator")
+			console.log("BUFFER, SEPARATOR MOD, ENCODING INFERRED AS DEF")
 			this._bufferSeparated(strofr, mod)
 		}else if(this.isBuffer(strofr) && !mod){
-			console.log("is buffer, without a mod, mod is inferred")
-			this._buffer(strofr, 'utf-32')
+			console.log("BUFFER, NO MOD, ENCODING INFERRED AS DEF")
+			this._buffer(strofr, def)
 		}else if(this.isBufferArray(strofr) && this.isEncodedArray(mod)){
-			console.log("is buffer array, with a encoding array")
+			console.log("BUFFER ARRAY, ENCODING ARRAY MOD")
 			this._bufferArrayEncodedArray(strofr, mod)
 		}else if(this.isBufferArray(strofr) && this.isEncoded(mod)){
-			console.log("is buffer array, with a single encoding")
+			console.log("BUFFER ARRAY, SINGLE ENCODING MOD")
 			this._bufferArrayEncoded(strofr, mod)
 		}else if(this.isBufferArray(strofr) && !mod){
-			console.log("is buffer array, without an encoding, iterpreted as utf")
-			this._bufferArray(strofr, 'utf-32')
+			console.log("BUFFER ARRAY, NO MOD, ENCODING INFERRED AS DEF")
+			this._bufferArray(strofr, def)
 		}
 		else{
 			throw Error("Strowfers do not accept giberish, unless its actual giberish")
 		}
 	}
+
+
+	_rawString(){
+
+	}
+
+	_rawStringArray(){
+
+	}
+
+	_rawBuffer(){
+
+	}
+
+	_rawBufferArray(){
+
+	}
+
 	//it doesn't matter if strofr is an array or string, they act the same here
 	_stringEncodedArrayOrStringArrayEncodedArray(strofr, mod){
 		for(var i = 0; i<strofr.length; i++){
@@ -92,15 +114,15 @@ export class Strowfer{
 		this.strofr.push(new Cell(strofr, mod))
 	}
 	//single string utf-32 (inferred), separated by sep
-	_stringSeparated(strofr, sep){
+	_stringSeparated(strofr, sep, def){
 		var splits = strofr.split(sep)
 		splits.forEach((splt)=>{
-			this.strofr.push(new Cell(splt, 'utf-32'))
+			this.strofr.push(new Cell(splt, def))
 		})
 	}
 	//single string buffer decoded utf-32 (inferred), with code array for the string positions
-	_bufferEncodedArray(strofr, mod){
-		strofr = Buffer.from(strofr, 'utf-32')
+	_bufferEncodedArray(strofr, mod, def){
+		strofr = Buffer.from(strofr, def)
 		if(!this.sameLength(strofr, mod)){throw Error("_bufferEncodedArray")};
 		this._stringEncodedArrayOrStringArrayEncodedArray(strofr, mod)
 	}
@@ -112,21 +134,21 @@ export class Strowfer{
 	}
 
 	//single buffer decoded utf-32 (inferred), separated by sep
-	_bufferSeparated(strofr, sep){
-		strofr = Buffer.from(strofr, 'utf-32')
+	_bufferSeparated(strofr, sep, def){
+		strofr = Buffer.from(strofr, def)
 		this._stringSeparated(strofr, sep)
 	}
 	//single buffer, utf-32 decoding inferred
-	_buffer(strofr){
-		strofr = Buffer.from(strofr, 'utf-32')
-		this._stringEncoded(strofr, 'utf-32')
+	_buffer(strofr, def){
+		strofr = Buffer.from(strofr, def)
+		this._stringEncoded(strofr, def)
 	}
 
 	//buffer strings decoded using utf32, then mods in array stored with respective strings
-	_bufferArrayEncodedArray(strofr, mod){
+	_bufferArrayEncodedArray(strofr, mod, def){
 		var strs=[]
 		strofr.forEach((str)=>{
-			strs.push(Buffer.from(str, 'utf-32'))
+			strs.push(Buffer.from(str, def))
 		})
 		this._stringEncodedArrayOrStringArrayEncodedArray(strs, mod)
 	}
@@ -139,9 +161,9 @@ export class Strowfer{
 	}
 
 	//buffer array of strings, interpreted as utf-32 encoding
-	_bufferArray(strofr){
-		strofr = Buffer.from(strofr, 'utf-32');
-		this._stringArrayEncoded(strofr, 'utf-32');
+	_bufferArray(strofr, def){
+		strofr = Buffer.from(strofr, def);
+		this._stringArrayEncoded(strofr, def);
 	}
 
 	//array of objects, each stored with their own code mod
@@ -167,20 +189,6 @@ export class Strowfer{
 
 	isSeparated(mod){ if(mod.includes('s:')){ return true } }
 
-	toString(delim){
-		//the problem with a string is that its usually encoded monolithicly
-		//buffers
-	}
-	toRow(delim){
-
-	}
-	toBuffer(){
-		//Buffers are filled with an array of cell objects, because 
-		//these objects are slightly more rich than a string. They can be
-		//encoded uniquely and bufferized (without losing encondoings) or 
-		//stringified which is a one way function that can represent semantics
-		//but not syntax
-	}
 	
 	sameLength(arr1, arr2){
 		if( this.isArray(arr1) && this.isArray(arr2) ){ return ( arr1.length == arr2.length ) }	
