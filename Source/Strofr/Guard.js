@@ -61,6 +61,8 @@ export class Guard{
     //https://stackoverflow.com/questions/8511281/check-if-a-value-is-an-object-in-javascript
     //https://stackoverflow.com/questions/4059147/check-if-a-variable-is-a-string-in-javascript
     //https://javascript.plainenglish.io/how-to-check-for-null-in-javascript-dffab64d8ed5
+    //https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript
+    //https://stackoverflow.com/questions/4339288/typeof-for-regexp
     //v is just a schema that get passed in
     constructor(v, obj){
 
@@ -71,9 +73,7 @@ export class Guard{
 
     isArray(v){ return ((Array.isArray(v)) && v.length) }
 
-
 	isString(v){ return (typeof v === 'string' && v instanceof String) }
-
 
     isStringArray(v){ 
 		if(!this.isArray(v)){ return }
@@ -117,8 +117,6 @@ export class Guard{
         return true
 	}
 
-
-
     isNull(v){ return (v==null && v===null) }
 
     isUndefined(v){ return (typeof v === "undefined" && v===undefined) }
@@ -126,14 +124,16 @@ export class Guard{
     isRegX(v){ return (v instanceof RegExp && v.constructor == RegExp) }
 
     isArrayOfRegX(v){
-
+        if(!this.isArray(v)) { return }
+        v.forEach((e)=>{ if(!Buffer.isRegX(e)){ return } })
+        return true
     }
 
-    isGuarded(v){
+    // isGuarded(v){
 
-    }
+    // }
 
-    isArrayOfGuarded(v){
+    // isArrayOfGuarded(v){
 
-    }
+    // }
 }
