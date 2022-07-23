@@ -112,7 +112,12 @@ export class Guard{
         var queue=[]
         //step 1:
         queue = guardMap(queue, schema)
-            
+        
+    }
+    execute(v, queue){
+        //v is an array
+        //queue holds the operations
+        //This is another complex algorithm 
     }
     //base case is when the key yields an object or a string 
     guardMap(queue, schema){
