@@ -126,24 +126,26 @@ export class Guard{
     guardMap(v, queue, schema){
         //step1:
         var _v = v.shift()
-
+        //console.log(schema[0])
         for(var i = 0; i<schema.length; i++){
-            //var obj = schema[Object.keys(schema)[i]]
-            //console.log(Object.keys(schema[i])[0])
-            
-            if(this.callOn(Object.keys(schema[i])[0], _v)){
-                console.log("IT CAUGHT")
-                // if(this.isGuardMapBase(_v, queue, obj)){
-                //     //console.log(obj)
-                //     return
-                // }else{
-                //     //push to queue
-                //     if(this.isNKeys(obj, 1)){
-                //         queue.push(Object.keys(obj)[0])
-                //         //console.log(Object.keys(obj)[0])
-                //         this.guardMap(v, queue, obj[Object.keys(obj)[0]])
-                //     }
-                // }
+            var guard=schema[i];
+            //console.log(guard)
+            if(this.callOn(Object.keys(guard)[0], _v)){
+
+                if(this.isGuardMapBase(_v, queue, guard)){
+                    console.log('This needs to work')
+                    return
+                }else{
+
+                    if(this.isNKeys(guard, 1)){
+                        console.log("BEFORE", guard)
+                        console.log("AFTER", guard[Object.keys(guard)[0]])
+                        queue.push(Object.keys(guard)[0])
+                        //console.log(queue)
+                        //console.log(Object.keys(obj)[0])
+                        this.guardMap(v, queue, guard[Object.keys(guard)[0]])
+                    }
+                }
             }
 
         }
@@ -153,13 +155,13 @@ export class Guard{
     callOn(func, _v){
         func+='('+'"' +_v + '"' + ')'
         func='this.'+func
-        console.log(func)
 
-        console.log(eval(func))
+        return eval(func)
 
     }
     isGuardMapBase(_v, queue, obj){
         if(this.isObj(obj) && !this.isEmptyObject(obj)){
+
             var key0 = Object.keys(obj)[0]
 
             //if object[key0] is empty object, throw Error()
@@ -172,18 +174,15 @@ export class Guard{
                 }else{
                     // if object[key0] is string or object return trues
                     if (this.isString(obj[key0])){
-                        queue.push(key0)
-                        queue.push(obj[key0])
+                        
                         return true
                     }else if(this.isObj(obj[key0])){
                         //check if both keys present, default and 
                         //make sure there are two keys
                         if(this.isNKeys(obj[key0], 2)){
-                            queue.push(key0)
-                            if(Object.keys(obj[key0])[0]!='DEFAULT'||Object.keys(obj[key0])[0]!='FUNCTION'){
-                                if(Object.keys(obj[key0][1])!='DEFAULT'||Object.keys(obj[key0][1]!='FUNCTION')){
-                                    queue.push(obj[key0]['DEFAULT'])
-                                    queue.push(obj[key0]['FUNCTION'])
+                            if(Object.keys(obj[key0])[0]=='DEFAULT'||Object.keys(obj[key0])[0]=='FUNCTION'){
+                                if(Object.keys(obj[key0][1])=='DEFAULT'||Object.keys(obj[key0][1]=='FUNCTION')){
+                                    
                                     return true
                                 }
                             }else{
@@ -205,7 +204,7 @@ export class Guard{
 
 
     isNKeys(obj, n){
-
+        return (Object.keys(obj).length==n)
     }
     isArray(v){ return ((Array.isArray(v)) && v.length) }
 
@@ -220,7 +219,10 @@ export class Guard{
 		return true
 	}
 
-    isEncoding(v){ return Buffer.isEncoding(v); }
+    isEncoding(v){ 
+        console.log(v)
+        return Buffer.isEncoding(v); 
+    }
 
 	isEncodingArray(v){ 
         if(!this.isArray(v)) {return}
