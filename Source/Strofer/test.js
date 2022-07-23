@@ -128,102 +128,102 @@ class StroferTest{
 	cellNoModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "CELL, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "CELL, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "CELL, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 	}
 	cellSingleModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "CELL, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "CELL, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "CELL, SINGLE ENCODING MOD")
 			}
 		)
 	}
 	rowNoModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(),"ROW, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(),"ROW, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(),"ROW, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 	}
 	rowSingleModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "ROW, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "ROW, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "ROW, SINGLE ENCODING MOD")
 			}
 		)
 	}
 	rowEncodingArrayModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(Strofer(), "ROW, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(Strofer(), "ROW, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(Strofer(), "ROW, ENCODING ARRAY MOD")
 			}
 		)
 	}
 	objectEncodingArrayModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT, ENCODING ARRAY MOD")
 			}
 		)
 	}
@@ -243,53 +243,39 @@ class StroferTest{
 				assert.ok(new Strofer(/somePattern/), "OBJECT, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
-		assert.doesNotThrow(
-			()=>{
-				assert.ok()
-			}
-		)
-		assert.doesNotThrow(
-			()=>{
-				assert.ok()
-			}
-		)
-		assert.doesNotThrow(
-			()=>{
-				assert.ok()
-			}
-		)
+		
 	}
 	objectArrayEncodingArrayModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, ENCODING ARRAY MOD")
 			}
 		)
 	}
 	objectArraySingleEncodingModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, SINGLE ENCODING MOD")
 			}
 		)
 	}
@@ -297,102 +283,104 @@ class StroferTest{
 	objectArrayNoModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "OBJECT ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 	}
 	stringArrayEncodingArrayPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, ENCODING ARRAY MOD")
 			}
 		)
 	}
 	stringArrayNoModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 	}
 	stringArraySingleEncodingModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING ARRAY, SINGLE ENCODING MOD")
 			}
 		)
 	}
+
 	stringSeparatorModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING, SEPARATOR MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING, SEPARATOR MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING, SEPARATOR MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 	}
+
 	stringEncodingArrayModPath(){
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok()
+				assert.ok(new Strofer(), "STRING, ENCODING ARRAY MOD")
 			}
 		)
 	}
