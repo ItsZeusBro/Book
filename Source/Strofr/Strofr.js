@@ -17,7 +17,6 @@ export class Strofr{
 
 	Strofrize(strofr, mod, mod2, indx){
 		if(this.aThingThatBreaksStrofr(strofr)||(this.aThingThatBreaksMods(mod, mod2))){
-			console.log("IT BREAKS")
 			throw new Error("LEAVE THIS TOMB FOR YOUR OWN GOOD")
 		}
 		

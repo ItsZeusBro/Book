@@ -1,9 +1,13 @@
+import {Strofr} from './Strofr.js'
 const GUARD={
+    'ENCODING':''
+}
+const GUARD_MAP={
     'v':{
         'STRING_ARRAY':{
-                'ENCODING_ARRAY':null,
-                'ENCODING':null,
-                'NULL':null,
+                'ENCODING_ARRAY':'_stringEncodedArrayOrStringArrayEncodedArray',
+                'ENCODING':'_stringArrayEncodedOrStringEncoded',
+                'NULL':'_stringArrayEncodedOrStringEncoded',
                 'ELSE': 'ERROR' //we do this because we can easily generate meaningful error messages here from what we know
         }, 
 
@@ -141,22 +145,20 @@ class Guard{
     isArrayOfRegX(v){
 
     }
-    isArrayOfGuards(v){
+    // isArrayOfGuards(v){
 
-    }
-    isGuardObject(v){
+    // }
+    // isGuardObject(v){
 
-    }
-    isArrayOfGuardsInUse(v){
+    // }
+    // isArrayOfGuardsInUse(v){
 
-    }
-    isGuardInUse(v){
-        //if variable context doesn't change, even though the program context 
-        //changes based on a guard variable already in use
-    }
-    isAnythingElse(v){
+    // }
+    // isGuardInUse(v){
+    //     //if variable context doesn't change, even though the program context 
+    //     //changes based on a guard variable already in use
+    // }
 
-    }
 }
 
 class StrofrGuard extends Guard{
@@ -164,6 +166,34 @@ class StrofrGuard extends Guard{
 
     }
 
+    isEncoding(){
+
+    }
+
+    isEncodingArray(){
+
+    }
+
+    isCell(){
+
+    }
+
+    isCellArray(){
+
+    }
+
+    //These are expected override functions 
+    //which checks for anything other than
+    //your guards in use
+    // isAnythingElse(v){
+
+    // }
+    // isGuardInUse(v){
+
+    // }
+    // isArrayOfGuardInUse(v){
+
+    // }
 
 }
 
