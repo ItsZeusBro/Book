@@ -12,7 +12,10 @@ export class Strofer{
 		if(this.aThingThatBreaksStrofr(strofr)||(this.aThingThatBreaksMod(mod))){
 			console.log("IT BREAKS")
 			throw new Error("LEAVE THIS TOMB FOR YOUR OWN GOOD")
-		}else if(this.isCell(strofr) && !mod && !this.isObj(strofr)){
+
+		}
+		
+		else if(this.isCell(strofr) && !mod && !this.isObj(strofr)){
 			//infer encoding
 			console.log("CELL, NO MOD, ENCODING INFERRED AS DEF")
 			this.strofr=this.newCell(strofr, def)
