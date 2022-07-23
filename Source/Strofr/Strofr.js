@@ -1,33 +1,39 @@
 import { Cell } from "../Cell.js"
 
-export class Strofer{
-
-    constructor(strofr, mod, indx){
+export class Strofr{
+	//strofr can be a array of strings, objects, buffers, or cells
+		//it can also be a string, object, or cell
+		//it can also be a buffer that is any of the above	
+	//mod can be a separator (only if strofr is a string or array of strings) 
+		//mod can be an encoding if its anything else
+	//mod2 can be an encoding if mod1 is a separator for a string or buffer
+		//
+    constructor(strofr, mod, mod2, indx){
 		this.strofr=undefined;//strofr = string, buffer, or an array
 		this.i=indx;//index
-		this.Stroferize(strofr, mod)
+		this.def="utf-32"
+		this.Strofrize(strofr, mod, mod2, indx)
     }
 
-	Stroferize(strofr, mod, def='utf-32'){
-		if(this.aThingThatBreaksStrofr(strofr)||(this.aThingThatBreaksMod(mod))){
+	Strofrize(strofr, mod, mod2, indx){
+		if(this.aThingThatBreaksStrofr(strofr)||(this.aThingThatBreaksMods(mod, mod2))){
 			console.log("IT BREAKS")
 			throw new Error("LEAVE THIS TOMB FOR YOUR OWN GOOD")
-
 		}
 		
 		else if(this.isCell(strofr) && !mod && !this.isObj(strofr)){
 			//infer encoding
 			console.log("CELL, NO MOD, ENCODING INFERRED AS DEF")
-			this.strofr=this.newCell(strofr, def)
+			this.strofr=this.newCell(strofr, this.def, undefined)
 		}
 		else if(this.isCell(strofr)&& this.isEncoded(mod)&& !this.isObj(strofr)){
 			console.log("CELL, SINGLE ENCODING MOD")
-			this.strofr=this.newCell(strofr, mod)
+			this.strofr=this.newCell(strofr, mod, undefined)
 		}
 
 		else if(this.isRow(strofr)&& !mod && !this.isObj(strofr)){
 			console.log("ROW, NO MOD, ENCODING INFERRED AS DEF")
-			this.strofr=this.newRow(strofr, def)
+			this.strofr=this.newRow(strofr, this.def)
 
 		}
 		else if(this.isRow(strofr)&& this.isEncoded(mod) && !this.isObj(strofr)){
@@ -46,7 +52,7 @@ export class Strofer{
 
 		}else if(this.isObj(strofr) && !mod){
 			console.log("OBJECT, NO MOD, ENCODING INFERRED AS DEF")
-			this._objEncoded(strofr, def)
+			this._objEncoded(strofr, this.def)
 		}
 
 		else if(this.isObjArray(strofr) && this.isEncodedArray(mod) && this.sameLength(strofr, mod)){
@@ -57,7 +63,7 @@ export class Strofer{
 			this._arrayEncoded(strofr, mod)
 		}else if(this.isObjArray(strofr) && !mod){
 			console.log("OBJECT ARRAY, NO MOD, ENCODING INFERRED AS DEF")
-			this._arrayEncoded(strofr, def)
+			this._arrayEncoded(strofr, this.def)
 		}
 		
 		else if(this.isStringArray(strofr) && this.isEncodedArray(mod)){
@@ -65,7 +71,7 @@ export class Strofer{
 			this._stringEncodedArrayOrStringArrayEncodedArray(strofr, mod) 		
 		}else if(this.isStringArray(strofr) && !mod){
 			console.log("STRING ARRAY, NO MOD, ENCODING INFERRED AS DEF")		
-			this._stringArrayEncodedOrStringEncoded(strofr, def)
+			this._stringArrayEncodedOrStringEncoded(strofr, this.def)
 		}
 		else if(this.isStringArray(strofr) && this.isEncoded(mod)){
 			console.log("STRING ARRAY, SINGLE ENCODING MOD")	
@@ -75,7 +81,7 @@ export class Strofer{
 		//separator condition needs to come first because it might be confused for an encoding
 		else if(this.isString(strofr) && this.isSeparated(mod)){
 			console.log("STRING, SEPARATOR MOD, ENCODING INFERRED AS DEF")
-			this._stringSeparated(strofr, mod, def)
+			this._stringSeparated(strofr, mod, this.def)
 		}else if(this.isString(strofr) && this.isEncodedArray(mod) && this.sameLength(strofr, mod)){
 			console.log("STRING, ENCODING ARRAY MOD")	
 			this._stringEncodedArrayOrStringArrayEncodedArray(strofr, mod) 		
@@ -84,7 +90,7 @@ export class Strofer{
 			this._stringArrayEncodedOrStringEncoded(strofr, mod)
 		}else if(this.isString(strofr) && !mod){
 			console.log("STRING, NO MOD, ENCODING INFERRED AS DEF")		
-			this._stringArrayEncodedOrStringEncoded(strofr, def)
+			this._stringArrayEncodedOrStringEncoded(strofr, this.def)
 		}
 
 		else if(this.isBufferArray(strofr) && this.isEncodedArray(mod)){
@@ -95,7 +101,7 @@ export class Strofer{
 			this._bufferArrayEncoded(strofr, mod)
 		}else if(this.isBufferArray(strofr) && !mod){
 			console.log("BUFFER ARRAY, NO MOD, ENCODING INFERRED AS DEF")
-			this._bufferArray(strofr, def)
+			this._bufferArray(strofr, this.def)
 		}
 		
 		else if(this.isBuffer(strofr) && this.isSeparated(mod)){
@@ -109,7 +115,7 @@ export class Strofer{
 			this._bufferEncoded(strofr, mod)
 		}else if(this.isBuffer(strofr) && !mod){
 			console.log("BUFFER, NO MOD, ENCODING INFERRED AS DEF")
-			this._bufferEncoded(strofr, def)
+			this._bufferEncoded(strofr, this.def)
 		}
 		else{
 			throw new Error("LEAVE THIS TOMB FOR YOUR OWN GOOD")
@@ -125,17 +131,17 @@ export class Strofer{
 	_stringEncodedArrayOrStringArrayEncodedArray(strofr, mod){
 		var cells=[]
 		for(var i = 0; i<strofr.length; i++){
-			this.cells.push(this.newCell(strofr[i], mod[i]))
+			this.cells.push(this.newCell(strofr[i], mod[i], undefined))
 		}
 		this.strofr=cells
 	}
 	//string array, single encoding mod
 	_stringArrayEncodedOrStringEncoded(strofr, mod){
-		if(!this.isArray(strofr)){this.strofr= [this.newCell(strofr, mod)]}
+		if(!this.isArray(strofr)){this.strofr= [this.newCell(strofr, mod, undefined)]}
 		var cells=[]
 
 		for(var i = 0; i<strofr.length; i++){
-			this.cells.push(this.newCell(strofr[i], mod))
+			this.cells.push(this.newCell(strofr[i], mod, undefined))
 		}
 		this.strofr=cells
 	}
@@ -146,7 +152,7 @@ export class Strofer{
 
 		var splits = strofr.split(sep)
 		splits.forEach((splt)=>{
-			this.cells.push(this.newCell(splt, def))
+			this.cells.push(this.newCell(splt, def, undefined))
 		})
 
 		this.strofr=cells
@@ -197,7 +203,7 @@ export class Strofer{
 	_arrayEncodedArray(strofr, mod){
 		var cells=[]
 		for(var i = 0; i<strofr.length; i++){
-			this.cells.push(this.newCell(strofr[i], mod[i]))
+			this.cells.push(this.newCell(strofr[i], mod[i], undefined))
 		}
 	}
 
@@ -205,7 +211,7 @@ export class Strofer{
 	_arrayEncoded(strofr, mod){
 		var cells=[]
 		strofr.forEach((obj)=>{
-			this.cells.push(this.newCell(obj, mod))
+			this.cells.push(this.newCell(obj, mod, undefined))
 		})
 	}
 
@@ -223,7 +229,7 @@ export class Strofer{
 	aThingThatBreaksStrofr(strofr){
 		if((Array.isArray(strofr)&&!strofr.length)||!strofr){return true};
 	}
-	aThingThatBreaksMod(mod){
+	aThingThatBreaksMods(mod, mod2){
 		if((Array.isArray(mod)&&!mod.length)||(mod==true)){return true};
 	}
 
@@ -280,19 +286,19 @@ export class Strofer{
 		}
 	}
 
-	newCell(val, type){
-		return new Cell(val, type)
+	newCell(strofr, encoding, indx){
+		return new Cell(strofr, encoding, indx)
 	}
 
-	newRow(vals, type){
+	newRow(strofr, encoding, indx){
 		var row = []
-		if(this.isArray(vals) && this.isArray(type) && this.sameLength(vals, type)){
-			for(var i=0; i<vals.length; i++){
-				this.newCell(vals[i], type[i])
+		if(this.isArray(strofr) && this.isArray(encoding) && this.sameLength(strofr, encoding)){
+			for(var i=0; i<strofr.length; i++){
+				this.newCell(strofr[i], encoding[i], indx)
 			}
-		}else if(this.isArray(vals) && type){
-			for(var i=0; i<vals.length; i++){
-				this.newCell(vals[i], type)
+		}else if(this.isArray(strofr) && type){
+			for(var i=0; i<strofr.length; i++){
+				this.newCell(strofr[i], encoding, indx)
 			}
 		}else{
 			throw Error('NOT ROWABLE')
