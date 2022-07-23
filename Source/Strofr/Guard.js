@@ -156,11 +156,15 @@ export class Guard{
                                     queue.push(obj[key0]['FUNCTION'])
                                     return queue
                                 }
+                            }else{
+                                throw Error("Base case object lacks maximum of 2 keys (DEFAULT, FUNCTION)")
                             }
                         }else{
                             throw Error("Base case object lacks maximum of 2 keys (DEFAULT, FUNCTION)")
                         }
 
+                    }else{
+                        throw Error("obj[key0] is not an object or a string")
                     }
                 }
             }
