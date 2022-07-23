@@ -13,13 +13,13 @@ export class Strowfer{
 			throw Error("If you dont know how to use this, take my advice and leave!")
 		}
 
-		else if(this.isArray(strofr) && !this.isStringArray(strofr) && !this.isBufferArray(strofr) && this.isEncodedArray(mod) && this.sameLength(strofr, mod)){
+		else if(this.isObjArray(strofr) && this.isEncodedArray(mod) && this.sameLength(strofr, mod)){
 			console.log("OBJECT ARRAY, NOT STRING ARRAY, NOT BUFFER ARRAY, ENCODING ARRAY MOD")
 			this._arrayEncodedArray(strofr, mod)
-		}else if(this.isArray(strofr) && !this.isStringArray(strofr) && !this.isBufferArray(strofr) && this.isEncoded(mod)){
+		}else if(this.isObjArray(strofr) && this.isEncoded(mod)){
 			console.log("OBJECT ARRAY, NOT STRING ARRAY, NOT BUFFER ARRAY, SINGLE ENCODING MOD")
 			this._arrayEncoded(strofr, mod)
-		}else if(this.isArray(strofr) && !this.isStringArray(strofr) && !this.isBufferArray(strofr) && !mod){
+		}else if(this.isObjArray(strofr) && !mod){
 			console.log("OBJECT ARRAY, NOT STRING ARRAY, NOT BUFFER ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			this._arrayEncoded(strofr, def)
 		}
@@ -182,11 +182,13 @@ export class Strowfer{
 
 	isString(strng){ if (typeof strng === 'string' || strng instanceof String) { return true; } }
 	
-	isArray(arr){ return (Array.isArray(arr) && arr.length); }
+	isObjArray(strofr){ return (Array.isArray(strofr) && strofr.length && !this.isStringArray(strofr) && !this.isBufferArray(strofr)); }
 
-	isStringArray(arr){ 
-		if(!this.isArray(arr)){return false}
-		arr.forEach( (element)=>{ if( !this.isString(element) ){ return false } } )
+	isArray(strofr){ return (Array.isArray(strofr)) && strofr.length }
+
+	isStringArray(strofr){ 
+		if(!this.isArray(strofr)){return false}
+		strofr.forEach( (element)=>{ if( !this.isString(element) ){ return false } } )
 		return true
 	}
 
