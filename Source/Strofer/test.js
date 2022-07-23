@@ -4,16 +4,7 @@ import * as assert from "node:assert"
 
 class StroferTest{
 	constructor(){
-		// assert.doesNotThrow(
-		// 	()=>{
 
-		// 	}
-		// )
-		// assert.throws(
-		// 	()=>{
-
-		// 	}
-		// )
 		this._StroferErrors()
 		this._StroferTypeChecks()
 	}
@@ -26,7 +17,7 @@ class StroferTest{
 			},
 			{
 				name: 'Error',
-				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD"
 			}
 
 		)
@@ -36,16 +27,17 @@ class StroferTest{
 			},
 			{
 				name: 'Error',
-				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD"
 			}
 		)
+		console.log("this")
 		assert.throws(
 			()=>{
 				new Strofer(false)
 			},
 			{
 				name: 'Error',
-				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD"
 			}
 		)
 		assert.throws(
@@ -54,7 +46,7 @@ class StroferTest{
 			},
 			{
 				name: 'Error',
-				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD"
 			}
 		)
 
@@ -64,7 +56,7 @@ class StroferTest{
 			},
 			{
 				name: 'Error',
-				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD"
 			}
 		)
 
@@ -74,7 +66,7 @@ class StroferTest{
 			},
 			{
 				name: 'Error',
-				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD"
 			}
 		)
 	}

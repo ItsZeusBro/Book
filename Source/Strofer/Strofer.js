@@ -9,7 +9,7 @@ export class Strofer{
     }
 
 	Stroferize(strofr, mod, def='utf-32'){
-		if(this.aThingThatBreaksIt(strofr)){
+		if(this.aThingThatBreaksStrofr(strofr)||(this.aThingThatBreaksMod(mod))){
 			console.log("IT BREAKS")
 			throw new Error("LEAVE THIS TOMB FOR YOUR OWN GOOD")
 		}else if(this.isCell(strofr) && !mod && !this.isObj(strofr)){
@@ -217,9 +217,11 @@ export class Strofer{
 		if( this.isArray(arr1) && this.isArray(arr2) ){ return ( arr1.length == arr2.length ) }	
 	}
 	
-	aThingThatBreaksIt(strofr){
-		console.log("aThingThatBreaks", strofr)
-		if(strofr===[]){return true};
+	aThingThatBreaksStrofr(strofr){
+		if((Array.isArray(strofr)&&!strofr.length)||!strofr){return true};
+	}
+	aThingThatBreaksMod(mod){
+		if((Array.isArray(mod)&&!mod.length)||(mod==true)){return true};
 	}
 
 	isBuffer(buff){ return Buffer.isBuffer(buff); }
