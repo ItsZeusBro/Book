@@ -102,6 +102,7 @@ export class Guard{
     //https://javascript.plainenglish.io/how-to-check-for-null-in-javascript-dffab64d8ed5
     //https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript
     //https://stackoverflow.com/questions/4339288/typeof-for-regexp
+    //https://bobbyhadz.com/blog/javascript-check-if-object-is-empty
     //v is just a schema that get passed in
     constructor(v, obj){
 
@@ -117,24 +118,63 @@ export class Guard{
     guardMap(v, queue, schema){
         //step1:
         schema.forEach((obj)=>{
-            isGuardMapBase(obj)
+            if(this.isGuardMapBase(obj)){
+                queue.push(this.isGuardMapBase(obj))
+            }else{
+
+            }
         })
         //iterate through schema array
-            //step1: check if at base case, if so call basecase(v, queue, )
+            //step1: check if at base case, if so call basecase(v, queue)
 
             //step2:
     }
 
-    isGuardMapBase(obj){
-        //if object[key0] is empty object, throw Error()
-        // if object[key0] is array, its not a base case, return false
-        // if object[key0] is string or object return true
-        return (isString(val)||isObj(val))
+    isGuardMapBase(obj, queue){
+        if(this.isObj(obj) && !this.isEmptyObject(obj)){
+            var key0 = Object.keys(obj)[0]
+            //if object[key0] is empty object, throw Error()
+            if(this.isObj(obj[key0]) && this.isEmptyObject(obj[key0])){
+                throw Error("Schema contains empty object")
+            }else{
+                // if object[key0] is array, its not a base case, return false
+                if(this.isArray(obj[key0])){
+                    return false;
+                }else{
+                    // if object[key0] is string or object return trues
+                    if (this.isString(obj[key0])){
+                        queue.push(key0)
+                        queue.push(obj[key0])
+                        return queue
+                    }else if(this.isObj(obj[key0])){
+                        //check if both keys present, default and 
+                        //make sure there are two keys
+                        if(this.isNKeys(obj[key0], 2)){
+                            if(Object.keys(obj[key0])[0]!='DEFAULT'||Object.keys(obj[key0])[0]!='FUNCTION'){
+                                if(Object.keys(obj[key0][1])!='DEFAULT'||Object.keys(obj[key0][1]!='FUNCTION')){
+                                    queue.push(obj[key0]['DEFAULT'])
+                                    queue.push(obj[key0]['FUNCTION'])
+                                    return queue
+                                }
+                            }
+                        }else{
+                            throw Error("Base case object lacks maximum of 2 keys (DEFAULT, FUNCTION)")
+                        }
+
+                    }
+                }
+            }
+        }
+       return false
     }
 
+    isNKeys(obj, n){
+
+    }
     isArray(v){ return ((Array.isArray(v)) && v.length) }
 
 	isString(v){ return (typeof v === 'string' && v instanceof String) }
+
 
     isStringArray(v){ 
 		if(!this.isArray(v)){ return }
@@ -158,6 +198,9 @@ export class Guard{
 		v.forEach( (e) => { if( !this.isObj(e) ) { return } } );
 		return true
     }
+    isEmptyObject(obj)[
+        return Object.keys(obj).length === 0;
+    ]
 
     isInt(v){
         var x;
