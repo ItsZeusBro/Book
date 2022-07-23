@@ -9,8 +9,10 @@ export class Strofer{
     }
 
 	Stroferize(strofr, mod, def='utf-32'){
-
-		if(this.isCell(strofr) && !mod && !this.isObj(strofr)){
+		if(this.aThingThatBreaksIt(strofr)){
+			console.log("IT BREAKS")
+			throw new Error("LEAVE THIS TOMB FOR YOUR OWN GOOD")
+		}else if(this.isCell(strofr) && !mod && !this.isObj(strofr)){
 			//infer encoding
 			console.log("CELL, NO MOD, ENCODING INFERRED AS DEF")
 			this.strofr=this.newCell(strofr, def)
@@ -39,7 +41,7 @@ export class Strofer{
 			console.log("OBJECT, ENCODING ARRAY MOD")
 			this._objEncoded(strofr, mod)
 
-		}else if(his.isObj(strofr) && !mod){
+		}else if(this.isObj(strofr) && !mod){
 			console.log("OBJECT, NO MOD, ENCODING INFERRED AS DEF")
 			this._objEncoded(strofr, def)
 		}
@@ -107,7 +109,7 @@ export class Strofer{
 			this._bufferEncoded(strofr, def)
 		}
 		else{
-			throw Error("LEAVE THIS TOMB FOR YOUR OWN GOOD")
+			throw new Error("LEAVE THIS TOMB FOR YOUR OWN GOOD")
 		}
 	}
 
@@ -126,7 +128,7 @@ export class Strofer{
 	}
 	//string array, single encoding mod
 	_stringArrayEncodedOrStringEncoded(strofr, mod){
-		if(!this.isArray(strofr)){return this.strofr.push(new Cell(strofr, mod))}
+		if(!this.isArray(strofr)){this.strofr= [this.newCell(strofr, mod)]}
 		var cells=[]
 
 		for(var i = 0; i<strofr.length; i++){
@@ -146,7 +148,6 @@ export class Strofer{
 
 		this.strofr=cells
 	}
-
 
 	//single string buffer decoded utf-32 (inferred), with code array for the string positions
 	_bufferEncodedArray(strofr, mod, def){
@@ -189,7 +190,6 @@ export class Strofer{
 		this._stringArrayEncodedOrStringEncoded(strofr, def);
 	}
 
-	
 	//array of objects, each stored with their own code mod
 	_arrayEncodedArray(strofr, mod){
 		var cells=[]
@@ -197,6 +197,7 @@ export class Strofer{
 			this.cells.push(this.newCell(strofr[i], mod[i]))
 		}
 	}
+
 	//array of objects all with same code
 	_arrayEncoded(strofr, mod){
 		var cells=[]
@@ -206,17 +207,21 @@ export class Strofer{
 	}
 
 
-	
-
 	isObj(strofr){
-		return (!this.isCell(strofr)&&!this.isRow(strofr)&&!this.isString(strofr)&&!this.isArray(strofr)&&!this.isBuffer(strofr)&&strofr)
+		return (!this.isCell(strofr)&&!this.isRow(strofr)&&!this.isString(strofr)&&!this.isArray(strofr)&&!this.isBuffer(strofr)&&strofr&&!Array.isArray(strofr))
 	}
+	
 	isSeparated(mod){ if(mod.includes('s:')){ return true } }
 
-	
 	sameLength(arr1, arr2){
 		if( this.isArray(arr1) && this.isArray(arr2) ){ return ( arr1.length == arr2.length ) }	
 	}
+	
+	aThingThatBreaksIt(strofr){
+		console.log("aThingThatBreaks", strofr)
+		if(strofr===[]){return true};
+	}
+
 	isBuffer(buff){ return Buffer.isBuffer(buff); }
 	
 	isBufferArray(arr){ 
@@ -254,6 +259,7 @@ export class Strofer{
 			return true
 		}
 	}
+	
 	isRow(strofr){
 		if(this.isArray(strofr)){
 			strofr.forEach((cell)=>{
@@ -262,6 +268,7 @@ export class Strofer{
 			return true
 		}
 	}
+	
 	isCell(cell){
 		if(cell instanceof Cell && cell.v && cell.t){
 			return true

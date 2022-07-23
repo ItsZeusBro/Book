@@ -1,8 +1,8 @@
 import {THE_ILIAD} from "../../Cases/Books/IndividualBooks/TheIliad.js"
-import {Strowfer} from "./Strofer.js"
+import {Strofer} from "./Strofer.js"
 import * as assert from "node:assert"
 
-class StrowferTest{
+class StroferTest{
 	constructor(){
 		// assert.doesNotThrow(
 		// 	()=>{
@@ -14,100 +14,119 @@ class StrowferTest{
 
 		// 	}
 		// )
-		this._StrowferErrors()
-		this._StrowferTypeChecks()
+		this._StroferErrors()
+		this._StroferTypeChecks()
 	}
 
-	_StrowferErrors(){
+	_StroferErrors(){
 		//THINGS THAT SHOULD BE AN ERROR
 		assert.throws(
 			()=>{
-				new Strowfer()
+				new Strofer()
 			},
-			"LEAVE THIS TOMB FOR YOUR OWN GOOD"
+			{
+				name: 'Error',
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+			}
+
 		)
 		assert.throws(
 			()=>{
-				new Strowfer([])
+				new Strofer([])
 			},
-			"LEAVE THIS TOMB FOR YOUR OWN GOOD"
+			{
+				name: 'Error',
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+			}
 		)
 		assert.throws(
 			()=>{
-				new Strowfer(false)
+				new Strofer(false)
 			},
-			"LEAVE THIS TOMB FOR YOUR OWN GOOD"
+			{
+				name: 'Error',
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+			}
 		)
 		assert.throws(
 			()=>{
-				new Strowfer(true, [])
+				new Strofer(true, [])
 			},
-			"LEAVE THIS TOMB FOR YOUR OWN GOOD"
+			{
+				name: 'Error',
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+			}
 		)
 
 		assert.throws(
 			()=>{
-				new Strowfer(true, true)
+				new Strofer(true, true)
 			},
-			"LEAVE THIS TOMB FOR YOUR OWN GOOD"
+			{
+				name: 'Error',
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+			}
 		)
 
 		assert.throws(
 			()=>{
-				new Strowfer([], 'utf-8')
+				new Strofer([], 'utf-8')
 			},
-			"LEAVE THIS TOMB FOR YOUR OWN GOOD"
+			{
+				name: 'Error',
+				message:"LEAVE THIS TOMB FOR YOUR OWN GOOD",
+			}
 		)
 	}
 
-	_StrowferTypeChecks(){
+	_StroferTypeChecks(){
 
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer(123))
+				assert.ok(new Strofer(123))
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer(0.04))
+				assert.ok(new Strofer(0.04))
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer(/somePattern/))
+				assert.ok(new Strofer(/somePattern/))
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer([1], ['utf-8']), "OBJECT ARRAY, ENCODING ARRAY MOD")
+				assert.ok(new Strofer([1], ['utf-8']), "OBJECT ARRAY, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer([1], 'utf-8'), "OBJECT ARRAY, SINGLE ENCODING MOD")
+				assert.ok(new Strofer([1], 'utf-8'), "OBJECT ARRAY, SINGLE ENCODING MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer([1]), "OBJECT ARRAY, NO MOD, ENCODING INFERRED AS DEF")
+				assert.ok(new Strofer([1]), "OBJECT ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer(['1'], ['utf-8']), "STRING ARRAY, ENCODING ARRAY MOD")
+				assert.ok(new Strofer(['1'], ['utf-8']), "STRING ARRAY, ENCODING ARRAY MOD")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer(['1']), "STRING ARRAY, NO MOD, ENCODING INFERRED AS DEF")
+				assert.ok(new Strofer(['1']), "STRING ARRAY, NO MOD, ENCODING INFERRED AS DEF")
 			}
 		)
 		assert.doesNotThrow(
 			()=>{
-				assert.ok(new Strowfer(['1'], 'utf-8'), "STRING ARRAY, SINGLE ENCODING MOD")
+				assert.ok(new Strofer(['1'], 'utf-8'), "STRING ARRAY, SINGLE ENCODING MOD")
 			}
 		)
 	}
 }
 
-new StrowferTest()
+new StroferTest()
