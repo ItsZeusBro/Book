@@ -102,31 +102,29 @@ export class Guard{
     }
     guard(v, schema, obj){
         var _nG;
-        for(var v_indx = 0; v_indx<v.length; v_indx++){
-            this.nextGuard(v, v_indx,  schema)
-        }
-        
+        this.nextGuard(v, 0,  schema)
     }
     nextGuard(v, v_indx, schema){
         if(this.isObjArray(schema)){
-            for (var i = 0; i<shcema.length; i++){
+            for (var i = 0; i<schema.length; i++){
                 var obj = schema[i]
-                console.log("OBJARR", obj)
-                // if (this.isNKeys(obj, 2)){
-                //     //terminal call (must return obj)
-                //     return [obj, 'terminal']
-                // }else{
-
-                // }
+                //if we pass the guard, recurse, else throw error
+                if()
+                this.nextGuard(v, v_indx+=1, obj)
             }
         }else if(this.isObj(schema)){
+            //if there is one key, pass the guard and recurse
+
+            //if there is two keys, call terminate()
+
+            //if there are three or more, throw schema error
             console.log("OBJ", schema)
         }else{
             throw Error('schema must be of type object or of type array')
         }
 
     }
-    terminal(v, strngOrObj){
+    terminate(v, strngOrObj){
 
     }  
 
