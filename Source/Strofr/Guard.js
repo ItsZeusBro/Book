@@ -108,15 +108,13 @@ export class Guard{
             //sometimes they are a default or function specifier
         //all functions are always values, but not every value is a function
             //sometimes they are a default variable  
-        var _nG = this.nextGuard(schema)
-
-        if(_nG[1]=='terminal'){
-            this.terminal(v, _nG[0])
-        }else if(_nG[1]=='non-terminal'){
-            _nG = this.nextGuard(_nG[0])
+            var _nG;
+        for(var i = 0; i<v.length; i++){
+            this.nextGuard(v, i,  schema)
         }
+        
     }
-    nextGuard(_v, schema){
+    nextGuard(v, i, schema){
         //takes the next v, and searches the schema for the next function
         //if not found, checks for terminal condition or returns false
         //if found calls it, and returns next portion of schema
@@ -130,15 +128,16 @@ export class Guard{
             //we are at a terminal, call terminal on the object
             for (var i = 0; i<shcema.length; i++){
                 var obj = schema[i]
-                if (this.isNKeys(obj, 2)){
-                    //terminal call (must return obj)
-                    return [obj, 'terminal']
-                }else{
+                console.log("OBJARR", obj)
+                // if (this.isNKeys(obj, 2)){
+                //     //terminal call (must return obj)
+                //     return [obj, 'terminal']
+                // }else{
 
-                }
+                // }
             }
         }else if(this.isObj(schema)){
-
+            console.log("OBJ", schema)
         }else{
             throw Error('schema must be of type object or of type array')
         }
