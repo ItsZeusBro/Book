@@ -1,74 +1,3 @@
-import {Cell} from "./Cell.js"
-//you cant have two optional variables with default behavior
-//at the same level in a subschema
-
-
-export const GUARDS=[
-        {
-                'isString':[
-                        {
-                                'isSeparator':[
-                                        {
-                                                'isEncoding': {
-                                                    'DEFAULT':'utf8',
-                                                    'FUNCTION': 'isStringIsSeparatorIsEncoding'
-                                                }    
-                                        }
-                                ]
-                        }, 
-                        {
-                                'isEncoding':{
-                                        'DEFAULT':'utf8',
-                                        'FUNCTION': 'isStringIsEncoding'
-                                }
-                        },
-                        {
-                                'isEncodingArray':'isStringIsEncodingArray'
-
-                        }   
-                ]
-        },
-        {
-                'isString':[
-                        {
-                                'isEncodingArray':'isStringIsEncodingArray'
-                        },
-                        {
-                                'isEncoding':{
-                                        'DEFAULT':'utf8',
-                                        'FUNCTION':'isStringIsEncoding'
-                                }
-                        }
-                ]
-        },
-        {
-                "isCell":[
-                        {
-                                'isEncoding':{
-                                        'DEFAULT':'utf8',
-                                        'FUNCTION': 'isCellIsEncoding'
-                                }
-                        }
-
-                ]
-        },       
-        {
-                "isCell":[
-                        {
-                                'isString':[
-
-                                        {
-                                            'DEFAULT':'utf8',
-                                            'FUNCTION': 'isRowIsEncoding'
-                                        }
-                                ]
-                        },
-                        {
-                                'isString':'isRowIsEncodingArray'
-                        }
-                ]
-        }
-]
 
 export class Guard{
     constructor(v, schema, obj, terminate=true){
@@ -115,7 +44,6 @@ export class Guard{
         this.didTerminate=true
         if(this.isString(schema[Object.keys(schema)[0]])){
             console.log("TERMINATE ON STRING", v, schema)
-
         }else{
             console.log("TERMINATE ON OBJECT", v, schema)
             if(this.callGuard(Object.keys(schema)[0], v[v.length-1])){
@@ -123,7 +51,6 @@ export class Guard{
                 this.buildTerminator(v, schema, false)
             }else{
                 console.log("callGuard does not pass on termination")
-                
                 this.buildTerminator(v, schema, true)
             }
         }
@@ -327,7 +254,7 @@ class someObj{
         console.log("isStringIsEncoding(", v, ")")
 
     }
-    isStringIsSeparatorIsEncoding(v){
+    isStringIsSeparatorIsEncoding(...v){
         console.log("WOOOOOHOOOOO!")
         console.log("isStringIsSeparatorIsEncoding(", v, ")")
 
