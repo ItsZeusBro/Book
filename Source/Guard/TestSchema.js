@@ -28,5 +28,8 @@ export const GUARD=[
             'DEFAULT':'utf8',
             'FUNCTION': 'isStringIsSeparatorIsEncoding'
         }    
+    },
+    {
+        'isEncoding':'isStringIsSeparatorIsEncoding' 
     }
 ]
