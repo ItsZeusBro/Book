@@ -103,20 +103,11 @@ export class Guard{
             if(this.isNKeys(schema, 1)){
                 console.log( "SCHEMA IS GUARD OBJECT")
                 console.log( v[v_indx], schema, '\n')
+                //if passGuard uses a terminating guard, it doesn't recurse, short circuits if condition
                 if(this.passGuard( v, v_indx, schema)){
                     //shrink obj
                     this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema))
                 }
-            }else if(this.isNKeys(schema, 2)){
-                console.log( "SCHEMA IS TERMINAL OBJECT")
-                if(v[v_indx]){
-                    throw Error("Reached Terminal Guard with extra paramters")
-                }else{
-
-                }
-                console.log( v[v_indx], schema, '\n')
-        //         //if there is two keys, call terminate()
-        //         this.terminate(schema)
             }else{
                 throw Error( "Schema error, should never have more than 1 key to a non terminating level and should never have more than 2 keys to a terminating level")
             }
@@ -128,11 +119,17 @@ export class Guard{
         }
 
     }
-    terminate( v, strngOrObj){
-
+    terminate(v, schema){
+        console.log("TERMINATING FUNCTION", v, schema, '\n\n\n\n\n\n')
     }  
 
-    passGuard( v, v_indx, schema){
+    passGuard(v, v_indx, schema){
+
+        //if there is a default in the schema, we treat it differently if it doesn't pass the guard
+        //we need to look ahead and see if this is a terminating guard
+        if(isTerminatingGuard(v, v_indx, schema)){
+            this.terminate
+        }
         console.log( "TRYING GUARD")
         //grab the key, and assume it is the guard function and call it
         console.log( Object.keys(schema)[0], '\n')
@@ -344,7 +341,7 @@ class someObj{
 }
 
 
-new Guard(["strng", "s:separator", "utf8", "something"], GUARDS,  new someObj())
+new Guard(["strng", "s:separator", "null"], GUARDS,  new someObj())
 
     //attributions
     //https://stackoverflow.com/questions/14636536/how-to-check-if-a-variable-is-an-integer-in-javascript
