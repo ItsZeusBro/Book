@@ -1,82 +1,75 @@
 import {Cell} from "./Cell.js"
-//you cant have two optional variables with default behavior
-//at the same level in a subschema
+
+class TestObj{
+    constructor(){
+
+    }
+
+    isStringIsEncodingArray(v){
+        console.log("isStringIsEncodingArray(", v, ")")
+    }
+    isStringIsEncoding(v){
+        console.log("isStringIsEncoding(", v, ")")
+
+    }
+    isStringIsSeparatorIsEncoding(...v){
+        console.log("WOOOOOHOOOOO!")
+        console.log("isStringIsSeparatorIsEncoding(", v, ")")
+
+    }
+    isStringIsEncoding(v){
+        console.log("isStringIsEncoding(", v, ")")
+
+    }
+    isStringIsEncodingArray(v){
+        console.log("isStringIsEncodingArray(", v, ")")
+
+    }
+    isBufferArrayIsEncodingArray(v){
+        console.log("isBufferArrayIsEncodingArray(", v, ")")
+
+    }
+    isBufferArrayIsEncoding(v){
+        console.log("isBufferArrayIsEncoding(", v, ")")
+
+    }
+    isBufferIsSeparator(v){
+        console.log("isBufferIsSeparator(", v, ")")
+
+    }
+    isBufferIsEncodingArray(v){
+        console.log("isBufferIsEncodingArray(", v, ")")
+
+    }
+    isBufferIsEncoding(v){
+        console.log("isBufferIsEncoding(", v, ")")
+
+    }
+    isBufferIsSeparator(v){
+        console.log("isBufferIsSeparator(", v, ")")
+
+    }
+    isBufferIsEncodingArray(v){
+        console.log("isBufferIsEncodingArray(", v, ")")
+
+    }
+    isBufferIsEncoding(v){
+        console.log("isBufferIsEncoding(", v, ")")
+
+    }
+    isCellIsEncoding(v){
+        console.log("isCellIsEncodings(", v, ")")
+
+    }
+    isRowIsEncoding(v){
+        console.log("isRowIsEncoding(", v, ")")
+
+    }
+    isRowIsEncodingArray(v){
+        console.log("isRowIsEncodingArray(", v, ")")
+
+    }
+}
 
 
-export const GUARDS=[
-        {
-                'isString':[
-                        {
-                                'isSeparator':[
-                                        {
-                                                'isEncoding': {
-                                                    'DEFAULT':'utf8',
-                                                    'FUNCTION': 'isStringIsSeparatorIsEncoding'
-                                                }    
-                                        }
-                                ]
-                        }, 
-                        {
-                                'isEncoding':{
-                                        'DEFAULT':'utf8',
-                                        'FUNCTION': 'isStringIsEncoding'
-                                }
-                        },
-                        {
-                                'isEncodingArray':'isStringIsEncodingArray'
-
-                        }   
-                ]
-        },
-        {
-                'isString':[
-                    {
-                        'isSeparator':[
-                                {
-                                        'isEncoding': {
-                                            'DEFAULT':'utf8',
-                                            'FUNCTION': 'isStringIsSeparatorIsEncoding'
-                                        }    
-                                }
-                        ]
-                    }, 
-                    {
-                            'isEncoding':{
-                                    'DEFAULT':'utf8',
-                                    'FUNCTION': 'isStringIsEncoding'
-                            }
-                    },
-                    {
-                            'isEncodingArray':'isStringIsEncodingArray'
-
-                    }   
-                ]
-        },
-        {
-                "isCell":[
-                        {
-                                'isEncoding':{
-                                        'DEFAULT':'utf8',
-                                        'FUNCTION': 'isCellIsEncoding'
-                                }
-                        }
-
-                ]
-        },       
-        {
-                "isCell":[
-                        {
-                                'isString':[
-
-                                        {
-                                            'DEFAULT':'utf8',
-                                            'FUNCTION': 'isRowIsEncoding'
-                                        }
-                                ]
-                        },
-                        {
-                                'isString':'isRowIsEncodingArray'
-                        }
-                ]
-        }
-]
+new Guard(["strng", "s:separator", "null"], GUARDS,  new someObj())
