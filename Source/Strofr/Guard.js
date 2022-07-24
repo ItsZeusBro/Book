@@ -5,7 +5,7 @@ import {Cell} from "./Cell.js"
 
 export const GUARDS=[
         {
-                'isStringArray':[
+                'isString':[
                         {
                                 'isEncodingArray':'isStringIsEncodingArray'
                         },
@@ -42,35 +42,6 @@ export const GUARDS=[
                 ]
         },
         {
-                "isBufferArray":[
-                        {
-                                'isEncodingArray':'isBufferArrayIsEncodingArray'
-                        },
-                        {
-                                'isEncoding':{
-                                        'DEFAULT':'utf-32',
-                                        'FUNCTION': 'isBufferArrayIsEncoding'
-                                }
-                        }
-                ]
-        },
-        {
-                "isBuffer":[
-                        {
-                                'isSeparator':'isBufferIsSeparator'
-                        },
-                        {
-                                'isEncodingArray':'isBufferIsEncodingArray'
-                        },
-                        {
-                                'isEncoding':{
-                                        'DEFAULT':'utf-32',
-                                        'FUNCTION': 'isBufferIsEncoding'
-                                }
-                        }
-                ]
-        },
-        {
                 "isCell":[
                         {
                                 'isEncoding':{
@@ -82,15 +53,18 @@ export const GUARDS=[
                 ]
         },       
         {
-                "isRow":[
+                "isCell":[
                         {
-                                'isEncoding':{
-                                        'DEFAULT':'utf-32',
-                                        'FUNCTION': 'isRowIsEncoding'
-                                }
+                                'isString':[
+
+                                        {
+                                            'DEFAULT':'utf-32',
+                                            'FUNCTION': 'isRowIsEncoding'
+                                        }
+                                ]
                         },
                         {
-                                'isEncodingArray':'isRowIsEncodingArray'
+                                'isString':'isRowIsEncodingArray'
                         }
                 ]
         }
@@ -102,6 +76,7 @@ export class Guard{
     }
     guard(v, schema, obj){
         var _nG;
+        //recursive function nextGuard() returns nothing. It succeeds at each level or throws an error
         this.nextGuard(v, 0,  schema)
     }
     nextGuard(v, v_indx, schema){
