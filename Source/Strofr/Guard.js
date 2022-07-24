@@ -1,16 +1,18 @@
 import {Cell} from "./Cell.js"
 //you cant have two optional variables with default behavior
 //at the same level in a subschema
-export const GUARD_MAP=[
+
+
+export const GUARDS=[
                     {
                             'isStringArray':[
                                     {
-                                        'isEncodingArray':'_stringEncodedArrayOrStringArrayEncodedArray'
+                                        'isEncodingArray':'isStringIsEncodingArray'
                                     },
                                     {
                                         'isEncoding':{
                                             'DEFAULT':'utf-32',
-                                            'FUNCTION':'_stringArrayEncodedOrStringEncoded'
+                                            'FUNCTION':'isStringIsEncoding'
                                         }
                                     }
                             ]
@@ -22,7 +24,7 @@ export const GUARD_MAP=[
                                                 {
                                                     'isEncoding': {
                                                         'DEFAULT':'utf-32',
-                                                        'FUNCTION': '_stringSeparated'
+                                                        'FUNCTION': 'isStringIsSeparatorIsEncoding'
                                                     }    
                                                 }
                                             ]
@@ -30,11 +32,11 @@ export const GUARD_MAP=[
                                     {
                                             'isEncoding':{
                                                 'DEFAULT':'utf-32',
-                                                'FUNCTION': '_stringSeparated'
+                                                'FUNCTION': 'isStringIsEncoding'
                                             }
                                     },
                                     {
-                                            'isEncodingArray':'_stringEncodedArrayOrStringArrayEncodedArray'
+                                            'isEncodingArray':'isStringIsEncodingArray'
 
                                     }   
                             ]
@@ -42,12 +44,12 @@ export const GUARD_MAP=[
                     {
                             "isBufferArray":[
                                     {
-                                            'isEncodingArray':'_bufferArrayEncodedArray'
+                                            'isEncodingArray':'isBufferArrayIsEncodingArray'
                                     },
                                     {
                                             'isEncoding':{
                                                 'DEFAULT':'utf-32',
-                                                'FUNCTION': '_bufferArrayEncoded'
+                                                'FUNCTION': 'isBufferArrayIsEncoding'
                                             }
                                     }
                             ]
@@ -55,15 +57,15 @@ export const GUARD_MAP=[
                     {
                             "isBuffer":[
                                     {
-                                        'isSeparator':'_bufferSeparated'
+                                        'isSeparator':'isBufferIsSeparator'
                                     },
                                     {
-                                        'isEncodingArray':'_bufferEncodedArray'
+                                        'isEncodingArray':'isBufferIsEncodingArray'
                                     },
                                     {
                                         'isEncoding':{
                                             'DEFAULT':'utf-32',
-                                            'FUNCTION': '_bufferEncoded'
+                                            'FUNCTION': 'isBufferIsEncoding'
                                         }
                                     }
                             ]
@@ -73,7 +75,7 @@ export const GUARD_MAP=[
                                 {
                                         'isEncoding':{
                                             'DEFAULT':'utf-32',
-                                            'FUNCTION': '_cellEncoding'
+                                            'FUNCTION': 'isCellIsEncoding'
                                         }
                                 }
 
@@ -84,11 +86,11 @@ export const GUARD_MAP=[
                             {
                                 'isEncoding':{
                                     'DEFAULT':'utf-32',
-                                    'FUNCTION': '_rowEncoding'
+                                    'FUNCTION': 'isRowIsEncoding'
                                 }
                             },
                             {
-                                'isEncodingArray':'_rowEncodedArray'
+                                'isEncodingArray':'isRowIsEncodingArray'
                             }
                         ]
                     }
@@ -96,55 +98,47 @@ export const GUARD_MAP=[
 
 
 export class Guard{
-    //attributions
-    //https://stackoverflow.com/questions/14636536/how-to-check-if-a-variable-is-an-integer-in-javascript
-    //https://stackoverflow.com/questions/8511281/check-if-a-value-is-an-object-in-javascript
-    //https://stackoverflow.com/questions/4059147/check-if-a-variable-is-a-string-in-javascript
-    //https://javascript.plainenglish.io/how-to-check-for-null-in-javascript-dffab64d8ed5
-    //https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript
-    //https://stackoverflow.com/questions/4339288/typeof-for-regexp
-    //https://bobbyhadz.com/blog/javascript-check-if-object-is-empty
+
     //v is just a schema that get passed in
     constructor(v, schema, obj){
         this.guard(v, schema, obj)
     }
     guard(v, schema, obj){
-        //we want to take in the schema to build a queue of typechecks leading to a helper function call
-        var queue=[]
-        //step 1:
-        queue = this.guardMap(v, queue, schema)
-        this.execute(v, queue)
-    }
-    execute(v, queue){
-        //console.log(v)
-        //console.log(queue)
-        //v is an array
-        //queue holds the operations
-        //This is another complex algorithm 
-    }
-    //base case is when the key yields an object or a string 
-    guardMap(v, queue, schema){
-        //step1:
-        //console.log(schema[0])
-        var _v = v.shift()
+        //all guards are always keys, but not every key is a guard
+            //sometimes they are a default or function specifier
+        //all functions are always values, but not every value is a function
+            //sometimes they are a default variable  
+        var _nG = this.nextGuard(schema)
+        if(_nG){
 
-        for(var i = 0; i<schema.length; i++){
-            var guard=schema[i];
-            console.log(guard)
-            if(this.callOn(Object.keys(guard)[0], _v)){
-                schema=schema[i][Object.keys(guard)[0]]
-                //console.log(schema)
-
-                i--;
-            }
-            //if the key of the object evaluates to true on _v
-            //reset schema to next function
-            //console.log(guard)
-            
-            _v = v.shift()
         }
-        return
     }
+    nextGuard(_v, schema){
+        //takes the next v, and searches the schema for the next function
+        //if not found, checks for terminal condition or returns false
+        //if found calls it, and returns next portion of schema
+    
+        //to find the next function in the schema do the following:
+        //if schema is an array, iterate over it, check all the objects
+        //for a key function that calls and returns true, then return subschema
+        //if not found, 
+        if(this.isObjArray(schema)){
+            for (var i = 0; i<shcema.length; i++){
+
+            }
+        }else if(this.isObj(schema)){
+
+        }else{
+            throw Error('schema must be of type object or of type array')
+        }
+
+    }
+    terminal(v, strngOrObj){
+        //this calls the relevant function and passes the relevant params
+        //if there is a default param in the terminating object, 
+        //it replaces the last v (variadic params)
+    }  
+
 
     callOn(func, _v){
         func+='('+'"' +_v + '"' + ')'
@@ -158,6 +152,8 @@ export class Guard{
 
 
 
+
+
     isNKeys(obj, n){
         return (Object.keys(obj).length==n)
     }
@@ -166,8 +162,6 @@ export class Guard{
 	isString(v){ 
         return (typeof v === 'string' || v instanceof String) 
     }
-
-
     isStringArray(v){ 
 		if(!this.isArray(v)){ return }
 		v.forEach( (e) => { if( !this.isString(e) ) { return } } );
@@ -219,7 +213,7 @@ export class Guard{
 
     isUndefined(v){ return (typeof v === "undefined" || v===undefined) }
 
-    isRegX(v){ return (v instanceof RegExp && v.constructor == RegExp) }
+    isRegX(v){ return (v instanceof RegExp || v.constructor == RegExp) }
 
     isArrayOfRegX(v){
         if(!this.isArray(v)) { return }
@@ -254,8 +248,6 @@ export class Guard{
 		}
 	}
 
-	
-
 	sameLength(...v){
 		if( this.isArray(arr1) && this.isArray(arr2) ){ return ( arr1.length == arr2.length ) }	
 	}
@@ -269,4 +261,87 @@ export class Guard{
     // }
 }
 
-new Guard(["strng", "s:separator", "utf-32"], GUARD_MAP, undefined)
+
+class someObj{
+    constructor(){
+
+    }
+
+    isStringIsEncodingArray(v){
+        console.log("isStringIsEncodingArray(", v, ")")
+    }
+    isStringIsEncoding(v){
+        console.log("isStringIsEncoding(", v, ")")
+
+    }
+    isStringIsSeparatorIsEncoding(v){
+        console.log("isStringIsSeparatorIsEncoding(", v, ")")
+
+    }
+    isStringIsEncoding(v){
+        console.log("isStringIsEncoding(", v, ")")
+
+    }
+    isStringIsEncodingArray(v){
+        console.log("isStringIsEncodingArray(", v, ")")
+
+    }
+    isBufferArrayIsEncodingArray(v){
+        console.log("isBufferArrayIsEncodingArray(", v, ")")
+
+    }
+    isBufferArrayIsEncoding(v){
+        console.log("isBufferArrayIsEncoding(", v, ")")
+
+    }
+    isBufferIsSeparator(v){
+        console.log("isBufferIsSeparator(", v, ")")
+
+    }
+    isBufferIsEncodingArray(v){
+        console.log("isBufferIsEncodingArray(", v, ")")
+
+    }
+    isBufferIsEncoding(v){
+        console.log("isBufferIsEncoding(", v, ")")
+
+    }
+    isBufferIsSeparator(v){
+        console.log("isBufferIsSeparator(", v, ")")
+
+    }
+    isBufferIsEncodingArray(v){
+        console.log("isBufferIsEncodingArray(", v, ")")
+
+    }
+    isBufferIsEncoding(v){
+        console.log("isBufferIsEncoding(", v, ")")
+
+    }
+    isCellIsEncoding(v){
+        console.log("isCellIsEncodings(", v, ")")
+
+    }
+    isRowIsEncoding(v){
+        console.log("isRowIsEncoding(", v, ")")
+
+    }
+    isRowIsEncodingArray(v){
+        console.log("isRowIsEncodingArray(", v, ")")
+
+    }
+}
+
+
+new Guard(["strng", "s:separator", "utf-32"], GUARDS,  new someObj())
+
+    //attributions
+    //https://stackoverflow.com/questions/14636536/how-to-check-if-a-variable-is-an-integer-in-javascript
+    //https://stackoverflow.com/questions/8511281/check-if-a-value-is-an-object-in-javascript
+    //https://stackoverflow.com/questions/4059147/check-if-a-variable-is-a-string-in-javascript
+    //https://javascript.plainenglish.io/how-to-check-for-null-in-javascript-dffab64d8ed5
+    //https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript
+    //https://stackoverflow.com/questions/4339288/typeof-for-regexp
+    //https://bobbyhadz.com/blog/javascript-check-if-object-is-empty
+
+    
