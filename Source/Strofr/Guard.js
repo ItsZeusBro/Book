@@ -74,14 +74,15 @@ export class Guard{
     constructor(v, schema, obj, terminate=true){
         this.terminate=terminate
         this.didTerminate=false
-        this.guard(v, 0, schema, obj)
+        this.obj=obj
+        this.guard(v, 0, schema)
     }
-    guard(v, v_indx, schema, obj){
+    guard(v, v_indx, schema){
         var _nG;
         try{
             for(var i = 0; i<schema.length; i++){
                 try {
-                    this.nextGuard(v, v_indx,  schema[i], obj)
+                    this.nextGuard(v, v_indx,  schema[i])
                     if(this.terminate&&this.didTerminate){
                         return
                     }
@@ -94,9 +95,9 @@ export class Guard{
         }
     }
 
-    nextGuard(v, v_indx, schema, obj){
+    nextGuard(v, v_indx, schema){
         if(this.isObjArray(schema)){
-            this.guard(v, v_indx, schema, obj)
+            this.guard(v, v_indx, schema)
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
                 if(this.passGuard( v, v_indx, schema)[0]){
@@ -112,7 +113,28 @@ export class Guard{
 
     terminatingGuard(v, schema){
         this.didTerminate=true
-        console.log("TERMINATE ON", v, schema)
+        if(this.isString(schema[Object.keys(schema)[0]])){
+            console.log("TERMINATE ON STRING", v, schema)
+
+        }else{
+            console.log("TERMINATE ON OBJECT", v, schema)
+            if(this.callGuard(Object.keys(schema)[0], v[v.length-1])){
+                console.log("callGuard passes on termination")
+            }else{
+                console.log("callGuard does not pass on termination")
+                
+                var func = schema[Object.keys(schema)[0]]['FUNCTION']
+                v.pop()
+                v.push(schema[Object.keys(schema)[0]]['DEFAULT'])
+                func='this.obj.'+func+'('+v+')'
+                console.log(func)
+                eval(func)
+            }
+        }
+        //if there is an associated object with the key
+        //we deal with terminating object
+        //if there is an associated string with the key
+        //we simply call that function on the provided object
     }  
 
 
@@ -148,11 +170,11 @@ export class Guard{
         }
     }
 
-    callGuard( func, _v){
+    callGuard(func, _v){
         try{
             func+='('+'"' +_v + '"' + ')'
             func='this.'+func
-    
+            console.log(func)
             if(eval(func)){
 
                 return true
@@ -290,6 +312,7 @@ class someObj{
 
     }
     isStringIsSeparatorIsEncoding(v){
+        console.log("WOOOOOHOOOOO!")
         console.log("isStringIsSeparatorIsEncoding(", v, ")")
 
     }
