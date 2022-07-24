@@ -22,5 +22,11 @@ export const GUARD=[
 
                     }   
             ]
+    },
+    {
+        'isEncoding': {
+            'DEFAULT':'utf8',
+            'FUNCTION': 'isStringIsSeparatorIsEncoding'
+        }    
     }
 ]
