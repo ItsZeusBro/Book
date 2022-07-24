@@ -109,6 +109,11 @@ export class Guard{
                 }
             }else if(this.isNKeys(schema, 2)){
                 console.log( "SCHEMA IS TERMINAL OBJECT")
+                if(v[v_indx]){
+                    throw Error("Reached Terminal Guard with extra paramters")
+                }else{
+
+                }
                 console.log( v[v_indx], schema, '\n')
         //         //if there is two keys, call terminate()
         //         this.terminate(schema)
@@ -339,7 +344,7 @@ class someObj{
 }
 
 
-new Guard(["strng", "s:separator", "utf8"], GUARDS,  new someObj())
+new Guard(["strng", "s:separator", "utf8", "something"], GUARDS,  new someObj())
 
     //attributions
     //https://stackoverflow.com/questions/14636536/how-to-check-if-a-variable-is-an-integer-in-javascript
