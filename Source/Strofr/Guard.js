@@ -72,16 +72,16 @@ export const GUARDS=[
 
 export class Guard{
     constructor(v, schema, obj){
-        this.guard(v, schema, obj)
+        this.guard(v, 0, schema, obj)
     }
-    guard(v, schema, obj){
+    guard(v, v_indx, schema, obj){
         var _nG;
         //recursive function nextGuard() returns nothing. It succeeds at each level or throws an error
        
         try{
             for(var i = 0; i<schema.length; i++){
                 try {
-                    this.nextGuard(v, 0,  schema[i])
+                    this.nextGuard(v, v_indx,  schema[i], obj)
                 }catch(err){
                     console.log(err)
                 }
@@ -92,18 +92,13 @@ export class Guard{
         
 
     }
-    nextGuard(v, v_indx, schema){
+    nextGuard(v, v_indx, schema, obj){
         if(this.isObjArray(schema)){
             console.log( "SCHEMA IS OBJECT ARRAY")
             console.log( v[v_indx], schema, '\n')
 
-        //     for (var i = 0; i<schema.length; i++){
-        //         //if we pass the guard, recurse, else throw error
-        //         if(this.passGuard(schema)){
-        //             //shrink obj
-        //             this.nextGuard(v, v_indx+=1, this.passGuard(schema))
-        //         }
-        //     }
+            this.guard(v, v_indx+1, schema, obj)
+
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
                 console.log( "SCHEMA IS GUARD OBJECT")
