@@ -72,7 +72,9 @@ export const GUARDS=[
 ]
 
 export class Guard{
-    constructor(v, schema, obj){
+    constructor(v, schema, obj, terminate=true){
+        this.terminate=terminate
+        this.didTerminate=false
         this.guard(v, 0, schema, obj)
     }
     guard(v, v_indx, schema, obj){
@@ -83,6 +85,9 @@ export class Guard{
             for(var i = 0; i<schema.length; i++){
                 try {
                     this.nextGuard(v, v_indx,  schema[i], obj)
+                    if(this.terminate&&this.didTerminate){
+                        return
+                    }
                 }catch(err){
                     console.log(err)
                 }
@@ -107,6 +112,9 @@ export class Guard{
                 if(this.passGuard( v, v_indx, schema)){
                     //if the whole program returns true, this would recurse!
                     //shrink obj
+                    if(this.terminate && this.didTerminate){
+                        return
+                    }
                     this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema))
                 }
             }else{
