@@ -120,15 +120,11 @@ export class Guard{
             console.log("TERMINATE ON OBJECT", v, schema)
             if(this.callGuard(Object.keys(schema)[0], v[v.length-1])){
                 console.log("callGuard passes on termination")
+                this.buildTerminator(v, schema, false)
             }else{
                 console.log("callGuard does not pass on termination")
                 
-                var func = schema[Object.keys(schema)[0]]['FUNCTION']
-                v.pop()
-                v.push(schema[Object.keys(schema)[0]]['DEFAULT'])
-                func='this.obj.'+func+'('+v+')'
-                console.log(func)
-                eval(func)
+                this.buildTerminator(v, schema, true)
             }
         }
         //if there is an associated object with the key
@@ -137,6 +133,26 @@ export class Guard{
         //we simply call that function on the provided object
     }  
 
+    buildTerminator(v, schema, deflt){
+        var func = schema[Object.keys(schema)[0]]['FUNCTION']
+        func='this.obj.'+func+'('
+
+        if(deflt){
+            v.pop()
+            v.push(schema[Object.keys(schema)[0]]['DEFAULT'])
+        }
+        v.forEach((_v)=>{
+            if(this.isString(_v)){
+                func+="'"+_v+"'"+','
+            }else{
+                func+=_v+','
+            }
+        })
+        func = func.substring(0, func.length-1)
+        func+=')'
+        console.log(func)
+        eval(func)
+    }
 
     isTerminatingGuard(schema){
         var objKeys = Object.keys(schema)
