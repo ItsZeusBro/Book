@@ -4,19 +4,7 @@ import {Cell} from "./Cell.js"
 
 
 export const GUARDS=[
-        {
-                'isString':[
-                        {
-                                'isEncodingArray':'isStringIsEncodingArray'
-                        },
-                        {
-                                'isEncoding':{
-                                        'DEFAULT':'utf-32',
-                                        'FUNCTION':'isStringIsEncoding'
-                                }
-                        }
-                ]
-        },
+
         {
                 'isString':[
                         {
@@ -39,6 +27,19 @@ export const GUARDS=[
                                 'isEncodingArray':'isStringIsEncodingArray'
 
                         }   
+                ]
+        },
+        {
+                'isString':[
+                        {
+                                'isEncodingArray':'isStringIsEncodingArray'
+                        },
+                        {
+                                'isEncoding':{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION':'isStringIsEncoding'
+                                }
+                        }
                 ]
         },
         {
@@ -89,15 +90,14 @@ export class Guard{
         }catch{
 
         }
-        
-
     }
+
     nextGuard(v, v_indx, schema, obj){
         if(this.isObjArray(schema)){
             console.log( "SCHEMA IS OBJECT ARRAY")
             console.log( v[v_indx], schema, '\n')
 
-            this.guard(v, v_indx+1, schema, obj)
+            this.guard(v, v_indx, schema, obj)
 
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
