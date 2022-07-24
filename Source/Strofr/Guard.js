@@ -4,128 +4,111 @@ import {Cell} from "./Cell.js"
 
 
 export const GUARDS=[
-                    {
-                            'isStringArray':[
-                                    {
-                                        'isEncodingArray':'isStringIsEncodingArray'
-                                    },
-                                    {
-                                        'isEncoding':{
-                                            'DEFAULT':'utf-32',
-                                            'FUNCTION':'isStringIsEncoding'
-                                        }
-                                    }
-                            ]
-                    },
-                    {
-                            'isString':[
-                                    {
-                                            'isSeparator':[
-                                                {
-                                                    'isEncoding': {
-                                                        'DEFAULT':'utf-32',
-                                                        'FUNCTION': 'isStringIsSeparatorIsEncoding'
-                                                    }    
-                                                }
-                                            ]
-                                    }, 
-                                    {
-                                            'isEncoding':{
-                                                'DEFAULT':'utf-32',
-                                                'FUNCTION': 'isStringIsEncoding'
-                                            }
-                                    },
-                                    {
-                                            'isEncodingArray':'isStringIsEncodingArray'
-
-                                    }   
-                            ]
-                    },
-                    {
-                            "isBufferArray":[
-                                    {
-                                            'isEncodingArray':'isBufferArrayIsEncodingArray'
-                                    },
-                                    {
-                                            'isEncoding':{
-                                                'DEFAULT':'utf-32',
-                                                'FUNCTION': 'isBufferArrayIsEncoding'
-                                            }
-                                    }
-                            ]
-                    },
-                    {
-                            "isBuffer":[
-                                    {
-                                        'isSeparator':'isBufferIsSeparator'
-                                    },
-                                    {
-                                        'isEncodingArray':'isBufferIsEncodingArray'
-                                    },
-                                    {
-                                        'isEncoding':{
-                                            'DEFAULT':'utf-32',
-                                            'FUNCTION': 'isBufferIsEncoding'
-                                        }
-                                    }
-                            ]
-                    },
-                    {
-                            "isCell":[
-                                {
-                                        'isEncoding':{
-                                            'DEFAULT':'utf-32',
-                                            'FUNCTION': 'isCellIsEncoding'
-                                        }
-                                }
-
-                            ]
-                    },       
-                    {
-                        "isRow":[
-                            {
+        {
+                'isStringArray':[
+                        {
+                                'isEncodingArray':'isStringIsEncodingArray'
+                        },
+                        {
                                 'isEncoding':{
-                                    'DEFAULT':'utf-32',
-                                    'FUNCTION': 'isRowIsEncoding'
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION':'isStringIsEncoding'
                                 }
-                            },
-                            {
-                                'isEncodingArray':'isRowIsEncodingArray'
-                            }
-                        ]
-                    }
-    ]
+                        }
+                ]
+        },
+        {
+                'isString':[
+                        {
+                                'isSeparator':[
+                                        {
+                                                'isEncoding': {
+                                                    'DEFAULT':'utf-32',
+                                                    'FUNCTION': 'isStringIsSeparatorIsEncoding'
+                                                }    
+                                        }
+                                ]
+                        }, 
+                        {
+                                'isEncoding':{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION': 'isStringIsEncoding'
+                                }
+                        },
+                        {
+                                'isEncodingArray':'isStringIsEncodingArray'
 
+                        }   
+                ]
+        },
+        {
+                "isBufferArray":[
+                        {
+                                'isEncodingArray':'isBufferArrayIsEncodingArray'
+                        },
+                        {
+                                'isEncoding':{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION': 'isBufferArrayIsEncoding'
+                                }
+                        }
+                ]
+        },
+        {
+                "isBuffer":[
+                        {
+                                'isSeparator':'isBufferIsSeparator'
+                        },
+                        {
+                                'isEncodingArray':'isBufferIsEncodingArray'
+                        },
+                        {
+                                'isEncoding':{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION': 'isBufferIsEncoding'
+                                }
+                        }
+                ]
+        },
+        {
+                "isCell":[
+                        {
+                                'isEncoding':{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION': 'isCellIsEncoding'
+                                }
+                        }
+
+                ]
+        },       
+        {
+                "isRow":[
+                        {
+                                'isEncoding':{
+                                        'DEFAULT':'utf-32',
+                                        'FUNCTION': 'isRowIsEncoding'
+                                }
+                        },
+                        {
+                                'isEncodingArray':'isRowIsEncodingArray'
+                        }
+                ]
+        }
+]
 
 export class Guard{
-
-    //v is just a schema that get passed in
     constructor(v, schema, obj){
         this.guard(v, schema, obj)
     }
     guard(v, schema, obj){
-        //all guards are always keys, but not every key is a guard
-            //sometimes they are a default or function specifier
-        //all functions are always values, but not every value is a function
-            //sometimes they are a default variable  
-            var _nG;
-        for(var i = 0; i<v.length; i++){
-            this.nextGuard(v, i,  schema)
+        var _nG;
+        for(var v_indx = 0; v_indx<v.length; v_indx++){
+            this.nextGuard(v, v_indx,  schema)
         }
         
     }
-    nextGuard(v, i, schema){
-        //takes the next v, and searches the schema for the next function
-        //if not found, checks for terminal condition or returns false
-        //if found calls it, and returns next portion of schema
-    
-        //to find the next function in the schema do the following:
-        //if schema is an array, iterate over it, check all the objects
-        //for a key function that calls and returns true, then return subschema
-        //if not found, 
+    nextGuard(v, v_indx, schema){
         if(this.isObjArray(schema)){
-            //iterate through it, if there is more than one key on an object
-            //we are at a terminal, call terminal on the object
             for (var i = 0; i<shcema.length; i++){
                 var obj = schema[i]
                 console.log("OBJARR", obj)
@@ -144,9 +127,7 @@ export class Guard{
 
     }
     terminal(v, strngOrObj){
-        //this calls the relevant function and passes the relevant params
-        //if there is a default param in the terminating object, 
-        //it replaces the last v (variadic params)
+
     }  
 
 
