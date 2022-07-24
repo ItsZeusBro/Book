@@ -8,21 +8,15 @@ export class Guard{
     }
 
     guard(v, v_indx, schema){
-        var _nG;
-        try{
             for(var i = 0; i<schema.length; i++){
                 try {
                     this.nextGuard(v, v_indx,  schema[i])
-                    if(this.terminate&&this.didTerminate){
-                        return
-                    }
+                    // if(this.terminate&&this.didTerminate){
+                    //     return
+                    // }
                 }catch(err){
                 }
-
             }
-        }catch{
-
-        }
     }
 
     nextGuard(v, v_indx, schema){
@@ -30,7 +24,7 @@ export class Guard{
             this.guard(v, v_indx, schema)
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
-                console.log("CALLING GUARD ON", v, v_indx, schema)
+                //console.log("CALLING GUARD ON", v, v_indx, schema)
                 if(this.passGuard( v, v_indx, schema)[0]){
                     this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema)[1])
                 }
@@ -107,6 +101,7 @@ export class Guard{
 
     callGuard(func, _v){
         try{
+            //this needs to be fixed for types that are not strings
             func+='('+'"' +_v + '"' + ')'
             func='this.'+func
             console.log(func)
