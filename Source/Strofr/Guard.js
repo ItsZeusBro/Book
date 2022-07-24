@@ -94,8 +94,8 @@ export class Guard{
     }
     nextGuard(v, v_indx, schema){
         if(this.isObjArray(schema)){
-            console.log("SCHEMA IS OBJECT ARRAY")
-            console.log(v[v_indx], schema, '\n\n\n\n')
+            console.log( "SCHEMA IS OBJECT ARRAY")
+            console.log( v[v_indx], schema, '\n')
 
         //     for (var i = 0; i<schema.length; i++){
         //         //if we pass the guard, recurse, else throw error
@@ -106,49 +106,54 @@ export class Guard{
         //     }
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
-                console.log("SCHEMA IS GUARD OBJECT")
-                console.log(v[v_indx], schema, '\n\n')
-                if(this.passGuard(v, v_indx, schema)){
+                console.log( "SCHEMA IS GUARD OBJECT")
+                console.log( v[v_indx], schema, '\n')
+                if(this.passGuard( v, v_indx, schema)){
                     //shrink obj
-                    this.nextGuard(v, v_indx+1, this.passGuard(v, v_indx, schema))
+                    this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema))
                 }
             }else if(this.isNKeys(schema, 2)){
-                console.log("SCHEMA IS TERMINAL OBJECT")
-                console.log(v[v_indx], schema, '\n\n')
+                console.log( "SCHEMA IS TERMINAL OBJECT")
+                console.log( v[v_indx], schema, '\n')
         //         //if there is two keys, call terminate()
         //         this.terminate(schema)
             }else{
-                throw Error("Schema error, should never have more than 1 key to a non terminating level and should never have more than 2 keys to a terminating level")
+                throw Error( "Schema error, should never have more than 1 key to a non terminating level and should never have more than 2 keys to a terminating level")
             }
 
         //     //if there are three or more, throw schema error
         //     console.log("OBJ", schema)
         }else{
-            throw Error('schema must be of type object or of type array')
+            throw Error( 'schema must be of type object or of type array')
         }
 
     }
-    terminate(v, strngOrObj){
+    terminate( v, strngOrObj){
 
     }  
 
-    passGuard(v, v_indx, schema){
-        console.log("PASS GUARD")
+    passGuard( v, v_indx, schema){
+        console.log( "TRYING GUARD")
         //grab the key, and assume it is the guard function and call it
-        console.log(Object.keys(schema)[0], '\n\n')
-        this.callOn(Object.keys(schema)[0], v[v_indx])
+        console.log( Object.keys(schema)[0], '\n')
+        this.callGuard( Object.keys(schema)[0], v[v_indx])
+        return schema[Object.keys(schema)[0]]
     }
-    callOn(func, _v){
-        func+='('+'"' +_v + '"' + ')'
-        func='this.'+func
-        console.log("CALL ON", func, '\n\n\n\n')
-
-        if(eval(func)){
-            return true
-        }else{
-            throw Error("Did not pass guard", func)
+    callGuard( func, _v){
+        try{
+            func+='('+'"' +_v + '"' + ')'
+            func='this.'+func
+            console.log( "CALLING GUARD", func, '\n')
+    
+            if(eval(func)){
+                console.log( "PASSED GUARD", func, '\n\n\n\n')
+                return true
+            }else{
+                throw Error( "Did not pass guard", func)
+            }
+        }catch{
+            throw Error( "Cannot Call Guard function, Check Schema")
         }
-
     }
     
 
