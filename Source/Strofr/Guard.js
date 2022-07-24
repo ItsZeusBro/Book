@@ -4,7 +4,6 @@ import {Cell} from "./Cell.js"
 
 
 export const GUARDS=[
-
         {
                 'isString':[
                         {
@@ -79,7 +78,6 @@ export class Guard{
     }
     guard(v, v_indx, schema, obj){
         var _nG;
-        //recursive function nextGuard() returns nothing. It succeeds at each level or throws an error
        
         try{
             for(var i = 0; i<schema.length; i++){
@@ -89,7 +87,7 @@ export class Guard{
                         return
                     }
                 }catch(err){
-                    console.log(err)
+                    //console.log(err)
                 }
             }
         }catch{
@@ -99,62 +97,56 @@ export class Guard{
 
     nextGuard(v, v_indx, schema, obj){
         if(this.isObjArray(schema)){
-            console.log( "SCHEMA IS OBJECT ARRAY")
-            console.log( v[v_indx], schema, '\n')
 
             this.guard(v, v_indx, schema, obj)
 
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
-                console.log( "SCHEMA IS GUARD OBJECT")
-                console.log( v[v_indx], schema, '\n')
                 //if passGuard uses a terminating guard, it doesn't recurse, short circuits if condition
                 if(this.passGuard( v, v_indx, schema)){
-                    //if the whole program returns true, this would recurse!
-                    //shrink obj
+
                     if(this.terminate && this.didTerminate){
                         return
                     }else{
+                        //if the whole program returns true after this.passGuard and this.terminate=false, this would recurse!
                         this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema))
                     }
                 }
             }else{
                 throw Error( "Schema error, should never have more than 1 key to a non terminating level and should never have more than 2 keys to a terminating level")
             }
-
-        //     //if there are three or more, throw schema error
-        //     console.log("OBJ", schema)
         }else{
             throw Error( 'schema must be of type object or of type array')
         }
-
     }
-    terminate(v, schema){
+
+    terminate(v, v_indx, schema){
         this.didTerminate=true
-        console.log("TERMINATING FUNCTION", v, schema, '\n\n\n\n\n\n')
     }  
+    isTerminatingGuard(v, v_indx, schema){
+    }
 
     passGuard(v, v_indx, schema){
 
         //if there is a default in the schema, we treat it differently if it doesn't pass the guard
         //we need to look ahead and see if this is a terminating guard
-        if(isTerminatingGuard(v, v_indx, schema)){
-            this.terminate
+        if(this.isTerminatingGuard(v, v_indx, schema)){
+            console.log("IS TERMINATING GUARD", v, v_indx, schema)
+
+            this.terminate(v, v_indx, schema)
         }
-        console.log( "TRYING GUARD")
         //grab the key, and assume it is the guard function and call it
-        console.log( Object.keys(schema)[0], '\n')
         this.callGuard( Object.keys(schema)[0], v[v_indx])
         return schema[Object.keys(schema)[0]]
     }
+
     callGuard( func, _v){
         try{
             func+='('+'"' +_v + '"' + ')'
             func='this.'+func
-            console.log( "CALLING GUARD", func, '\n')
     
             if(eval(func)){
-                console.log( "PASSED GUARD", func, '\n\n\n\n')
+                console.log( "PASSED GUARD", func)
                 return true
             }else{
                 throw Error( "Did not pass guard", func)
@@ -164,10 +156,6 @@ export class Guard{
         }
     }
     
-
-
-
-
 
 
     isNKeys(obj, n){
