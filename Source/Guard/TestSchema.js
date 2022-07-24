@@ -24,12 +24,40 @@ export const GUARD=[
             ]
     },
     {
-        'isEncoding': {
-            'DEFAULT':'utf8',
-            'FUNCTION': 'isStringIsSeparatorIsEncoding'
-        }    
+            'isInteger':[
+                    {
+                            'isInteger': {
+                                'DEFAULT':10,
+                                'FUNCTION': 'isIntegerIsInteger'
+                            }    
+                    },
+
+                    {
+                            'isString':{
+                                "DEFAULT":"",
+                                "FUNCTION": 'isIntegerIsString'
+                            }
+                    },
+                    {
+                            'isIntegerArray':{
+                                "DEFAULT":[],
+                                "FUNCTION": 'isIntegerIsIntegerArray'
+                            }
+                    },
+                    {
+                            'isArray':[
+                                    {
+                                        'isArray':"isIntegerIsArrayIsArray"
+                                    },
+                                    {
+                                        'isString':"isIntegerIsArrayIsString"
+                                    }
+                            ]
+                    },
+        ]
+            
     },
     {
-        'isEncoding':'isStringIsSeparatorIsEncoding' 
+            'isArray':'isStringIsSeparatorIsEncoding' 
     }
 ]

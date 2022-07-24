@@ -1,5 +1,5 @@
 import {Cell} from "./Cell.js"
-
+import {GUARD} from "./TestSchema.js"
 class TestObj{
     constructor(){
 
@@ -13,7 +13,6 @@ class TestObj{
 
     }
     isStringIsSeparatorIsEncoding(...v){
-        console.log("WOOOOOHOOOOO!")
         console.log("isStringIsSeparatorIsEncoding(", v, ")")
 
     }

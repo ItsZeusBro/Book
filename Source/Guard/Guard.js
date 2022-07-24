@@ -1,4 +1,3 @@
-
 export class Guard{
     constructor(v, schema, obj, terminate=true){
         this.terminate=terminate
