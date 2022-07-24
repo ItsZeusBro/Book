@@ -105,6 +105,7 @@ export class Guard{
                 console.log( v[v_indx], schema, '\n')
                 //if passGuard uses a terminating guard, it doesn't recurse, short circuits if condition
                 if(this.passGuard( v, v_indx, schema)){
+                    //if the whole program returns true, this would recurse!
                     //shrink obj
                     this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema))
                 }
