@@ -114,8 +114,9 @@ export class Guard{
                     //shrink obj
                     if(this.terminate && this.didTerminate){
                         return
+                    }else{
+                        this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema))
                     }
-                    this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema))
                 }
             }else{
                 throw Error( "Schema error, should never have more than 1 key to a non terminating level and should never have more than 2 keys to a terminating level")
@@ -129,6 +130,7 @@ export class Guard{
 
     }
     terminate(v, schema){
+        this.didTerminate=true
         console.log("TERMINATING FUNCTION", v, schema, '\n\n\n\n\n\n')
     }  
 
