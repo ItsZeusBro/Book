@@ -1,12 +1,93 @@
-import {Cell} from "./Cell.js"
-import {GUARD} from "./TestSchema.js"
+export const GUARD=[
+    {
+            'isString':[
+                    {
+                            'isSeparator':[
+                                    {
+                                            'isEncoding': {
+                                                'DEFAULT':'utf8',
+                                                'FUNCTION': 'isStringIsSeparatorIsEncoding'
+                                            }    
+                                    }
+                            ]
+                    }, 
+                    {
+                            'isEncoding':{
+                                    'DEFAULT':'utf8',
+                                    'FUNCTION': 'isStringIsEncoding'
+                            }
+                    },
+                    {
+                            'isEncodingArray':'isStringIsEncodingArray'
+                    }   
+            ]
+    },
+    {
+            'isInteger':[
+                    {
+                            'isInteger': {
+                                'DEFAULT':10,
+                                'FUNCTION': 'isIntegerIsInteger'
+                            }    
+                    },
+
+                    {
+                            'isString':{
+                                "DEFAULT":"",
+                                "FUNCTION": 'isIntegerIsString'
+                            }
+                    },
+                    {
+                            'isIntegerArray':{
+                                "DEFAULT":[],
+                                "FUNCTION": 'isIntegerIsIntegerArray'
+                            }
+                    },
+                    {
+                            'isArray':[
+                                    {
+                                        'isArray':"isIntegerIsArrayIsArray"
+                                    },
+                                    {
+                                        'isString':"isIntegerIsArrayIsString"
+                                    }
+                            ]
+                    },
+        ]
+            
+    },
+    {
+            'isArray':'isStringIsSeparatorIsEncoding' 
+    }
+]
+
 class TestObj{
-    constructor(){
+    constructor(...v){
+        new Guard(v, GUARDS,  this)
 
     }
 
-    isStringIsEncodingArray(...v){
-        console.log("isStringIsEncodingArray(", v, ")")
+    isString(...v){
+
+        console.log("isString(", v, ")")
+
+    }
+    isStringIsString(...v){
+        console.log("isStringIsString(", v, ")")
+
+    }
+    isStringIsStringIsInt(...v){
+        console.log("isStringIsStringIsInt(", v, ")")
+
+    }
+    isStringIsIntIsString(...v){
+        console.log("isStringIsIntIsString(", v, ")")
+
+    }
+
+    isStringIsIntIsInt(...v){
+        console.log("isStringIsIntIsInt(", v, ")")
+
     }
     isStringIsEncoding(...v){
         console.log("isStringIsEncoding(", v, ")")
@@ -14,61 +95,22 @@ class TestObj{
     }
     isStringIsSeparatorIsEncoding(...v){
         console.log("isStringIsSeparatorIsEncoding(", v, ")")
-
     }
-    isStringIsEncoding(...v){
-        console.log("isStringIsEncoding(", v, ")")
+    
 
+    isStringIsSeparatorIsEncoding(...v){
+        console.log("isStringIsSeparatorIsEncoding(", v, ")")
     }
-    isStringIsEncodingArray(...v){
-        console.log("isStringIsEncodingArray(", v, ")")
+    
+}
 
+class Test{
+    constructor(){
+        this.constructorTests()
     }
-    isBufferArrayIsEncodingArray(...v){
-        console.log("isBufferArrayIsEncodingArray(", v, ")")
 
-    }
-    isBufferArrayIsEncoding(...v){
-        console.log("isBufferArrayIsEncoding(", v, ")")
-
-    }
-    isBufferIsSeparator(...v){
-        console.log("isBufferIsSeparator(", v, ")")
-
-    }
-    isBufferIsEncodingArray(...v){
-        console.log("isBufferIsEncodingArray(", v, ")")
-
-    }
-    isBufferIsEncoding(...v){
-        console.log("isBufferIsEncoding(", v, ")")
-
-    }
-    isBufferIsSeparator(...v){
-        console.log("isBufferIsSeparator(", v, ")")
-
-    }
-    isBufferIsEncodingArray(...v){
-        console.log("isBufferIsEncodingArray(", v, ")")
-
-    }
-    isBufferIsEncoding(...v){
-        console.log("isBufferIsEncoding(", v, ")")
-
-    }
-    isCellIsEncoding(...v){
-        console.log("isCellIsEncodings(", v, ")")
-
-    }
-    isRowIsEncoding(...v){
-        console.log("isRowIsEncoding(", v, ")")
-
-    }
-    isRowIsEncodingArray(...v){
-        console.log("isRowIsEncodingArray(", v, ")")
-
+    constructorTests(){
+        new TestObj()
     }
 }
 
-
-new Guard(["strng", "s:separator", "null"], GUARDS,  new someObj())
