@@ -109,8 +109,11 @@ export class Guard{
         //all functions are always values, but not every value is a function
             //sometimes they are a default variable  
         var _nG = this.nextGuard(schema)
-        if(_nG){
 
+        if(_nG[1]=='terminal'){
+            this.terminal(v, _nG[0])
+        }else if(_nG[1]=='non-terminal'){
+            _nG = this.nextGuard(_nG[0])
         }
     }
     nextGuard(_v, schema){
@@ -123,8 +126,16 @@ export class Guard{
         //for a key function that calls and returns true, then return subschema
         //if not found, 
         if(this.isObjArray(schema)){
+            //iterate through it, if there is more than one key on an object
+            //we are at a terminal, call terminal on the object
             for (var i = 0; i<shcema.length; i++){
+                var obj = schema[i]
+                if (this.isNKeys(obj, 2)){
+                    //terminal call (must return obj)
+                    return [obj, 'terminal']
+                }else{
 
+                }
             }
         }else if(this.isObj(schema)){
 
@@ -156,6 +167,9 @@ export class Guard{
 
     isNKeys(obj, n){
         return (Object.keys(obj).length==n)
+    }
+    greaterThanNKeys(obj, n){
+        return (Object.keys(obj).length>n)
     }
     isArray(v){ return ((Array.isArray(v)) && v.length) }
 
