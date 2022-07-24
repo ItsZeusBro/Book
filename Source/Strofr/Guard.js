@@ -107,17 +107,25 @@ export class Guard{
     nextGuard(v, v_indx, schema){
         if(this.isObjArray(schema)){
             for (var i = 0; i<schema.length; i++){
-                var obj = schema[i]
                 //if we pass the guard, recurse, else throw error
-                if(this.passGuard(obj)){
+                if(this.passGuard(schema)){
                     //shrink obj
-                    this.nextGuard(v, v_indx+=1, this.passGuard(obj))
+                    this.nextGuard(v, v_indx+=1, this.passGuard(schema))
                 }
             }
         }else if(this.isObj(schema)){
             //if there is one key, pass the guard and recurse
-
-            //if there is two keys, call terminate()
+            if(this.isNKeys(schema, 1)){
+                if(this.passGuard(schema)){
+                    //shrink obj
+                    this.nextGuard(v, v_indx+=1, this.passGuard(schema))
+                }
+            }else if(this.isNKeys(schema, 2)){
+                //if there is two keys, call terminate()
+                this.terminate(schema)
+            }else{
+                throw Error("Schema error, should never have more than 1 key to a non terminating level and should never have more than 2 keys to a terminating level")
+            }
 
             //if there are three or more, throw schema error
             console.log("OBJ", schema)
