@@ -6,6 +6,7 @@ export class Guard{
         this.obj=obj
         this.guard(v, 0, schema)
     }
+
     guard(v, v_indx, schema){
         var _nG;
         try{
@@ -29,6 +30,7 @@ export class Guard{
             this.guard(v, v_indx, schema)
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
+                console.log("CALLING GUARD ON", v, v_indx, schema)
                 if(this.passGuard( v, v_indx, schema)[0]){
                     this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema)[1])
                 }
@@ -43,21 +45,13 @@ export class Guard{
     terminatingGuard(v, schema){
         this.didTerminate=true
         if(this.isString(schema[Object.keys(schema)[0]])){
-            console.log("TERMINATE ON STRING", v, schema)
         }else{
-            console.log("TERMINATE ON OBJECT", v, schema)
             if(this.callGuard(Object.keys(schema)[0], v[v.length-1])){
-                console.log("callGuard passes on termination")
                 this.buildTerminator(v, schema, false)
             }else{
-                console.log("callGuard does not pass on termination")
                 this.buildTerminator(v, schema, true)
             }
         }
-        //if there is an associated object with the key
-        //we deal with terminating object
-        //if there is an associated string with the key
-        //we simply call that function on the provided object
     }  
 
     buildTerminator(v, schema, deflt){
@@ -85,7 +79,6 @@ export class Guard{
         var objKeys = Object.keys(schema)
         if(objKeys.length==1){
             if(this.isObj(schema[objKeys[0]])){
-
                 var obj = schema[objKeys[0]]
                 if(Object.keys(obj).length==2){
                     if(this.isString(obj['DEFAULT']) && this.isString(obj['FUNCTION'])){
@@ -106,7 +99,6 @@ export class Guard{
 
     passGuard(v, v_indx, schema){
         if(this.isTerminatingGuard(schema)){
-            console.log("TERMINATING GUARD", schema)
             this.terminatingGuard(v, schema)
         }else{
             return [this.callGuard( Object.keys(schema)[0], v[v_indx]) , schema[Object.keys(schema)[0]]]
@@ -129,8 +121,6 @@ export class Guard{
         }
     }
     
-
-
     isNKeys(obj, n){
         return (Object.keys(obj).length==n)
     }
