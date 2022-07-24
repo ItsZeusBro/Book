@@ -78,17 +78,18 @@ export class Guard{
     }
     guard(v, v_indx, schema, obj){
         var _nG;
-       
         try{
             for(var i = 0; i<schema.length; i++){
                 try {
-                    //console.log(schema[i],'\n\n\n\n')
+                    console.log(schema[i])
                     this.nextGuard(v, v_indx,  schema[i], obj)
+                    console.log('\n\n\n\n')
                     if(this.terminate&&this.didTerminate){
                         return
                     }
                 }catch(err){
                 }
+
             }
         }catch{
 
@@ -97,20 +98,12 @@ export class Guard{
 
     nextGuard(v, v_indx, schema, obj){
         if(this.isObjArray(schema)){
-
             this.guard(v, v_indx, schema, obj)
-
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
-                //if passGuard uses a terminating guard, it doesn't recurse, short circuits if condition
                 if(this.passGuard( v, v_indx, schema)[0]){
-
-
-                    //if the whole program returns true after this.passGuard and this.terminate=false, this would recurse!
+                    console.log("PASSED GUARD", v[v_indx], schema)
                     this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema)[1])
-                    
-                }else{
-
                 }
             }else{
                 throw Error( "Schema error, should never have more than 1 key to a non terminating level and should never have more than 2 keys to a terminating level")
@@ -120,20 +113,35 @@ export class Guard{
         }
     }
 
-    terminate(v, v_indx, schema){
+    terminatingGuard(schema){
         this.didTerminate=true
+        console.log("TERMINATE ON", schema)
     }  
+
+    getTerminatingGuard(schema){
+        var objKeys = Object.keys(schema)
+        if(objKeys.length==1){
+            if(this.isObj(schema[objKeys[0]])){
+                var obj = schema[objKeys[0]]
+                if(Object.keys(obj).length==2){
+                    if(this.isString(obj['DEFAULT']) && this.isString(obj['FUNCTION'])){
+                        return obj
+                    }
+                }
+            }
+        }
+    }
+
     isTerminatingGuard(schema){
-        //check to see that schema has single key 
-        //that evaluates to an object with 2 keys 
-        //with DEFAULT and FUNCTION keys that evaluate to strings
         var objKeys = Object.keys(schema)
         if(objKeys.length==1){
             if(this.isObj(schema[objKeys[0]])){
 
                 var obj = schema[objKeys[0]]
                 if(Object.keys(obj).length==2){
+
                     if(this.isString(obj['DEFAULT']) && this.isString(obj['FUNCTION'])){
+                        console.log("IS TERMINATING GUARD", obj)
                         return true
                     }else{
                         return false
@@ -151,8 +159,7 @@ export class Guard{
 
     passGuard(v, v_indx, schema){
         if(this.isTerminatingGuard(schema)){
-            console.log("IS TERMINATING GUARD", schema)
-            this.terminate(v, v_indx, schema)
+            this.terminatingGuard(this.getTerminatingGuard(schema))
         }else{
             return [this.callGuard( Object.keys(schema)[0], v[v_indx]) , schema[Object.keys(schema)[0]]]
         }
