@@ -1,6 +1,24 @@
+import {Guard} from './Guard.js'
+
 export const GUARD=[
     {
+            'isString':"isString"
+
+    },
+    {
+            
             'isString':[
+                    {
+                            'isString':"isStringIsString"
+                    },
+                    {
+                            'isString':[
+                                    {
+                                        'isInt':'isStringIsStringIsInt'
+                                    }
+                            ]
+                    },
+
                     {
                             'isSeparator':[
                                     {
@@ -64,7 +82,6 @@ export const GUARD=[
 class TestObj{
     constructor(...v){
         new Guard(v, GUARDS,  this)
-
     }
 
     isString(...v){
@@ -99,7 +116,7 @@ class TestObj{
     
 
     isStringIsSeparatorIsEncoding(...v){
-        console.log("isStringIsSeparatorIsEncoding(", v, ")")
+        console.log("isStringIsEncodingIsInt(", v, ")")
     }
     
 }
@@ -110,7 +127,17 @@ class Test{
     }
 
     constructorTests(){
-        new TestObj()
+        new TestObj('someString')
+        new TestObj('string1', 'string2')
+        new TestObj('string1', 'string2', 4)
+        new TestObj('string1', 5, 'string2')
+        new TestObj('string1', 4, 5)
+        new TestObj('string1', 'utf8')
+        new TestObj('string1', 'sep:,', 'utf8')
+        new TestObj('string1', 'utf8', 3)
+        
     }
 }
 
+
+new Test()
