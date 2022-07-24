@@ -109,8 +109,10 @@ export class Guard{
             for (var i = 0; i<schema.length; i++){
                 var obj = schema[i]
                 //if we pass the guard, recurse, else throw error
-                if()
-                this.nextGuard(v, v_indx+=1, obj)
+                if(this.passGuard(obj)){
+                    //shrink obj
+                    this.nextGuard(v, v_indx+=1, this.passGuard(obj))
+                }
             }
         }else if(this.isObj(schema)){
             //if there is one key, pass the guard and recurse
@@ -128,7 +130,11 @@ export class Guard{
 
     }  
 
-
+    passGuard(obj){
+        //if it doesn't pass guard return nothing,
+        //if it does return the next layer of schema
+        console.log(obj)
+    }
     callOn(func, _v){
         func+='('+'"' +_v + '"' + ')'
         func='this.'+func
