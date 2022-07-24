@@ -82,8 +82,8 @@ export class Guard{
             for(var i = 0; i<schema.length; i++){
                 try {
                     this.nextGuard(v, 0,  schema[i])
-                }catch{
-                    //do nothing
+                }catch(err){
+                    console.log(err)
                 }
             }
         }catch{
@@ -107,14 +107,14 @@ export class Guard{
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
                 console.log("SCHEMA IS GUARD OBJECT")
-                console.log(v[v_indx], schema, '\n\n\n\n')
+                console.log(v[v_indx], schema, '\n\n')
                 if(this.passGuard(v, v_indx, schema)){
                     //shrink obj
                     this.nextGuard(v, v_indx+1, this.passGuard(v, v_indx, schema))
                 }
             }else if(this.isNKeys(schema, 2)){
                 console.log("SCHEMA IS TERMINAL OBJECT")
-                console.log(v[v_indx], schema, '\n\n\n\n')
+                console.log(v[v_indx], schema, '\n\n')
         //         //if there is two keys, call terminate()
         //         this.terminate(schema)
             }else{
@@ -132,16 +132,22 @@ export class Guard{
 
     }  
 
-    passGuard(obj){
-        //if it doesn't pass guard return nothing,
-        //if it does return the next layer of schema
-        console.log(obj)
+    passGuard(v, v_indx, schema){
+        console.log("PASS GUARD")
+        //grab the key, and assume it is the guard function and call it
+        console.log(Object.keys(schema)[0], '\n\n')
+        this.callOn(Object.keys(schema)[0], v[v_indx])
     }
     callOn(func, _v){
         func+='('+'"' +_v + '"' + ')'
         func='this.'+func
+        console.log("CALL ON", func, '\n\n\n\n')
 
-        return eval(func)
+        if(eval(func)){
+            return true
+        }else{
+            throw Error("Did not pass guard", func)
+        }
 
     }
     
