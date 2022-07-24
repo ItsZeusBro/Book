@@ -81,9 +81,7 @@ export class Guard{
         try{
             for(var i = 0; i<schema.length; i++){
                 try {
-                    console.log(schema[i])
                     this.nextGuard(v, v_indx,  schema[i], obj)
-                    console.log('\n\n\n\n')
                     if(this.terminate&&this.didTerminate){
                         return
                     }
@@ -102,7 +100,6 @@ export class Guard{
         }else if(this.isObj(schema)){
             if(this.isNKeys(schema, 1)){
                 if(this.passGuard( v, v_indx, schema)[0]){
-                    console.log("PASSED GUARD", v[v_indx], schema)
                     this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema)[1])
                 }
             }else{
@@ -113,24 +110,11 @@ export class Guard{
         }
     }
 
-    terminatingGuard(schema){
+    terminatingGuard(v, schema){
         this.didTerminate=true
-        console.log("TERMINATE ON", schema)
+        console.log("TERMINATE ON", v, schema)
     }  
 
-    getTerminatingGuard(schema){
-        var objKeys = Object.keys(schema)
-        if(objKeys.length==1){
-            if(this.isObj(schema[objKeys[0]])){
-                var obj = schema[objKeys[0]]
-                if(Object.keys(obj).length==2){
-                    if(this.isString(obj['DEFAULT']) && this.isString(obj['FUNCTION'])){
-                        return obj
-                    }
-                }
-            }
-        }
-    }
 
     isTerminatingGuard(schema){
         var objKeys = Object.keys(schema)
@@ -139,9 +123,7 @@ export class Guard{
 
                 var obj = schema[objKeys[0]]
                 if(Object.keys(obj).length==2){
-
                     if(this.isString(obj['DEFAULT']) && this.isString(obj['FUNCTION'])){
-                        console.log("IS TERMINATING GUARD", obj)
                         return true
                     }else{
                         return false
@@ -159,7 +141,8 @@ export class Guard{
 
     passGuard(v, v_indx, schema){
         if(this.isTerminatingGuard(schema)){
-            this.terminatingGuard(this.getTerminatingGuard(schema))
+            console.log("TERMINATING GUARD", schema)
+            this.terminatingGuard(v, schema)
         }else{
             return [this.callGuard( Object.keys(schema)[0], v[v_indx]) , schema[Object.keys(schema)[0]]]
         }
