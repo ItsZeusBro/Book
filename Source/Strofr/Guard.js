@@ -125,29 +125,23 @@ export class Guard{
     //base case is when the key yields an object or a string 
     guardMap(v, queue, schema){
         //step1:
-        var _v = v.shift()
         //console.log(schema[0])
+        var _v = v.shift()
+
         for(var i = 0; i<schema.length; i++){
             var guard=schema[i];
-            //console.log(guard)
+            console.log(guard)
             if(this.callOn(Object.keys(guard)[0], _v)){
+                schema=schema[i][Object.keys(guard)[0]]
+                //console.log(schema)
 
-                if(this.isGuardMapBase(_v, queue, guard)){
-                    console.log('This needs to work')
-                    return
-                }else{
-
-                    if(this.isNKeys(guard, 1)){
-                        console.log("BEFORE", guard)
-                        console.log("AFTER", guard[Object.keys(guard)[0]])
-                        queue.push(Object.keys(guard)[0])
-                        //console.log(queue)
-                        //console.log(Object.keys(obj)[0])
-                        this.guardMap(v, queue, guard[Object.keys(guard)[0]])
-                    }
-                }
+                i--;
             }
-
+            //if the key of the object evaluates to true on _v
+            //reset schema to next function
+            //console.log(guard)
+            
+            _v = v.shift()
         }
         return
     }
@@ -159,46 +153,7 @@ export class Guard{
         return eval(func)
 
     }
-    isGuardMapBase(_v, queue, obj){
-        if(this.isObj(obj) && !this.isEmptyObject(obj)){
-
-            var key0 = Object.keys(obj)[0]
-
-            //if object[key0] is empty object, throw Error()
-            if(this.isObj(obj[key0]) && this.isEmptyObject(obj[key0])){
-                throw Error("Schema contains empty object")
-            }else{
-                // if object[key0] is array, its not a base case, return false
-                if(this.isArray(obj[key0])){
-                    return false;
-                }else{
-                    // if object[key0] is string or object return trues
-                    if (this.isString(obj[key0])){
-                        
-                        return true
-                    }else if(this.isObj(obj[key0])){
-                        //check if both keys present, default and 
-                        //make sure there are two keys
-                        if(this.isNKeys(obj[key0], 2)){
-                            if(Object.keys(obj[key0])[0]=='DEFAULT'||Object.keys(obj[key0])[0]=='FUNCTION'){
-                                if(Object.keys(obj[key0][1])=='DEFAULT'||Object.keys(obj[key0][1]=='FUNCTION')){
-                                    
-                                    return true
-                                }
-                            }else{
-                                throw Error("Base case object lacks maximum of 2 keys (DEFAULT, FUNCTION)")
-                            }
-                        }else{
-                            throw Error("Base case object lacks maximum of 2 keys (DEFAULT, FUNCTION)")
-                        }
-                    }else{
-                        throw Error("obj[key0] is not an object or a string")
-                    }
-                }
-            }
-        }
-       return false
-    }
+    
 
 
 
@@ -220,7 +175,6 @@ export class Guard{
 	}
 
     isEncoding(v){ 
-        console.log(v)
         return Buffer.isEncoding(v); 
     }
 
@@ -273,7 +227,12 @@ export class Guard{
         return true
     }
 
-    isSeparator(v){ if(v.includes('s:')){ return true } }
+    isSeparator(v){ 
+
+        if(v.includes('s:')){ 
+            return true 
+        } 
+    }
 
 	sameLength(arr1, arr2){
 		if( this.isArray(arr1) && this.isArray(arr2) ){ return ( arr1.length == arr2.length ) }	
