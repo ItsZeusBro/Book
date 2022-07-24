@@ -11,7 +11,7 @@ export const GUARDS=[
                                 'isSeparator':[
                                         {
                                                 'isEncoding': {
-                                                    'DEFAULT':'utf-32',
+                                                    'DEFAULT':'utf8',
                                                     'FUNCTION': 'isStringIsSeparatorIsEncoding'
                                                 }    
                                         }
@@ -19,7 +19,7 @@ export const GUARDS=[
                         }, 
                         {
                                 'isEncoding':{
-                                        'DEFAULT':'utf-32',
+                                        'DEFAULT':'utf8',
                                         'FUNCTION': 'isStringIsEncoding'
                                 }
                         },
@@ -36,7 +36,7 @@ export const GUARDS=[
                         },
                         {
                                 'isEncoding':{
-                                        'DEFAULT':'utf-32',
+                                        'DEFAULT':'utf8',
                                         'FUNCTION':'isStringIsEncoding'
                                 }
                         }
@@ -46,7 +46,7 @@ export const GUARDS=[
                 "isCell":[
                         {
                                 'isEncoding':{
-                                        'DEFAULT':'utf-32',
+                                        'DEFAULT':'utf8',
                                         'FUNCTION': 'isCellIsEncoding'
                                 }
                         }
@@ -59,7 +59,7 @@ export const GUARDS=[
                                 'isString':[
 
                                         {
-                                            'DEFAULT':'utf-32',
+                                            'DEFAULT':'utf8',
                                             'FUNCTION': 'isRowIsEncoding'
                                         }
                                 ]
@@ -339,7 +339,7 @@ class someObj{
 }
 
 
-new Guard(["strng", "s:separator", "utf-32"], GUARDS,  new someObj())
+new Guard(["strng", "s:separator", "utf8"], GUARDS,  new someObj())
 
     //attributions
     //https://stackoverflow.com/questions/14636536/how-to-check-if-a-variable-is-an-integer-in-javascript
