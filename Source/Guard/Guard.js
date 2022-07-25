@@ -25,7 +25,7 @@ export class Guard{
         }
     }
 
-    passGuard(){
+    passGuard(v, v_indx, schema){
         if(this.isNKeys(schema, 1)){
             var passGuard = this._passGuard(v, v_indx, schema)
             if(passGuard[0]){
@@ -41,36 +41,34 @@ export class Guard{
         }
     }
 
-    terminatingGuard(v, schema){
+    _passGuard(v, v_indx, schema){
+        if(this.isTerminatingGuard(schema)){
+            this.terminate(v, schema)
+        }else{
+            return [this.callGuard( Object.keys(schema)[0], v[v_indx]) , schema[Object.keys(schema)[0]]]
+        }
+    }
+
+    terminate(v, schema){
         this.didTerminate=true
         if(this.isString(schema[Object.keys(schema)[0]])){
         }else{
             if(this.callGuard(Object.keys(schema)[0], v[v.length-1])){
-                this.buildTerminator(v, schema, false)
+                this._terminate(v, schema, false)
             }else{
-                this.buildTerminator(v, schema, true)
+                this._terminate(v, schema, true)
             }
         }
     }  
 
-    buildTerminator(v, schema, deflt){
-        var func = schema[Object.keys(schema)[0]]['FUNCTION']
-        func='this.obj.'+func+'('
-
+    _terminate(v, schema, deflt){
         if(deflt){
             v.pop()
             v.push(schema[Object.keys(schema)[0]]['DEFAULT'])
         }
-        v.forEach((_v)=>{
-            if(this.isString(_v)){
-                func+="'"+_v+"'"+','
-            }else{
-                func+=_v+','
-            }
-        })
-        func = func.substring(0, func.length-1)
-        func+=')'
-        console.log(func)
+        var func = schema[Object.keys(schema)[0]]['FUNCTION']
+        func='this.obj.'+func
+        func=this.buildParams(func, v)
         eval(func)
     }
 
@@ -87,30 +85,36 @@ export class Guard{
             }
         }
         return false
-    }
-
-    passGuard(v, v_indx, schema){
-        if(this.isTerminatingGuard(schema)){
-            this.terminatingGuard(v, schema)
-        }else{
-            return [this.callGuard( Object.keys(schema)[0], v[v_indx]) , schema[Object.keys(schema)[0]]]
-        }
-    }
+    }    
 
     callGuard(func, _v){
         try{
             //this needs to be fixed for types that are not strings
-            func+='('+'"' +_v + '"' + ')'
             func='this.'+func
-            console.log(func)
-            if(eval(func)){
+            func = this.buildParams(func, _v)
 
+            if(eval(func)){
                 return true
             }else{
                 return false
             }
         }catch{
-            throw Error( "Cannot Call Guard function, Check Schema")
+            throw Error("Cannot Call Guard function, Check Schema")
         }
     }
+
+    buildParams(func, v){
+        func+='('
+        v.forEach((_v)=>{
+            if(this.isString(_v)){
+                func+="'"+_v+"'"+','
+            }else{
+                func+=_v+','
+            }
+        })
+        func = func.substring(0, func.length-1)
+        func+=')'
+        return func
+    }
+
 }
