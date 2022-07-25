@@ -7,31 +7,37 @@ export class Guard{
     }
 
     guard(v, v_indx, schema){
-            for(var i = 0; i<schema.length; i++){
-                try {
-                    this.nextGuard(v, v_indx,  schema[i])
-                    // if(this.terminate&&this.didTerminate){
-                    //     return
-                    // }
-                }catch(err){
-                }
+        for(var i = 0; i<schema.length; i++){
+            try {
+                this.nextGuard(v, v_indx,  schema[i])
+            }catch(err){
             }
+        }
     }
 
     nextGuard(v, v_indx, schema){
         if(this.isObjArray(schema)){
             this.guard(v, v_indx, schema)
         }else if(this.isObj(schema)){
-            if(this.isNKeys(schema, 1)){
-                //console.log("CALLING GUARD ON", v, v_indx, schema)
-                if(this.passGuard( v, v_indx, schema)[0]){
-                    this.nextGuard(v, v_indx+1, this.passGuard( v, v_indx, schema)[1])
-                }
-            }else{
-                throw Error( "Schema error, should never have more than 1 key to a non terminating level and should never have more than 2 keys to a terminating level")
+            this.passGuard(v, v_indx, schema)
+        }else{
+            throw Error('schema must be of type object or of type array')
+        }
+    }
+
+    passGuard(){
+        if(this.isNKeys(schema, 1)){
+            var passGuard = this._passGuard(v, v_indx, schema)
+            if(passGuard[0]){
+                schema = passGuard[1]
+                this.nextGuard(v, v_indx+1, schema)
             }
         }else{
-            throw Error( 'schema must be of type object or of type array')
+            throw Error(
+                `Schema error, should never have more than 1 key 
+                to a non terminating level and should never have 
+                more than 2 keys to a terminating level`
+            )
         }
     }
 

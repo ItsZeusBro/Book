@@ -136,7 +136,6 @@ class Test{
         new TestObj('string1', 'sep:,', 'utf8')
         new TestObj('string1', 'utf8', 3)
 
-
     }
 }
 
