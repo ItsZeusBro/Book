@@ -3,14 +3,17 @@ export class Guards{
     isNKeys(obj, n){
         return (Object.keys(obj).length==n)
     }
+
     greaterThanNKeys(obj, n){
         return (Object.keys(obj).length>n)
     }
+
     isArr(v){ return ((Array.isArray(v)) && v.length) }
 
 	isStr(v){ 
         return (typeof v === 'string' || v instanceof String) 
     }
+
     isStrArr(v){ 
 		if(!this.isArray(v)){ return }
 		v.forEach( (e) => { if( !this.isString(e) ) { return } } );
@@ -35,6 +38,7 @@ export class Guards{
 		v.forEach( (e) => { if( !this.isObj(e) ) { return } } );
 		return true
     }
+    
     isEmptyObj(obj){
         return Object.keys(obj).length === 0;
     }
@@ -85,6 +89,3 @@ export class Guards{
 
     // }
 }
-
-
-    

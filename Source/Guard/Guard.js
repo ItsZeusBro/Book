@@ -1,8 +1,11 @@
+import {Guards} from './Guards.js'
+
 export class Guard{
     constructor(v, schema, obj, terminate=true){
         this.terminate=terminate
         this.didTerminate=false
         this.obj=obj
+        this.guards=new Guards()
         this.guard(v, 0, schema)
     }
 
@@ -49,6 +52,17 @@ export class Guard{
         }
     }
 
+    callGuard(func, _v){
+        func='this.guards.'+func
+        func = this.buildParams(func, _v)
+
+        if(eval(func)){
+            return true
+        }else{
+            return false
+        }
+    }
+
     terminate(v, schema){
         this.didTerminate=true
         if(this.isString(schema[Object.keys(schema)[0]])){
@@ -87,22 +101,6 @@ export class Guard{
         return false
     }    
 
-    callGuard(func, _v){
-        try{
-            //this needs to be fixed for types that are not strings
-            func='this.'+func
-            func = this.buildParams(func, _v)
-
-            if(eval(func)){
-                return true
-            }else{
-                return false
-            }
-        }catch{
-            throw Error("Cannot Call Guard function, Check Schema")
-        }
-    }
-
     buildParams(func, v){
         func+='('
         v.forEach((_v)=>{
@@ -116,5 +114,4 @@ export class Guard{
         func+=')'
         return func
     }
-
 }
